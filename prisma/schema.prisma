@@ -22,3 +22,85 @@ model User {
   password   String
   permission String
 }
+
+model hospital {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt           DateTime @default(now())
+  updateAt            DateTime @updatedAt
+  name                String
+  phone               String
+  latitude            Float
+  longitude           Float
+  numberBedsAvailable Int
+  utiAvailable        Boolean
+}
+
+model cargo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updateAt    DateTime @updatedAt
+  description String   @unique
+}
+
+model funcionario {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  name      String
+  cpf       String   @unique
+  phone     String
+}
+
+model especialidade {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model medico {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model solicitacao {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model transferencia {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model medicoRegulador {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model documentoTransferencia {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model prontuario {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model medicamentoPrescrito {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model drogas {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}

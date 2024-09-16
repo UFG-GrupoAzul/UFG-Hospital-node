@@ -12,7 +12,7 @@ class UserService {
         if (userExist) {
             throw new Error("User already exists in the database.");
         }
-        const hashPassword = await hash(password, 10);
+        const hashPassword = await this.getHashPassword(password);
         try {
             return await prisma.user.create({
                 data: {
