@@ -16,91 +16,157 @@ datasource db {
 model User {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime @default(now())
-  updateAt   DateTime @updatedAt
+  updatedAt  DateTime @updatedAt
   name       String
   email      String   @unique
   password   String
   permission String
+  Person     Person[]
 }
 
-model hospital {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt           DateTime @default(now())
-  updateAt            DateTime @updatedAt
-  name                String
-  phone               String
-  latitude            Float
-  longitude           Float
-  numberBedsAvailable Int
-  utiAvailable        Boolean
+model Person {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  cpf      String    @unique
+  phone    String
+  User     User?     @relation(fields: [userId], references: [id])
+  userId   String?   @db.ObjectId
+  Employee Employee?
 }
 
-model cargo {
+model Employee {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  registration String
+  person       Person   @relation(fields: [personId], references: [id])
+  personId     String   @unique @db.ObjectId
+  Doctor       Doctor?
+
+  //@@id([personId])
+}
+
+model Role {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime @default(now())
-  updateAt    DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
   description String   @unique
 }
 
-model funcionario {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
-  name      String
-  cpf       String   @unique
-  phone     String
+model Hospital {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  phone         String
+  latitude      Float
+  longitude     Float
+  availableBeds Int
+  icuAvailable  Boolean
 }
 
-model especialidade {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Patient {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  birthDate      DateTime
+  name           String
+  medicalRecords MedicalRecord[]
+  Transfer       Transfer[]
+  Request        Request[]
 }
 
-model medico {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model MedicalRecord {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  prescribedDrugs PrescribedDrug[]
+  Patient         Patient?         @relation(fields: [patientId], references: [id])
+  patientId       String?          @db.ObjectId
 }
 
-model solicitacao {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model PrescribedDrug {
+  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  dosageInfo         String
+  dosageAmount       Float
+  administration     String
+  administrationDate DateTime
+  MedicalRecord      MedicalRecord? @relation(fields: [medicalRecordId], references: [id])
+  medicalRecordId    String?        @db.ObjectId
 }
 
-model transferencia {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Drug {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  name             String
+  activeIngredient String
+  description      String
 }
 
-model medicoRegulador {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Transfer {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  originDoctor        Doctor   @relation("originDoctor", fields: [originDoctorId], references: [id])
+  originDoctorId      String   @db.ObjectId
+  destinationDoctor   Doctor   @relation("destinationDoctor", fields: [destinationDoctorId], references: [id])
+  destinationDoctorId String   @db.ObjectId
+  patient             Patient  @relation(fields: [patientId], references: [id])
+  patientId           String   @db.ObjectId
 }
 
-model documentoTransferencia {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Doctor {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  crm        String
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String   @unique @db.ObjectId
+
+  originTransfers      Transfer[] @relation("originDoctor")
+  destinationTransfers Transfer[] @relation("destinationDoctor")
 }
 
-model prontuario {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Request {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  patient            Patient            @relation(fields: [patientId], references: [id])
+  patientId          String             @db.ObjectId
+  specialty          Specialty          @relation(fields: [specialtyId], references: [id])
+  specialtyId        String             @db.ObjectId
+  regulatoryDoctor   RegulatoryDoctor   @relation(fields: [regulatoryDoctorId], references: [id])
+  regulatoryDoctorId String             @db.ObjectId
+  TransferDocument   TransferDocument[]
 }
 
-model medicamentoPrescrito {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Specialty {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  description String
+  Request     Request[]
 }
 
-model drogas {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model RegulatoryDoctor {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  crm       String
+  insurance String
+  Request   Request[]
+}
+
+model TransferDocument {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  number      String
+  observation String
+  request     Request  @relation(fields: [requestId], references: [id])
+  requestId   String   @db.ObjectId
 }
