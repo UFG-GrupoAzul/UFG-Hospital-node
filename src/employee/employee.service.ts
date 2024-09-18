@@ -34,8 +34,10 @@ class EmployeeService {
     async update(id: string, name: string, cpf: string, phone: string, registration: string) {
         try {
             const employeeExist = await this.findByCpf(cpf);
-            if (!employeeExist)
-                throw new Error("Employee not found in the database.")
+
+
+            if (employeeExist && employeeExist.id != id)
+                throw new Error("This CPF already exists in the database.");
 
             return await prisma.employee.update({
                 where: {id},
@@ -48,7 +50,7 @@ class EmployeeService {
                             phone
                         }
                     }
-                },include: {
+                }, include: {
                     person: true
                 }
 
@@ -74,7 +76,6 @@ class EmployeeService {
     }
 
 
-
     async findById(id: string) {
         try {
             return await prisma.employee.findUnique({
@@ -92,14 +93,11 @@ class EmployeeService {
     async delete(id: string) {
         try {
             await prisma.employee.delete({where: {id}})
-        }catch (error) {
+        } catch (error) {
             console.log(`Error deleting employee: ${error}`);
             throw error;
         }
     }
-
-
-
 
 
     private async findByCpf(cpf: string) {
@@ -107,7 +105,7 @@ class EmployeeService {
             return await prisma.person.findUnique({
                 where: {cpf}
             })
-        }catch (error){
+        } catch (error) {
             console.log(`Error fetching employee: ${error}`);
             throw error;
         }
