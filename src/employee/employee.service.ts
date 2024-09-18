@@ -32,39 +32,39 @@ class EmployeeService {
     }
 
     async update(id: string, name: string, cpf: string, phone: string, registration: string) {
-       try{ const employeeExist = await this.findByCpf(cpf);
-        if (!employeeExist)
-            throw new Error("Employee not found in the database.")
+        try {
+            const employeeExist = await this.findByCpf(cpf);
+            if (!employeeExist)
+                throw new Error("Employee not found in the database.")
 
-        const employeeUpdated = await prisma.employee.update({
-            where: {id},
-            data: {
-                registration,
-                person: {
-                    create: { // Cria a Person e associa ao Employee
-                        name,
-                        cpf,
-                        phone
+            return await prisma.employee.update({
+                where: {id},
+                data: {
+                    registration,
+                    person: {
+                        update: {
+                            name,
+                            cpf,
+                            phone
+                        }
                     }
+                },include: {
+                    person: true
                 }
-            }, include: {
-                person: true // Inclui os dados de Person no retorno
-            }
 
-        })
-           return employeeUpdated;
+            })
 
-       }catch (error) {
-           console.log(`Error updating Employee: ${error}`);
-           throw error;
-       }
+        } catch (error) {
+            console.log(`Error updating Employee: ${error}`);
+            throw error;
+        }
     }
 
     async findAll() {
         try {
             return await prisma.employee.findMany({
                 include: {
-                    person: true // Inclui os dados da Person
+                    person: true
                 }
             });
         } catch (error) {
@@ -90,9 +90,12 @@ class EmployeeService {
     }
 
     async delete(id: string) {
-
-        await prisma.employee.delete({where:{id}})
-
+        try {
+            await prisma.employee.delete({where: {id}})
+        }catch (error) {
+            console.log(`Error deleting employee: ${error}`);
+            throw error;
+        }
     }
 
 
