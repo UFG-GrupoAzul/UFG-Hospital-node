@@ -1,15 +1,20 @@
 import {NextFunction, Request, Response} from "express";
-import {userService} from "../index";
 import {Util} from "../utils/util";
+import {UserService} from "./user.service";
 
 class UserController {
 
+    private userService: UserService;
+
+    constructor(userService: UserService) {
+        this.userService = userService;
+    }
 
     create = async (req: Request, res: Response) => {
         try {
             const {name, email, password, permission} = req.body;
             this.isValidResponse(name, email, password, permission);
-            const user = await userService.create(name, email, password, permission);
+            const user = await this.userService.create(name, email, password, permission);
             return res.status(201).json(user);
         } catch (error) {
             Util.handleError(res, error, "Error creating user.")
@@ -22,7 +27,7 @@ class UserController {
             Util.validId(id);
             const {name, email, password, permission} = req.body;
             this.isValidResponse(name, email, password, permission);
-            const userUpdated = await userService.update(id, name, email, password, permission);
+            const userUpdated = await this.userService.update(id, name, email, password, permission);
             return res.status(200).json(userUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating user.");
@@ -33,7 +38,7 @@ class UserController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            await userService.delete(id);
+            await this.userService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
             Util.handleError(res, error, "Error deleting user.");
@@ -42,7 +47,7 @@ class UserController {
 
     findAll = async (req: Request, res: Response) => {
         try {
-            const users = await userService.findAll();
+            const users = await this.userService.findAll();
             return res.json(users);
         } catch (error) {
             Util.handleError(res, error, "Error fetching user.");
@@ -52,7 +57,7 @@ class UserController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const user = await userService.findById(id);
+            const user = await this.userService.findById(id);
 
             if (!user) {
                 return res.status(404).json({error: "User not found."});
@@ -67,7 +72,7 @@ class UserController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const user = await userService.findById(id);
+            const user = await this.userService.findById(id);
             if (!user) {
                 return res.status(404).json({error: "User not found."});
             }
@@ -85,5 +90,7 @@ class UserController {
     }
 }
 
-export {UserController};
+const userService = new UserService();
+const userController = new UserController(userService);
+export {UserController, userService, userController};
 

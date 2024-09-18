@@ -1,9 +1,6 @@
-import { Router } from "express";
-import {UserController} from "./user.controller";
-import {authController} from "../index";
-
-const router = Router();
-const userController = new UserController();
+import {Router} from "express";
+import {userController} from "./user.controller";
+import {router} from "../routes";
 
 router.get("/", userController.findAll);
 router.get("/:id",  userController.verifyIfExists, userController.findById);
