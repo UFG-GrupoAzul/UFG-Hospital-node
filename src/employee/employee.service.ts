@@ -1,11 +1,6 @@
-import {hash} from "bcryptjs";
 import {prisma} from "../index";
 
 class EmployeeService {
-
-    private async getHashPassword(password: string) {
-        return await hash(password, 10);
-    }
 
     async create(name: string, cpf: string, phone: string, registration: string) {
         const employeeExist = await this.findByCpf(cpf);
@@ -17,14 +12,16 @@ class EmployeeService {
                 data: {
                     registration,
                     person: {
-                        create: { // Cria a Person e associa ao Employee
+                        create: {
+                            id: undefined,
                             name,
                             cpf,
-                            phone
+                            phone,
+                            dType: "Employee"
                         }
                     }
                 }, include: {
-                    person: true // Inclui os dados de Person no retorno
+                    person: true
                 }
 
             });
@@ -41,7 +38,7 @@ class EmployeeService {
                     person: {name: "asc"}
                 },
                 include: {
-                    person: true // Inclui os dados de Person no retorno
+                    person: true
                 }
             });
         } catch (error) {
@@ -51,13 +48,12 @@ class EmployeeService {
     }
 
 
-
     private async findByCpf(cpf: string) {
-        try{
+        try {
             return await prisma.person.findUnique({
                 where: {cpf}
             })
-        }catch (error){
+        } catch (error) {
             console.log(`Error fetching employee: ${error}`);
             throw error;
         }
