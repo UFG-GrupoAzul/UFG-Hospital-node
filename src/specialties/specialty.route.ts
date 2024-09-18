@@ -1,4 +1,3 @@
-import {Router} from "express";
 import {specialtyController} from "./specialty.controller";
 import {router} from "../routes";
 

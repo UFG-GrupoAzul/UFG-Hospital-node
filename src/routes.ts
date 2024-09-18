@@ -7,9 +7,9 @@ import {authController} from "./auth/auth.controller";
 
 const router = Router();
 
-router.use("/users", authController.authMiddleware, userRoute);
-//router.use("/users", userRoute);
 router.use("/auth", authRoute);
+//router.use("/users", userRoute);
+router.use("/users", authController.authMiddleware, userRoute);
 router.use("/employees", authController.authMiddleware, employeeRoute);
 router.use("/specialties", authController.authMiddleware, specialtyRoute);
 
