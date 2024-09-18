@@ -12,7 +12,7 @@ class EmployeeController {
             const employee = await employeeService.create(name,cpf, phone, registration);
             return res.status(201).json(employee);
         } catch (error) {
-            Util.handleError(res, error, "Error creating employee.")
+            Util.handleError(res, error, "Error creating employees.")
         }
     }
 
@@ -25,7 +25,7 @@ class EmployeeController {
             const employeeUpdated = await employeeService.update(id,name,cpf, phone, registration);
             return res.status(200).json(employeeUpdated);
         } catch (error) {
-            Util.handleError(res, error, "Error updating employee.");
+            Util.handleError(res, error, "Error updating employees.");
         }
     }
 
@@ -36,7 +36,7 @@ class EmployeeController {
             await employeeService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
-            Util.handleError(res, error, "Error deleting employee.");
+            Util.handleError(res, error, "Error deleting employees.");
         }
     }
 
@@ -45,7 +45,7 @@ class EmployeeController {
             const employees = await employeeService.findAll();
             return res.json(employees);
         } catch (error) {
-            Util.handleError(res, error, "Error fetching employee.");
+            Util.handleError(res, error, "Error fetching employees.");
         }
     }
 
@@ -60,7 +60,7 @@ class EmployeeController {
             }
             return res.json(employee);
         } catch (error) {
-            Util.handleError(res, error, "Error fetching employee.");
+            Util.handleError(res, error, "Error fetching employees.");
         }
     }
 
@@ -74,7 +74,7 @@ class EmployeeController {
             }
             return next();
         } catch (error) {
-            Util.handleError(res, error, "Error fetching employee.");
+            Util.handleError(res, error, "Error fetching employees.");
         }
     }
 

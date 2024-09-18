@@ -120,7 +120,7 @@ model Doctor {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  crm        String
+  crm        String   @unique
   Employee   Employee @relation(fields: [employeeId], references: [id])
   employeeId String   @unique @db.ObjectId
 
@@ -145,7 +145,7 @@ model Specialty {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  name        String
+  name        String    @unique
   description String
   Request     Request[]
 }
@@ -154,7 +154,7 @@ model RegulatoryDoctor {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  crm       String
+  crm       String    @unique
   insurance String
   Request   Request[]
 }
