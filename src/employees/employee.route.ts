@@ -1,8 +1,5 @@
-import { Router } from "express";
-import {EmployeeController} from "./employee.controller";
-
-const router = Router();
-const employeeController = new EmployeeController();
+import {router} from "../routes";
+import {employeeController} from "./employee.controller";
 
 router.get("/",  employeeController.findAll);
 router.get("/:id",  employeeController.verifyIfExists, employeeController.findById);

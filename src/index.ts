@@ -12,20 +12,8 @@ const tokenDuration = process.env.TOKEN_DURATION as string;
 // Cria uma única instancia
 const prisma = new PrismaClient();
 
-// Service
-const userService = new UserService();
-const employeeService = new EmployeeService();
-const specialtyService = new SpecialtyService();
-
-// Controller
-const authController = new AuthController();
-
 export {
     prisma,
     tokenSecret,
-    tokenDuration,
-    userService,
-    employeeService,
-    specialtyService,
-    authController
+    tokenDuration
 };

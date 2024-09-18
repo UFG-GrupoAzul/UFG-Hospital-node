@@ -1,14 +1,20 @@
 import {NextFunction, Request, Response} from "express";
-import {specialtyService} from "../index";
 import {Util} from "../utils/util";
+import {SpecialtyService} from "./specialty.service";
 
 class SpecialtyController {
+
+    private specialtyService: SpecialtyService;
+
+    constructor(specialtyService: SpecialtyService) {
+        this.specialtyService = specialtyService;
+    }
 
     create = async (req: Request, res: Response) => {
         try {
             const {name, description} = req.body;
             this.isValidResponse(name, description);
-            const specialty = await specialtyService.create(name, description);
+            const specialty = await this.specialtyService.create(name, description);
             return res.status(201).json(specialty);
         } catch (error) {
             Util.handleError(res, error, "Error creating specialties.")
@@ -21,7 +27,7 @@ class SpecialtyController {
             Util.validId(id);
             const {name, description} = req.body;
             this.isValidResponse(name, description);
-            const specialtyUpdated = await specialtyService.update(id, name, description);
+            const specialtyUpdated = await this.specialtyService.update(id, name, description);
             return res.status(200).json(specialtyUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating specialties.");
@@ -32,7 +38,7 @@ class SpecialtyController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            await specialtyService.delete(id);
+            await this.specialtyService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
             Util.handleError(res, error, "Error deleting specialties.");
@@ -41,7 +47,7 @@ class SpecialtyController {
 
     findAll = async (req: Request, res: Response) => {
         try {
-            const specialties = await specialtyService.findAll();
+            const specialties = await this.specialtyService.findAll();
             return res.json(specialties);
         } catch (error) {
             Util.handleError(res, error, "Error fetching specialties.");
@@ -51,7 +57,7 @@ class SpecialtyController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const specialty = await specialtyService.findById(id);
+            const specialty = await this.specialtyService.findById(id);
 
             if (!specialty) {
                 return res.status(404).json({error: "Specialty not found."});
@@ -66,7 +72,7 @@ class SpecialtyController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const specialty = await specialtyService.findById(id);
+            const specialty = await this.specialtyService.findById(id);
             if (!specialty) {
                 return res.status(404).json({error: "Specialty not found."});
             }
@@ -82,5 +88,7 @@ class SpecialtyController {
     }
 }
 
-export {SpecialtyController};
+const specialtyService = new SpecialtyService();
+const specialtyController = new SpecialtyController(specialtyService);
+export {SpecialtyController, specialtyController};
 

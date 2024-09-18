@@ -1,10 +1,9 @@
 import {compare} from "bcryptjs";
 import {NextFunction, Request, Response} from "express";
 import {sign, verify} from "jsonwebtoken";
-import {tokenDuration, tokenSecret, userService} from "../index";
+import {tokenDuration, tokenSecret} from "../index";
 import {Util} from "../utils/util";
-
-
+import {userService} from "../users/user.controller";
 
 
 type TokenPayload = {
@@ -43,7 +42,7 @@ class AuthController {
 
     createAdmin = async (req: Request, res: Response) => {
         try {
-            const user = await userService.create("admin","admin","admin","admin") ;
+            const user = await userService.create("admin", "admin", "admin", "admin");
             return res.status(201).json(user);
         } catch (error) {
             Util.handleError(res, error, "Error creating AdminUser.")
@@ -71,5 +70,6 @@ class AuthController {
 
 }
 
-export {AuthController};
+const authController = new AuthController();
+export {AuthController, authController};
 

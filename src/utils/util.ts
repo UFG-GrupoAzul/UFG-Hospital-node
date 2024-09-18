@@ -1,14 +1,14 @@
-import { Response } from "express";
+import {Response} from "express";
 
 class Util {
 
     static handleError(res: Response, error: unknown, msg: string) {
         if (error instanceof Error) {
             console.error(`${msg}: ${error} `);
-            return res.status(400).json({ error: error.message });
+            return res.status(400).json({error: error.message});
         } else {
             console.error(`Unexpected error ${error}`);
-            return res.status(500).json({ error: "An unexpected error occurred." });
+            return res.status(500).json({error: "An unexpected error occurred."});
         }
     }
 
@@ -31,12 +31,12 @@ class Util {
         }
     }
 
-    static validId(id: String){
-        if(id.length !== 24){
+    static validId(id: String) {
+        if (id.length !== 24) {
             throw new Error(`Invalid id: ${id}`);
         }
     }
 }
 
-export { Util }
+export {Util}
 
