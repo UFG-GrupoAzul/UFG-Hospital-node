@@ -28,7 +28,7 @@ class UserService {
                     permission: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {
@@ -72,7 +72,7 @@ class UserService {
                     email: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {
@@ -104,7 +104,7 @@ class UserService {
                     email: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {
@@ -123,7 +123,7 @@ class UserService {
                     email: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {

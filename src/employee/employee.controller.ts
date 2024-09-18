@@ -20,9 +20,9 @@ class EmployeeController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const {name, email, password, permission} = req.body;
-            this.isValidResponse(name, email, password, permission);
-            const employeeUpdated = await employeeService.update(id, name, email, password, permission);
+            const {name,cpf, phone, registration} = req.body;
+            this.isValidResponse;
+            const employeeUpdated = await employeeService.update(id,name,cpf, phone, registration);
             return res.status(200).json(employeeUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating employee.");
@@ -48,6 +48,7 @@ class EmployeeController {
             Util.handleError(res, error, "Error fetching employee.");
         }
     }
+
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;

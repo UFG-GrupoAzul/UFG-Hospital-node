@@ -42,8 +42,6 @@ model Employee {
   person       Person   @relation(fields: [personId], references: [id])
   personId     String   @unique @db.ObjectId
   Doctor       Doctor?
-
-  //@@id([personId])
 }
 
 model Role {
