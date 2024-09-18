@@ -1,10 +1,11 @@
 import { Router } from "express";
 import {UserController} from "./user.controller";
+import {authController} from "../index";
 
 const router = Router();
 const userController = new UserController();
 
-router.get("/",  userController.findAll);
+router.get("/", userController.findAll);
 router.get("/:id",  userController.verifyIfExists, userController.findById);
 router.post("/",  userController.create);
 router.put("/:id",  userController.verifyIfExists, userController.update);

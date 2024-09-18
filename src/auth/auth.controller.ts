@@ -5,6 +5,8 @@ import {tokenDuration, tokenSecret, userService} from "../index";
 import {Util} from "../utils/util";
 
 
+
+
 type TokenPayload = {
     id: String;
     iat: number;
@@ -36,6 +38,15 @@ class AuthController {
             return res.status(200).json({user: {id: user.id, email, permission: user.permission}, token});
         } catch (error) {
             return Util.handleError(res, error, "");
+        }
+    }
+
+    createAdmin = async (req: Request, res: Response) => {
+        try {
+            const user = await userService.create("admin","admin","admin","admin") ;
+            return res.status(201).json(user);
+        } catch (error) {
+            Util.handleError(res, error, "Error creating AdminUser.")
         }
     }
 

@@ -28,7 +28,7 @@ class UserService {
                     permission: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {
@@ -49,8 +49,11 @@ class UserService {
     }
 
     async update(id: string, name: string, email: string, password: string, permission: string) {
+
         const userExist = await this.findByEmail(email);
+
         if (userExist && userExist.id != id) {
+
             throw new Error("User already exists in the database.");
         }
         const hashPassword = await this.getHashPassword(password);
@@ -69,7 +72,7 @@ class UserService {
                     email: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {
@@ -101,7 +104,7 @@ class UserService {
                     email: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {
@@ -120,7 +123,7 @@ class UserService {
                     email: true,
                     password: false,
                     createdAt: true,
-                    updateAt: true
+                    updatedAt: true
                 }
             });
         } catch (error) {

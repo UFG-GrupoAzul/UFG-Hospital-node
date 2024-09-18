@@ -27,6 +27,7 @@ class Util {
     static validString(text: any, fieldName: String) {
         if (text.isNaN) {
             throw new Error(`Invalid ${fieldName}: must be a non empty string.`);
+
         }
     }
 

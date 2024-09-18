@@ -3,6 +3,8 @@ import {authController} from "../index";
 
 const router = Router();
 
-router.get("/", authController.authenticate);
+
+router.post("/", authController.authenticate)
+router.post("/admin", authController.createAdmin)
 
 export default router;
