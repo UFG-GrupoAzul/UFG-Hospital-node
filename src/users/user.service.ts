@@ -47,6 +47,7 @@ class UserService {
             throw error;
         }
     }
+    //teste
 
     async update(id: string, name: string, email: string, password: string, permission: string) {
 
