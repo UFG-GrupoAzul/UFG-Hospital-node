@@ -53,7 +53,6 @@ class UserService {
         const userExist = await this.findByEmail(email);
 
         if (userExist && userExist.id != id) {
-
             throw new Error("User already exists in the database.");
         }
         const hashPassword = await this.getHashPassword(password);
