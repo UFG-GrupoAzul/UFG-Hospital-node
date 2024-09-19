@@ -1,7 +1,7 @@
 import {specialtyController} from "./specialty.controller";
+import {Router} from "express";
 
 const router = Router();
-
 
 router.get("/",  specialtyController.findAll);
 router.get("/:id",  specialtyController.verifyIfExists, specialtyController.findById);
