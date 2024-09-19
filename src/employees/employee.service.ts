@@ -34,11 +34,9 @@ class EmployeeService {
     async update(id: string, name: string, cpf: string, phone: string, registration: string) {
         try {
             const employeeExist = await this.findByCpf(cpf);
-
-
-            if (employeeExist && employeeExist.id != id)
+            if (employeeExist && employeeExist.id != id) {
                 throw new Error("This CPF already exists in the database.");
-
+            }
             return await prisma.employee.update({
                 where: {id},
                 data: {
@@ -74,7 +72,6 @@ class EmployeeService {
             throw error;
         }
     }
-
 
     async findById(id: string) {
         try {
