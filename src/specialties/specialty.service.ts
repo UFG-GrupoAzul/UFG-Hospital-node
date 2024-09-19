@@ -23,7 +23,8 @@ class SpecialtyService {
     async findByName(name: string) {
         try {
             return await prisma.specialty.findUnique({
-                where: {name}
+                where: {
+                    name}
             });
         } catch (error) {
             console.log(`Error fetching specialty: ${error}`);
