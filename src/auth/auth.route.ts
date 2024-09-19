@@ -1,5 +1,8 @@
 import {authController} from "./auth.controller";
-import {router} from "../routes";
+import {Router} from "express";
+
+const router = Router();
+
 
 router.post("/", authController.authenticate)
 router.post("/admin", authController.createAdmin)
