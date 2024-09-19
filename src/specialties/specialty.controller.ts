@@ -13,7 +13,7 @@ class SpecialtyController {
     create = async (req: Request, res: Response) => {
         try {
             const {name, description} = req.body;
-            this.isValidResponse(name, description);
+            this.isValidRequest(name, description);
             const specialty = await this.specialtyService.create(name, description);
             return res.status(201).json(specialty);
         } catch (error) {
@@ -26,7 +26,7 @@ class SpecialtyController {
             const id = req.params.id;
             Util.validId(id);
             const {name, description} = req.body;
-            this.isValidResponse(name, description);
+            this.isValidRequest(name, description);
             const specialtyUpdated = await this.specialtyService.update(id, name, description);
             return res.status(200).json(specialtyUpdated);
         } catch (error) {
@@ -82,7 +82,7 @@ class SpecialtyController {
         }
     }
 
-    private isValidResponse(name: any, description: any) {
+    private isValidRequest(name: any, description: any) {
         Util.validString(name, "name");
         Util.validString(description, "name");
     }
