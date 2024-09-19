@@ -1,5 +1,7 @@
 import {specialtyController} from "./specialty.controller";
-import {router} from "../routes";
+
+const router = Router();
+
 
 router.get("/",  specialtyController.findAll);
 router.get("/:id",  specialtyController.verifyIfExists, specialtyController.findById);

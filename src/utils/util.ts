@@ -24,6 +24,12 @@ class Util {
         }
     }
 
+    static validBoolean(boolean: any, fieldName: String) {
+        if (typeof boolean !== "boolean") {
+            throw new Error(`Invalid ${fieldName}: must be a boolean.`);
+        }
+    }
+
     static validString(text: any, fieldName: String) {
         if (text.isNaN) {
             throw new Error(`Invalid ${fieldName}: must be a non empty string.`);
