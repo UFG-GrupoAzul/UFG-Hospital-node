@@ -13,7 +13,7 @@ class UserController {
     create = async (req: Request, res: Response) => {
         try {
             const {name, email, password, permission} = req.body;
-            this.isValidResponse(name, email, password, permission);
+            this.isValidRequest(name, email, password, permission);
             const user = await this.userService.create(name, email, password, permission);
             return res.status(201).json(user);
         } catch (error) {
@@ -26,7 +26,7 @@ class UserController {
             const id = req.params.id;
             Util.validId(id);
             const {name, email, password, permission} = req.body;
-            this.isValidResponse(name, email, password, permission);
+            this.isValidRequest(name, email, password, permission);
             const userUpdated = await this.userService.update(id, name, email, password, permission);
             return res.status(200).json(userUpdated);
         } catch (error) {
@@ -82,7 +82,7 @@ class UserController {
         }
     }
 
-    private isValidResponse(name: any, email: any, password: any, permission: any) {
+    private isValidRequest(name: any, email: any, password: any, permission: any) {
         Util.validString(password, "name");
         Util.validString(name, "name");
         Util.validString(email, "email");

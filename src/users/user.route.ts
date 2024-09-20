@@ -1,8 +1,7 @@
 import {userController} from "./user.controller";
-
+import {Router} from "express";
 
 const router = Router();
-
 
 router.get("/", userController.findAll);
 router.get("/:id",  userController.verifyIfExists, userController.findById);
