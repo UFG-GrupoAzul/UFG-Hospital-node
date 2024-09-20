@@ -11,7 +11,7 @@ Sergio Castro Dos Santos Sales Cabral<br/>
 
 Observação: Criar o arquivo .env com base no arquivo .env.bkp e atualizar a url do banco de dados.
 
-﻿# UFG-Hospital
+# UFG-Hospital
 Este repositorio foi utilizado nas matérias de:
  - Fundamentos de Orientação a Objetos
  - Gerenciamento Ágil de Projetos;
