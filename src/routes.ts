@@ -7,6 +7,7 @@ import {authController} from "./auth/auth.controller";
 import hospitalRoute from "./hospital/hospital.route";
 import doctorRoute from "./doctor/doctor.route";
 import roleRoute from "./roles/role.route";
+import drugsRoute from "./drugs/drugs.route";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use("/hospitals", authController.authMiddleware, hospitalRoute);
 router.use("/roles", authController.authMiddleware, roleRoute);
 router.use("/specialties", authController.authMiddleware, specialtyRoute);
 router.use("/users", authController.authMiddleware, userRoute);
+router.use("/drugs", authController.authMiddleware, drugsRoute);
 
 export {router};
