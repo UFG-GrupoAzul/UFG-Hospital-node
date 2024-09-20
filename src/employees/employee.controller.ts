@@ -14,7 +14,7 @@ class EmployeeController {
     create = async (req: Request, res: Response) => {
         try {
             const {name, cpf, phone, email, registration} = req.body;
-            this.isValidResponse(name,cpf,phone,email,registration)
+            this.isValidRequest(name,cpf,phone,email,registration)
             const employee = await this.employeeService.create(name, cpf, phone, registration);
             return res.status(201).json(employee);
         } catch (error) {
