@@ -3,7 +3,6 @@ import {roleController} from "./role.controller";
 
 const router = Router();
 
-
 router.get("/", roleController.findAll);
 router.get("/:id", roleController.verifyIfExists, roleController.findById);
 router.post("/", roleController.create);
