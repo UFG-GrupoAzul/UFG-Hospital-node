@@ -3,7 +3,6 @@ import {Router} from "express";
 
 const router = Router();
 
-
 router.get("/", userController.findAll);
 router.get("/:id",  userController.verifyIfExists, userController.findById);
 router.post("/",  userController.create);
