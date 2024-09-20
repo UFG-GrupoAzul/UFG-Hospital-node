@@ -3,10 +3,6 @@ import {prisma} from "../index";
 class TransferDocumentService {
 
     async create(number: string, observation: string, requestId: string) {
-        // const employeeExist = await this.findByCpf(cpf);
-        // if (employeeExist && employeeExist.id != id) {
-        //     throw new Error("Employee already exists in the database.");
-        // }
         try {
             return await prisma.transferDocument.create({
                 data: {
@@ -23,12 +19,6 @@ class TransferDocumentService {
 
     async update(id: string, number: string, observation: string) {
         try {
-            //const doctorExists = await this.findByCpf(cpf);
-
-            //if (doctorExists && doctorExists.id != id) {
-            //    throw new Error("Doctor already exists with this CP.");
-            //}
-
             return await prisma.transferDocument.update({
                 where: {id},
                 data:  {
@@ -44,22 +34,14 @@ class TransferDocumentService {
 
     async getAll(){
         try{
-            return await prisma.doctor.findMany({
+            return await prisma.transferDocument.findMany({
                 select: {
                     id: true,
-                    crm: true,
-                    Employee: {
-                        select: {
-                            registration: true,
-                            person: {
-                                select: {
-                                    cpf: true,
-                                    phone: true,
-                                    name: true
-                                }
-                            }
-                        }
-                    }
+                    createdAt: true,
+                    updatedAt: true,
+                    number: true,
+                    observation: true,
+                    requestId: true
                 }
             })
         }catch (error){
@@ -70,23 +52,16 @@ class TransferDocumentService {
 
     async getById(id: string){
         try{
-            return await prisma.doctor.findUnique({where:{id:id},
+            return await prisma.transferDocument.findUnique({where:{id:id},
                 select: {
                     id: true,
-                    crm: true,
-                    Employee: {
-                        select: {
-                            registration: true,
-                            person: {
-                                select: {
-                                    cpf: true,
-                                    phone: true,
-                                    name: true
-                                }
-                            }
-                        }
-                    }
-                }});
+                    createdAt: true,
+                    updatedAt: true,
+                    number: true,
+                    observation: true,
+                    requestId: true
+                }
+            });
         }catch (error){
             console.error(error);
             throw error;
@@ -95,21 +70,12 @@ class TransferDocumentService {
 
     async delete(id: string){
         try{
-            return await prisma.doctor.findUnique({where:{id:id},})
+            await prisma.transferDocument.delete({
+                where:{id}
+            })
 
         }catch (error){
-            console.error(error);
-            throw error;
-        }
-    }
-
-    private async findByCpf(cpf: string) {
-        try {
-            return await prisma.person.findUnique({
-                where: {cpf}
-            })
-        } catch (error) {
-            console.error(error);
+            console.log(`Error deleting document transfer: ${error}`);
             throw error;
         }
     }

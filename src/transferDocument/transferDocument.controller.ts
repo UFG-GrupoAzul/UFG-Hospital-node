@@ -1,11 +1,9 @@
 import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
 import { TransferDocumentService } from './transferDocument.service';
-import { DoctorService } from '../doctor/doctor.service';
 
 class TransferDocumentController {
 
-    //private doctorService: DoctorService;
     private transferDocumentService: TransferDocumentService;
 
     constructor(transferDocumentService: TransferDocumentService) {
@@ -26,29 +24,29 @@ class TransferDocumentController {
         }
     }
 
-/*    update = async (req: Request, res: Response) => {
+    findAll = async (req: Request, res: Response) => {
+        try{
+            const transferDocuments = await this.transferDocumentService.getAll()
+            return res.status(200).json(transferDocuments);
+        }catch(error){
+            Util.handleError(res, error, "Error fetching document transfer.");
+        }
+    }
+
+    update = async (req: Request, res: Response) => {
         try{
             const id = req.params.id;
             Util.validId(id);
 
-            const {name, cpf, phone, email, registration, crm} = req.body
-            this.isValidResponse(name, cpf, phone, email, registration, crm)
+            const {number, observation, requestId} = req.body
+            this.isValidResponse(number, observation, requestId)
 
-            const doctorUpdated = await this.doctorService.update(id, name, cpf, phone, registration, crm)
-            return res.status(200).send(doctorUpdated)
+            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation)
+            return res.status(200).send(transferDocumentUpdated)
 
 
         }catch (error){
             Util.handleError(res, error, "Error updating doctor.");
-        }
-    }
-
-    findAll = async (req: Request, res: Response) => {
-        try{
-            const doctors = await this.doctorService.getAll()
-            return res.status(200).json(doctors);
-        }catch(error){
-            Util.handleError(res, error, "Error deleting doctor.");
         }
     }
 
@@ -57,10 +55,10 @@ class TransferDocumentController {
             const id = req.params.id;
             Util.validId(id);
 
-            const doctor = await this.doctorService.getById(id)
-            return res.status(200).json(doctor);
+            const transferDocument = await this.transferDocumentService.getById(id)
+            return res.status(200).json(transferDocument);
         } catch (error) {
-            Util.handleError(res, error, "Error deleting doctor.");
+            Util.handleError(res, error, "Error finding document transfer.");
         }
 
     }
@@ -70,11 +68,11 @@ class TransferDocumentController {
             const id = req.params.id;
             Util.validId(id);
 
-            const doctor = await this.doctorService.delete(id)
+            const transferDocument = await this.transferDocumentService.delete(id)
 
-            return res.status(200).send(doctor);
+            return res.status(200).send(transferDocument);
         }catch (error){
-            Util.handleError(res, error, "Error deleting doctor.");
+            Util.handleError(res, error, "Error deleting document transfer.");
         }
     } 
 
@@ -82,15 +80,15 @@ class TransferDocumentController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const doctor = await this.doctorService.getById(id);
-            if (!doctor) {
-                return res.status(404).json({error: "Doctor not found."});
+            const transferDocument = await this.transferDocumentService.getById(id);
+            if (!transferDocument) {
+                return res.status(404).json({error: "Document transfer not found."});
             }
             return next();
         } catch (error) {
-            Util.handleError(res, error, "Error fetching Doctor.");
+            Util.handleError(res, error, "Error fetching document transfer.");
         }
-    } */
+    }
 
 
     private isValidResponse(number: any, observation: any, requestId: any) {
@@ -100,11 +98,7 @@ class TransferDocumentController {
     }
 }
 
-// const doctorService = new DoctorService();
-// const doctorController = new DoctorController(doctorService);
-
 const transferDocumentService = new TransferDocumentService();
 const transferDocumentController = new TransferDocumentController(transferDocumentService);
-
 
 export {transferDocumentController};
