@@ -5,6 +5,9 @@ import employeeRoute from "./employees/employee.route";
 import specialtyRoute from "./specialties/specialty.route";
 import {authController} from "./auth/auth.controller";
 import hospitalRoute from "./hospital/hospital.route";
+import roleRoute from "./roles/role.route";
+import regulatoryDoctorRoute from "./regulatoryDoctors/regulatoryDoctor.route";
+import doctorRoute from "./doctor/doctor.route";
 
 const router = Router();
 
