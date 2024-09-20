@@ -14,7 +14,7 @@ class HospitalController {
     create = async(req: Request, res: Response) => {
         try{
             const {name,phone,latitude,longitude,availableBeds,icuAvailable} = req.body;
-            this.isValidResponse(name,phone,latitude,longitude,availableBeds,icuAvailable)
+            this.isValidRequest(name,phone,latitude,longitude,availableBeds,icuAvailable)
             const hospital = await this.hospitalService.create(name,phone,latitude,longitude,availableBeds,icuAvailable)
             return res.status(201).json(hospital);
 
@@ -28,7 +28,7 @@ class HospitalController {
             const id = req.params.id;
             Util.validId(id);
             const {name,phone,latitude,longitude,availableBeds,icuAvailable} = req.body;
-            this.isValidResponse(name,phone,latitude,longitude,availableBeds,icuAvailable)
+            this.isValidRequest(name,phone,latitude,longitude,availableBeds,icuAvailable)
             const hospitalUpdated = await this.hospitalService.update(id,name,phone,latitude,longitude,availableBeds,icuAvailable)
             return res.status(200).json(hospitalUpdated);
         }catch(error){
@@ -87,7 +87,7 @@ class HospitalController {
 
 
 
-    private isValidResponse(name: any, phone: any, latitude: any, longitude: any, availableBeds: any, icuAvailable: any) {
+    private isValidRequest(name: any, phone: any, latitude: any, longitude: any, availableBeds: any, icuAvailable: any) {
         Util.validString(name, "name")
         Util.validString(phone, "phone")
         Util.validNumber(latitude, "latitude")
