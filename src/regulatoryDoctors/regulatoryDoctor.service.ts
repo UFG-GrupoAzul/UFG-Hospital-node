@@ -4,7 +4,7 @@ class RegulatoryDoctorService {
 
     async create(name: string, cpf: string, phone: string, crm: string, insurance: string) {
         const regulatoryDoctorExists = await this.findByCrm(crm);
-        if (!regulatoryDoctorExists) {
+        if (regulatoryDoctorExists) {
             throw new Error("Regulatory Doctor already exists in the database");
         }
         try {
@@ -32,11 +32,28 @@ class RegulatoryDoctorService {
     }
 
     async update(id: string, name: string, cpf: string, phone: string, crm: string, insurance: string) {
+        const regulatoryDoctorExists = await this.findByCrm(crm);
+        if (regulatoryDoctorExists && regulatoryDoctorExists.id != id) {
+            throw new Error("Regulatory Doctor already exists in the database.");
+        }
         try {
-            const regulatoryDoctorExists = await this.findByCrm(crm);
-            if (regulatoryDoctorExists && regulatoryDoctorExists.id != id) {
-                throw new Error("Regulatory Doctor already exists in the database.");
-            }
+            return await prisma.regulatoryDoctor.update({
+                where: {id},
+                data: {
+                    crm,
+                    insurance,
+                    person: {
+                        update: {
+                            name,
+                            cpf,
+                            phone,
+                            dType: "RegulatoryDoctor"
+                        }
+                    }
+                }, include: {
+                    person: true
+                }
+            });
         } catch (error) {
             console.log(`Error updating Regulatory Doctor: ${error}`);
             throw error;
