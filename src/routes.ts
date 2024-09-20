@@ -5,8 +5,9 @@ import employeeRoute from "./employees/employee.route";
 import specialtyRoute from "./specialties/specialty.route";
 import {authController} from "./auth/auth.controller";
 import hospitalRoute from "./hospital/hospital.route";
-import doctorRoute from "./doctor/doctor.route";
 import roleRoute from "./roles/role.route";
+import regulatoryDoctorRoute from "./regulatoryDoctors/regulatoryDoctor.route";
+import doctorRoute from "./doctor/doctor.route";
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use("/employees", authController.authMiddleware, employeeRoute);
 router.use("/hospitals", authController.authMiddleware, hospitalRoute);
 router.use("/roles", authController.authMiddleware, roleRoute);
 router.use("/specialties", authController.authMiddleware, specialtyRoute);
+router.use("/regulatoryDoctors", authController.authMiddleware, regulatoryDoctorRoute);
 router.use("/users", authController.authMiddleware, userRoute);
 
 export {router};
