@@ -6,6 +6,7 @@ import specialtyRoute from "./specialties/specialty.route";
 import {authController} from "./auth/auth.controller";
 import hospitalRoute from "./hospital/hospital.route";
 import doctorRoute from "./doctor/doctor.route";
+import transferDocumentRoute from "./transferDocument/transferDocument.route";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/employees", authController.authMiddleware, employeeRoute);
 router.use("/specialties", authController.authMiddleware, specialtyRoute);
 router.use("/hospital",  authController.authMiddleware, hospitalRoute);
 router.use("/doctor", doctorRoute);
+router.use("/transferdoc", transferDocumentRoute);
 
 export {router};
