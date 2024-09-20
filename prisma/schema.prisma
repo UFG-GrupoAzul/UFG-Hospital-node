@@ -24,6 +24,7 @@ model User {
   Person     Person[]
 }
 
+// OK - Criar enum sexo
 model Person {
   id               String            @id @default(auto()) @map("_id") @db.ObjectId
   name             String
@@ -32,10 +33,12 @@ model Person {
   phone            String
   User             User?             @relation(fields: [userId], references: [id])
   userId           String?           @db.ObjectId
+  gender           Gender
   Employee         Employee?
   RegulatoryDoctor RegulatoryDoctor?
 }
 
+// OK - incluir sexo da pessoa
 model Employee {
   id           String   @id @map("_id") @db.ObjectId
   createdAt    DateTime @default(now())
@@ -45,88 +48,7 @@ model Employee {
   Doctor       Doctor?
 }
 
-model RegulatoryDoctor {
-  id        String    @id @map("_id") @db.ObjectId
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  crm       String    @unique
-  insurance String
-  person    Person    @relation(fields: [id], references: [id])
-  Request   Request[]
-}
-
-model Role {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  description String   @unique
-}
-
-model Hospital {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  name          String
-  phone         String
-  latitude      Float
-  longitude     Float
-  availableBeds Int
-  icuAvailable  Boolean
-}
-
-model Patient {
-  id             String          @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  birthDate      DateTime
-  name           String
-  medicalRecords MedicalRecord[]
-  Transfer       Transfer[]
-  Request        Request[]
-}
-
-model MedicalRecord {
-  id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  prescribedDrugs PrescribedDrug[]
-  Patient         Patient?         @relation(fields: [patientId], references: [id])
-  patientId       String?          @db.ObjectId
-}
-
-model PrescribedDrug {
-  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-  dosageInfo         String
-  dosageAmount       Float
-  administration     String
-  administrationDate DateTime
-  MedicalRecord      MedicalRecord? @relation(fields: [medicalRecordId], references: [id])
-  medicalRecordId    String?        @db.ObjectId
-}
-
-model Drug {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  name             String
-  activeIngredient String
-  description      String
-}
-
-model Transfer {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  originDoctor        Doctor   @relation("originDoctor", fields: [originDoctorId], references: [id])
-  originDoctorId      String   @db.ObjectId
-  destinationDoctor   Doctor   @relation("destinationDoctor", fields: [destinationDoctorId], references: [id])
-  destinationDoctorId String   @db.ObjectId
-  patient             Patient  @relation(fields: [patientId], references: [id])
-  patientId           String   @db.ObjectId
-}
-
+// Ok - incluir sexo da pessoa
 model Doctor {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime @default(now())
@@ -139,19 +61,86 @@ model Doctor {
   destinationTransfers Transfer[] @relation("destinationDoctor")
 }
 
-model Request {
-  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  patient            Patient            @relation(fields: [patientId], references: [id])
-  patientId          String             @db.ObjectId
-  specialty          Specialty          @relation(fields: [specialtyId], references: [id])
-  specialtyId        String             @db.ObjectId
-  regulatoryDoctor   RegulatoryDoctor   @relation(fields: [regulatoryDoctorId], references: [id])
-  regulatoryDoctorId String             @db.ObjectId
-  TransferDocument   TransferDocument[]
+// OK - Incluir sexo da pessoa
+model RegulatoryDoctor {
+  id        String    @id @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  crm       String    @unique
+  insurance String
+  person    Person    @relation(fields: [id], references: [id])
+  Request   Request[]
 }
 
+// Incluir sexo e tipoSanguineo
+model Patient {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  birthDate      DateTime
+  name           String
+  bloodType      BloodType
+  medicalRecords MedicalRecord[]
+  Transfer       Transfer[]
+  Request        Request[]
+}
+
+// OK
+model Role {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String   @unique
+}
+
+// OK
+model Hospital {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  phone         String
+  latitude      Float
+  longitude     Float
+  availableBeds Int
+  icuAvailable  Boolean
+}
+
+// OK
+model Drug {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  name             String
+  activeIngredient String
+  description      String
+}
+
+// Incluir Unidade dosagem
+model PrescribedDrug {
+  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  dosageInfo         String
+  dosageAmount       Float
+  administration     String
+  dosageUnit         DosageUnit
+  administrationDate DateTime
+  MedicalRecord      MedicalRecord? @relation(fields: [medicalRecordId], references: [id])
+  medicalRecordId    String?        @db.ObjectId
+}
+
+// Prontuário
+model MedicalRecord {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  prescribedDrugs PrescribedDrug[]
+  Patient         Patient?         @relation(fields: [patientId], references: [id])
+  patientId       String?          @db.ObjectId
+}
+
+// OK
 model Specialty {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime  @default(now())
@@ -169,4 +158,68 @@ model TransferDocument {
   observation String
   request     Request  @relation(fields: [requestId], references: [id])
   requestId   String   @db.ObjectId
+}
+
+// Incluir classificação
+model Request {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  patient            Patient            @relation(fields: [patientId], references: [id])
+  patientId          String             @db.ObjectId
+  specialty          Specialty          @relation(fields: [specialtyId], references: [id])
+  specialtyId        String             @db.ObjectId
+  regulatoryDoctor   RegulatoryDoctor   @relation(fields: [regulatoryDoctorId], references: [id])
+  regulatoryDoctorId String             @db.ObjectId
+  classification     Classification
+  TransferDocument   TransferDocument[]
+}
+
+// Incluir enum transporte
+model Transfer {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  originDoctor        Doctor    @relation("originDoctor", fields: [originDoctorId], references: [id])
+  originDoctorId      String    @db.ObjectId
+  destinationDoctor   Doctor    @relation("destinationDoctor", fields: [destinationDoctorId], references: [id])
+  destinationDoctorId String    @db.ObjectId
+  patient             Patient   @relation(fields: [patientId], references: [id])
+  patientId           String    @db.ObjectId
+  transport           Transport
+}
+
+// Enums traduzidos para inglês e com valores representativos
+enum Gender {
+  MALE   @map("Masculino")
+  FEMALE @map("Feminino")
+}
+
+enum BloodType {
+  A_POSITIVE  @map("A+")
+  A_NEGATIVE  @map("A-")
+  B_POSITIVE  @map("B+")
+  B_NEGATIVE  @map("B-")
+  O_POSITIVE  @map("O+")
+  O_NEGATIVE  @map("O-")
+  AB_POSITIVE @map("AB+")
+  AB_NEGATIVE @map("AB-")
+}
+
+enum Classification {
+  PRIMARY   @map("Primária")
+  SECONDARY @map("Secundária")
+  TERTIARY  @map("Terciária")
+}
+
+enum Transport {
+  LAND       @map("Terrestre")
+  PLANE      @map("Avião")
+  HELICOPTER @map("Helicóptero")
+}
+
+enum DosageUnit {
+  MG @map("MG") // Milligram
+  G  @map("G") // Liter
+  CP @map("CP") // Capsule
 }
