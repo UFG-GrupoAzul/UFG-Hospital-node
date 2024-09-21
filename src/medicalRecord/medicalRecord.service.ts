@@ -2,7 +2,7 @@ import {prisma} from "../index";
 
 class MedicalRecordService {
 
-    async create(data: any) {
+/*    async create(data: any) {
         try {
             const { prescribedDrugs, patientId } = data;
 
@@ -19,6 +19,35 @@ class MedicalRecordService {
             });
         } catch (error) {
             console.error(error);
+            throw error;
+        }
+    } */
+
+    async create(dosageInfo: string, dosageAmount: number, administration: string, administrationDate: string, insurance: string) {
+        const regulatoryDoctorExists = await this.findByCrm(crm);
+        if (regulatoryDoctorExists) {
+            throw new Error("Regulatory Doctor already exists in the database");
+        }
+        try {
+            return await prisma.regulatoryDoctor.create({
+                data: {
+                    crm,
+                    insurance,
+                    person: {
+                        create: {
+                            id: undefined,
+                            name,
+                            cpf,
+                            phone,
+                            dType: "RegulatoryDoctor"
+                        }
+                    }
+                }, include: {
+                    person: true
+                }
+            });
+        } catch (error) {
+            console.log(`Error creating regulatory doctor: ${error}`);
             throw error;
         }
     }
