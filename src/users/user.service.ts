@@ -48,6 +48,7 @@ class UserService {
         }
     }
 
+
     async update(id: string, name: string, email: string, password: string, permission: string) {
 
         const userExist = await this.findByEmail(email);
