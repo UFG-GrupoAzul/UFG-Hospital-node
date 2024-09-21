@@ -1,34 +1,37 @@
-import {PrismaClient} from "@prisma/client";
-import e, {Request, Response} from "express";
+import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import {Util} from "../utils/util";
 
-
-const {prismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const createPatient = async (req: Request, res: Response) =>{
-    const {birthDate, name} = req.body;
+export const createPatient = async (req: Request, res: Response): Promise<void> => {
+    const { birthDate, name } = req.body;
 
-    try{
+    try {
         const newPatient = await prisma.patient.create({
-            data:{
+            data: {
                 birthDate: new Date(birthDate),
                 name,
             },
         });
         res.status(201).json(newPatient);
     } catch (error) {
-        return res.status(404).json({error: "hihihi."});
+        Util.handleError(res, error, 'Database error');
     }
 };
-export const getAllPatients = async (_req: Request, res: Response): Promise<e.Response<any, Record<string, any>>> => {
+
+
+export const getAllPatients = async (_req: Request, res: Response): Promise<void> => {
     try {
         const patients = await prisma.patient.findMany();
         res.status(200).json(patients);
     } catch (error) {
-        return res.status(404).json({error: " HEHEHEHE."});
+        Util.handleError(res, error, "Error creating patient.");
     }
 };
-export const getPatientById = async (req: Request, res: Response): Promise<e.Response<any, Record<string, any>>> => {
+
+
+export const getPatientById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
     try {
@@ -38,35 +41,36 @@ export const getPatientById = async (req: Request, res: Response): Promise<e.Res
 
         if (!patient) {
             res.status(404).json({ error: 'Patient not found' });
+            return;
         }
 
         res.status(200).json(patient);
     } catch (error) {
-        return res.status(404).json({error: "Not Not."});
+        Util.handleError(res, error, "");
     }
 };
 
-const updatePatient = async (req: Request, res: Responses) =>{
-const {id} = req.params;
-const {birthDate, name} = req.body;
+export const updatePatient = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { birthDate, name } = req.body;
 
-try{
-const updatePatient = await prisma.patient.update({
-where:{id},
-data:{
-birthDate: new Date(birthDate),
-name,
-},
-});
+    try {
+        const updatedPatient = await prisma.patient.update({
+            where: { id },
+            data: {
+                birthDate: new Date(birthDate),
+                name,
+            },
+        });
 
-res.status(200).json(onUpdatedPatient);
-} catch (error){
-res.status(400).json({error:error});
-}
+        res.status(200).json(updatedPatient);
+    } catch (error) {
+        Util.handleError(res, error, "Error updating Patient.");
+    }
 };
 
-export const deletePatient = async (req: Request, res: Response): Promise<e.Response<any, Record<string, any>>> => {
-
+// Delete a patient by ID
+export const deletePatient = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
     try {
@@ -76,7 +80,6 @@ export const deletePatient = async (req: Request, res: Response): Promise<e.Resp
 
         res.status(204).send();
     } catch (error) {
-        return res.status(404).json({error: "not found."});
+        Util.handleError(res, error, "Excluded patient.");
     }
 };
-
