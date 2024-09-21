@@ -1,3 +1,4 @@
+
 import {prisma} from "../index";
 
 class SpecialtyService {
@@ -22,9 +23,8 @@ class SpecialtyService {
 
     async findByName(name: string) {
         try {
-            return await prisma.specialty.findUnique({
-                where: {
-                    name}
+            return await prisma.specialty.findFirst({
+                where: {name}
             });
         } catch (error) {
             console.log(`Error fetching specialty: ${error}`);
