@@ -23,31 +23,28 @@ class MedicalRecordService {
         }
     } */
 
-    async create(dosageInfo: string, dosageAmount: number, administration: string, administrationDate: string, insurance: string) {
-        const regulatoryDoctorExists = await this.findByCrm(crm);
+    async create(dosageInfo: string, dosageAmount: number, administration: string, administrationDate: Date) {
+        /* const regulatoryDoctorExists = await this.findByCrm(crm);
         if (regulatoryDoctorExists) {
             throw new Error("Regulatory Doctor already exists in the database");
-        }
+        } */
         try {
-            return await prisma.regulatoryDoctor.create({
+            return await prisma.medicalRecord.create({
                 data: {
-                    crm,
-                    insurance,
-                    person: {
+                    prescribedDrugs: {
                         create: {
-                            id: undefined,
-                            name,
-                            cpf,
-                            phone,
-                            dType: "RegulatoryDoctor"
+                            dosageInfo,
+                            dosageAmount,
+                            administration,
+                            administrationDate
                         }
                     }
                 }, include: {
-                    person: true
+                    prescribedDrugs: true
                 }
             });
         } catch (error) {
-            console.log(`Error creating regulatory doctor: ${error}`);
+            console.log(`Error creating medical record: ${error}`);
             throw error;
         }
     }
