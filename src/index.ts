@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import {AuthController} from "./auth/auth.controller";
 import {EmployeeService} from "./employees/employee.service";
 import {SpecialtyService} from "./specialties/specialty.service";
+import {DrugsService} from "./drugs/drugs.service";
 
 dotenv.config();
 // Busca os .envs
