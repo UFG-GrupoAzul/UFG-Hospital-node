@@ -9,7 +9,7 @@ class PatientService {
     }
 
     async create(data: Omit<Patient, 'id'>): Promise<Patient> {
-        const { birthDate, name, person } = data;
+        const { birthDate, name } = data;
 
 
         const patientExists = await this.findByName(name);
@@ -22,7 +22,6 @@ class PatientService {
                 data: {
                     birthDate: new Date(birthDate),
                     name,
-                    person,
                 },
             });
         } catch (error) {
@@ -43,7 +42,7 @@ class PatientService {
                 data: {
                     birthDate: new Date(data.birthDate),
                     name: data.name,
-                    person:data.person,
+
                 },
             });
         } catch (error) {
