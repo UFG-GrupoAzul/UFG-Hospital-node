@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
-import { TransferDocumentService } from '../transferDocument/transferDocument.service';
 import { MedicalRecordService } from './medicalRecord.service';
 
 class MedicalRecordController {
@@ -12,91 +11,76 @@ class MedicalRecordController {
     }
 
     create = async (req: Request, res: Response) => {
-
-
         try {
-            const {dosageInfo, dosageAmount, administration, administrationDate} = req.body
-            this.isValidResponse(dosageInfo, dosageAmount, administration, administrationDate)
-            const medicalRecord = await this.medicalRecordService.create(dosageInfo, dosageAmount, administration, administrationDate)
-            return res.status(201).send(medicalRecord)
-
-        } catch (error) {
-            Util.handleError(res, error, "Error creating document transfer.");
-        }
-    }
-
-    /* findAll = async (req: Request, res: Response) => {
-        try{
-            const transferDocuments = await this.transferDocumentService.getAll()
-            return res.status(200).json(transferDocuments);
-        }catch(error){
-            Util.handleError(res, error, "Error fetching document transfer.");
-        }
+            const medicalRecord = await this.medicalRecordService.create(req.body);
+            res.status(201).json(medicalRecord);
+          } catch (error) {
+            Util.handleError(res, error, "Error creating medical record.");
+          }
     }
 
     update = async (req: Request, res: Response) => {
-        try{
-            const id = req.params.id;
-            Util.validId(id);
-
-            const {number, observation, requestId} = req.body
-            this.isValidResponse(number, observation, requestId)
-
-            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation)
-            return res.status(200).send(transferDocumentUpdated)
+        try {
+          const medicalRecord = await this.medicalRecordService.update(req.params.id, req.body);
+          res.status(200).json(medicalRecord);
+        } catch (error) {
+            Util.handleError(res, error, "Error updating medical record.");
+        }
+      }
 
 
-        }catch (error){
-            Util.handleError(res, error, "Error updating doctor.");
+    findAll = async (req: Request, res: Response) => {
+        try {
+          const medicalRecords = await this.medicalRecordService.getAll();
+          res.status(200).json(medicalRecords);
+        } catch (error) {
+            Util.handleError(res, error, "Error fetching medical record.");
         }
     }
 
     findById = async (req: Request, res: Response) => {
         try {
-            const id = req.params.id;
-            Util.validId(id);
-
-            const transferDocument = await this.transferDocumentService.getById(id)
-            return res.status(200).json(transferDocument);
+          const medicalRecord = await this.medicalRecordService.getById(req.params.id);
+          if (medicalRecord) {
+            res.status(200).json(medicalRecord);
+          } else {
+            res.status(404).json({ message: 'Medical record not found.' });
+          }
         } catch (error) {
-            Util.handleError(res, error, "Error finding document transfer.");
+            Util.handleError(res, error, "Error finding medical record.");
         }
-
     }
 
     delete = async (req: Request, res: Response) => {
-        try{
-            const id = req.params.id;
-            Util.validId(id);
-
-            const transferDocument = await this.transferDocumentService.delete(id)
-
-            return res.status(200).send(transferDocument);
-        }catch (error){
+        try {
+            await this.medicalRecordService.delete(req.params.id);
+            res.status(204).send();
+        } catch (error) {
             Util.handleError(res, error, "Error deleting document transfer.");
         }
-    } 
+      }
+
 
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const transferDocument = await this.transferDocumentService.getById(id);
-            if (!transferDocument) {
-                return res.status(404).json({error: "Document transfer not found."});
+            const medicalRecord = await this.medicalRecordService.getById(id);
+            if (!medicalRecord) {
+                return res.status(404).json({error: "Medical record not found."});
             }
             return next();
         } catch (error) {
-            Util.handleError(res, error, "Error fetching document transfer.");
+            Util.handleError(res, error, "Error fetching medical record.");
         }
-    } */
+    }
 
-
-    private isValidResponse(dosageInfo: any, dosageAmount: any, administration: any, administrationDate: any) {
+    private isValidResponse(dosageInfo: any, dosageAmount: any, administration: any, administrationDate: any, patientId: any) {
         Util.validString(dosageInfo, "dosageInfo");
         Util.validString(dosageAmount, "dosageAmount");
         Util.validString(administration, "administration");
         Util.validString(administrationDate, "administrationDate");
+        Util.validString(patientId, "patientId");
     }
 }
 
