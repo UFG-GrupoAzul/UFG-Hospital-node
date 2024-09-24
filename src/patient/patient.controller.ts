@@ -1,85 +1,97 @@
-import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
+import {PatientService} from "./patient.service";
 
-const prisma = new PrismaClient();
 
-export const createPatient = async (req: Request, res: Response): Promise<void> => {
-    const { birthDate, name } = req.body;
+class PatientController{
 
-    try {
-        const newPatient = await prisma.patient.create({
-            data: {
-                birthDate: new Date(birthDate),
-                name,
-            },
-        });
-        res.status(201).json(newPatient);
-    } catch (error) {
-        Util.handleError(res, error, 'Database error');
+    private patientService : PatientService;
+
+    constructor(patientService: PatientService) {
+        this.patientService = patientService;
     }
-};
+    create = async (req: Request, res: Response)=> {
+        try {
+            const {name, cpf, phone, birthDate} = req.body;
+            // this.isValidRequest()
+            const patient = await this.patientService.create(name, cpf, phone, birthDate)
+            return res.status(201).json(patient);
 
-
-export const getAllPatients = async (_req: Request, res: Response): Promise<void> => {
-    try {
-        const patients = await prisma.patient.findMany();
-        res.status(200).json(patients);
-    } catch (error) {
-        Util.handleError(res, error, "Error creating patient.");
+        } catch (error) {
+            Util.handleError(res, error, "Error creating patient.")
+        }
     }
-};
 
-
-export const getPatientById = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-
-    try {
-        const patient = await prisma.patient.findUnique({
-            where: { id },
-        });
-
-        if (!patient) {
-            res.status(404).json({ error: 'Patient not found' });
-            return;
+        update = async (req: Request, res: Response) => {
+            try {
+                 const id = req.params.id;
+                Util.validId(id);
+                const {name, cpf, phone,birthDate} = req.body;
+                this.isValidRequest(name,cpf,phone,birthDate)
+                const patientUpdated = await this.patientService.update(id,name,cpf, phone, birthDate);
+                return res.status(200).json(patientUpdated);
+            } catch (error) {
+                Util.handleError(res, error, "Error updating patient.");
+            }
+        }
+        delete =  async (req: Request, res: Response) => {
+            try {
+                const id = req.params.id;
+                Util.validId(id);
+                await this.patientService.delete(id);
+                return res.status(204).json({msg: "Deleted"});
+            } catch (error) {
+                Util.handleError(res, error, "Error deleting patient.");
+            }
         }
 
-        res.status(200).json(patient);
-    } catch (error) {
-        Util.handleError(res, error, "");
-    }
-};
+        findAll = async (req: Request, res: Response) => {
+            try {
+                const patient = await this.patientService.findAll();
+                return res.json(patient);
+            } catch (error) {
+                Util.handleError(res, error, "Error fetching patient.");
+            }
+        }
 
-export const updatePatient = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-    const { birthDate, name } = req.body;
+        findById = async (req: Request, res: Response) => {
+            try {
+                const id = req.params.id;
+                Util.validId(id);
+                const patient = await this.patientService.findById(id);
 
-    try {
-        const updatedPatient = await prisma.patient.update({
-            where: { id },
-            data: {
-                birthDate: new Date(birthDate),
-                name,
-            },
-        });
+                if (!patient) {
+                    return res.status(404).json({error: "Patient not found."});
+                }
+                return res.json(patient);
+            } catch (error) {
+                Util.handleError(res, error, "Error fetching patient.");
+            }
+        }
+        verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const id = req.params.id;
+                Util.validId(id);
+                const patient = await this.patientService.findById(id);
+                if (!patient) {
+                    return res.status(404).json({error: "Patient not found."});
+                }
+                return next();
+            } catch (error) {
+                Util.handleError(res, error, "Error fetching patient.");
+            }
+        }
 
-        res.status(200).json(updatedPatient);
-    } catch (error) {
-        Util.handleError(res, error, "Error updating Patient.");
-    }
-};
+        private isValidRequest(name: any, cpf: any, phone: any, birthDate: any) {
+                Util.validString(name, "name");
+                Util.validString(cpf, "cpf");
+                Util.validString(phone, "phone");
+                Util.validString(birthDate,"birthDate");
 
-// Delete a patient by ID
-export const deletePatient = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
+            }
+        }
 
-    try {
-        await prisma.patient.delete({
-            where: { id },
-        });
+const patientService: PatientService = new PatientService();
+const patientController  = new PatientController(patientService);
 
-        res.status(204).send();
-    } catch (error) {
-        Util.handleError(res, error, "Excluded patient.");
-    }
-};
+export  {patientController};
