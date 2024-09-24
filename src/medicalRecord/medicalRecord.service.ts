@@ -3,22 +3,28 @@ import { MedicalRecord } from '@prisma/client';
 
 class MedicalRecordService {
 
-    async create(data: MedicalRecord): Promise<MedicalRecord> {
-        /* const regulatoryDoctorExists = await this.findByCrm(crm);
-        if (regulatoryDoctorExists) {
-            throw new Error("Regulatory Doctor already exists in the database");
-        } */
+    async create(patientId: string) {
+ 
         try {
-            return await prisma.medicalRecord.create({ data });
+            return await prisma.medicalRecord.create({ 
+                data: {
+                    patientId
+                } 
+            });
         } catch (error) {
             console.log(`Error creating medical record: ${error}`);
             throw error;
         }
     }
 
-    async update(id: string, data: MedicalRecord): Promise<MedicalRecord> {
+    async update(id: string, patientId: string) {
         try {
-          return await prisma.medicalRecord.update({ where: { id }, data });
+          return await prisma.medicalRecord.update({ 
+            where: { id }, 
+            data: {
+                patientId
+            } 
+        });
         } catch (error) {
             console.error(error);
             throw error;
@@ -39,7 +45,7 @@ class MedicalRecordService {
         }
     }
 
-    async getById(id: string): Promise<MedicalRecord | null> {
+    async getById(id: string) {
         try {
             return await prisma.medicalRecord.findUnique({ 
                 where: { id },
@@ -54,11 +60,13 @@ class MedicalRecordService {
     }
 
 
-    async delete(id: string): Promise<MedicalRecord> {
+    async delete(id: string) {
         try {
-            return await prisma.medicalRecord.delete({ where: { id } });
+            await prisma.medicalRecord.delete({ 
+                where: { id } 
+            });
         } catch (error) {
-            console.log(`Error deleting document transfer: ${error}`);
+            console.log(`Error deleting medical record: ${error}`);
             throw error;
         }
       }

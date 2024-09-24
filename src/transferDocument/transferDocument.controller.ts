@@ -17,7 +17,7 @@ class TransferDocumentController {
             const {number, observation, requestId} = req.body
             this.isValidResponse(number, observation, requestId)
             const transferDocument = await this.transferDocumentService.create(number, observation, requestId)
-            return res.status(201).send(transferDocument)
+            return res.status(201).json(transferDocument)
 
         } catch (error) {
             Util.handleError(res, error, "Error creating document transfer.");
@@ -41,12 +41,12 @@ class TransferDocumentController {
             const {number, observation, requestId} = req.body
             this.isValidResponse(number, observation, requestId)
 
-            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation)
-            return res.status(200).send(transferDocumentUpdated)
+            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation, requestId)
+            return res.status(200).json(transferDocumentUpdated)
 
 
         }catch (error){
-            Util.handleError(res, error, "Error updating doctor.");
+            Util.handleError(res, error, "Error updating document transfer.");
         }
     }
 
@@ -70,7 +70,7 @@ class TransferDocumentController {
 
             const transferDocument = await this.transferDocumentService.delete(id)
 
-            return res.status(200).send(transferDocument);
+            return res.status(204).json(transferDocument);
         }catch (error){
             Util.handleError(res, error, "Error deleting document transfer.");
         }

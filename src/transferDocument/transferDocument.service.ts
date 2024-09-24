@@ -17,13 +17,14 @@ class TransferDocumentService {
         }
     }
 
-    async update(id: string, number: string, observation: string) {
+    async update(id: string, number: string, observation: string, requestId: string) {
         try {
             return await prisma.transferDocument.update({
                 where: {id},
                 data:  {
                     number,
-                    observation
+                    observation,
+                    requestId
                 }
             });
         }catch (error) {
@@ -52,7 +53,8 @@ class TransferDocumentService {
 
     async getById(id: string){
         try{
-            return await prisma.transferDocument.findUnique({where:{id:id},
+            return await prisma.transferDocument.findUnique({
+                where:{id},
                 select: {
                     id: true,
                     createdAt: true,

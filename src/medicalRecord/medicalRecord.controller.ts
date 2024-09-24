@@ -12,8 +12,10 @@ class MedicalRecordController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const medicalRecord = await this.medicalRecordService.create(req.body);
-            res.status(201).json(medicalRecord);
+            const {patientId} = req.body
+            this.isValidResponse(patientId)
+            const medicalRecord = await this.medicalRecordService.create(patientId)
+            return res.status(201).json(medicalRecord)
           } catch (error) {
             Util.handleError(res, error, "Error creating medical record.");
           }
@@ -21,8 +23,14 @@ class MedicalRecordController {
 
     update = async (req: Request, res: Response) => {
         try {
-          const medicalRecord = await this.medicalRecordService.update(req.params.id, req.body);
-          res.status(200).json(medicalRecord);
+            const id = req.params.id;
+            Util.validId(id);
+
+            const {patientId} = req.body
+            this.isValidResponse(patientId)
+
+            const medicalRecord = await this.medicalRecordService.update(id, patientId)
+            return res.status(200).json(medicalRecord);
         } catch (error) {
             Util.handleError(res, error, "Error updating medical record.");
         }
@@ -32,7 +40,7 @@ class MedicalRecordController {
     findAll = async (req: Request, res: Response) => {
         try {
           const medicalRecords = await this.medicalRecordService.getAll();
-          res.status(200).json(medicalRecords);
+          return res.status(200).json(medicalRecords);
         } catch (error) {
             Util.handleError(res, error, "Error fetching medical record.");
         }
@@ -40,12 +48,13 @@ class MedicalRecordController {
 
     findById = async (req: Request, res: Response) => {
         try {
-          const medicalRecord = await this.medicalRecordService.getById(req.params.id);
-          if (medicalRecord) {
-            res.status(200).json(medicalRecord);
-          } else {
-            res.status(404).json({ message: 'Medical record not found.' });
-          }
+          const id = req.params.id;
+          Util.validId(id);
+
+
+          const medicalRecord = await this.medicalRecordService.getById(id);
+          return res.status(200).json(medicalRecord);
+          
         } catch (error) {
             Util.handleError(res, error, "Error finding medical record.");
         }
@@ -53,10 +62,13 @@ class MedicalRecordController {
 
     delete = async (req: Request, res: Response) => {
         try {
-            await this.medicalRecordService.delete(req.params.id);
-            res.status(204).send();
+          const id = req.params.id;
+          Util.validId(id);
+
+          const medicalRecord = await this.medicalRecordService.delete(id);
+          res.status(204).send(medicalRecord);
         } catch (error) {
-            Util.handleError(res, error, "Error deleting document transfer.");
+            Util.handleError(res, error, "Error deleting medical record.");
         }
       }
 
@@ -75,11 +87,7 @@ class MedicalRecordController {
         }
     }
 
-    private isValidResponse(dosageInfo: any, dosageAmount: any, administration: any, administrationDate: any, patientId: any) {
-        Util.validString(dosageInfo, "dosageInfo");
-        Util.validString(dosageAmount, "dosageAmount");
-        Util.validString(administration, "administration");
-        Util.validString(administrationDate, "administrationDate");
+    private isValidResponse(patientId: any) {
         Util.validString(patientId, "patientId");
     }
 }
