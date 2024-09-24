@@ -13,8 +13,11 @@ class TransferService {
     }
 
     async create(
-        originDoctorId: string, destinationDoctorId: string, patientId: string,
-        timeOfExit: Date = new Date(), requestId: string, regulatoryDoctorId: string) {
+        originDoctorId: string, destinationDoctorId: string,
+        //patientId: string,
+        timeOfExit: Date = new Date(),
+        //requestId: string,
+        regulatoryDoctorId: string) {
         const eta = this.generateEta(timeOfExit);
 
         try {
@@ -33,14 +36,14 @@ class TransferService {
             // }
             return await prisma.transfer.create({
                 data: {
-                    id: requestId, // Usando o requestId como o ID da Transfer
+                    //id: requestId, // Usando o requestId como o ID da Transfer
                     originDoctorId,
                     destinationDoctorId,
-                    patientId,
+                    //patientId,
                     timeOfExit,
                     regulatoryDoctorId,
                     eta,
-                    requestId: requestId, // Agora você usa o requestId diretamente
+                    //requestId: requestId, // Agora você usa o requestId diretamente
                 }
             });
         } catch (error) {

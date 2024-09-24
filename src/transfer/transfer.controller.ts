@@ -9,23 +9,25 @@ class TransferController {
         this.transferService = transferService;
     }
 
-    async create(req: Request, res: Response): Promise<Response> {
+    create = async (req: Request, res: Response) => {
         const {
             originDoctorId,
             destinationDoctorId,
-            patientId,
+           // patientId,
             timeOfExit,
-            requestId,
+           // requestId,
             regulatoryDoctorId
         } = req.body;
+        const parsedTimeOfExit = await this.parseTimeOfExit(timeOfExit);
 
         try {
+
             const transfer = await this.transferService.create(
                 originDoctorId,
                 destinationDoctorId,
-                patientId,
-                timeOfExit,
-                requestId,
+             //   patientId,
+                parsedTimeOfExit,
+               // requestId,
                 regulatoryDoctorId
             );
 
@@ -34,6 +36,18 @@ class TransferController {
             console.error(`Error creating Transfer: ${error}`);
             return res.status(500).json({ error: 'Failed to create transfer.' });
         }
+    }
+
+    private async parseTimeOfExit(timeOfExit: string) {
+        // Formato esperado: "YYYYMMDDTHHMM" -> "YYYY-MM-DDTHH:MM:00"
+        const year = timeOfExit.substring(0, 4);
+        const month = timeOfExit.substring(4, 6);
+        const day = timeOfExit.substring(6, 8);
+        const hour = timeOfExit.substring(9, 11);
+        const minute = timeOfExit.substring(11, 13);
+
+        const isoString = `${year}-${month}-${day}T${hour}:${minute}:00`;
+        return new Date(isoString);
     }
 }
 

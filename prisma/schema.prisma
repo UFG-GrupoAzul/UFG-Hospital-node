@@ -83,7 +83,7 @@ model Patient {
   birthDate      DateTime
   name           String
   medicalRecords MedicalRecord[]
-  Transfer       Transfer[]
+  //Transfer       Transfer[]
   Request        Request[]
 }
 
@@ -118,7 +118,7 @@ model Drug {
 }
 
 model Transfer {
-  id                  String           @id @map("_id") @db.ObjectId
+  id                  String           @id @default(auto()) @map("_id") @db.ObjectId
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
   originDoctor        Doctor           @relation("originDoctor", fields: [originDoctorId], references: [id])
@@ -129,10 +129,10 @@ model Transfer {
   regulatoryDoctorId  String           @unique @db.ObjectId
   timeOfExit          DateTime
   eta                 DateTime
-  patient             Patient          @relation(fields: [patientId], references: [id])
-  patientId           String           @unique @db.ObjectId
-  requestId           String           @db.ObjectId // Adiciona este campo
-  request             Request          @relation(fields: [requestId], references: [id]) // Usa requestId na relação
+  // patient             Patient          @relation(fields: [patientId], references: [id])
+  // patientId           String           @unique @db.ObjectId
+  // requestId           String           @db.ObjectId // Adiciona este campo
+  // request             Request          @relation(fields: [requestId], references: [id]) // Usa requestId na relação
 }
 
 model Doctor {
@@ -154,7 +154,7 @@ model Request {
   specialty          Specialty         @relation(fields: [specialtyId], references: [id])
   specialtyId        String            @db.ObjectId
   transferDocumentId String            @db.ObjectId
-  Transfer           Transfer[]
+  // Transfer           Transfer[]
   TransferDocument   TransferDocument?
 }
 
