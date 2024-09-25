@@ -81,9 +81,8 @@ model Patient {
   updatedAt      DateTime        @updatedAt
   person         Person          @relation(fields: [id], references: [id])
   birthDate      DateTime
-  name           String
   medicalRecords MedicalRecord[]
-  //Transfer       Transfer[]
+  // Transfer       Transfer[]
   Request        Request[]
 }
 

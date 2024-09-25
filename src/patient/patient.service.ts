@@ -1,5 +1,5 @@
-import { PrismaClient, Patient } from '@prisma/client';
-import { prisma } from "../index";
+import {PrismaClient, Patient} from '@prisma/client';
+import {prisma} from "../index";
 
 class PatientService {
     prisma: PrismaClient;
@@ -8,21 +8,31 @@ class PatientService {
         this.prisma = prisma;
     }
 
-    async create(data: Omit<Patient, 'id'>): Promise<Patient> {
-        const { birthDate, name } = data;
+    async create(name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
+        // const { birthDate, name, person string } = data;
 
-
-        const patientExists = await this.findByName(name);
-        if (patientExists) {
-            throw new Error("Patient already exists in the database");
-        }
+        // const patientExists = await this.findByName(name);
+        // if (patientExists) {
+        //     throw new Error("Patient already exists in the database");
+        // }
 
         try {
             return await this.prisma.patient.create({
                 data: {
-                    birthDate: new Date(birthDate),
-                    name,
-                },
+                    birthDate,
+                    person: {
+                        create: {
+                            id: undefined,
+                            name,
+                            cpf,
+                            phone,
+                            dType: "Patient"
+                        }
+                    }
+
+                }, include: {
+                    person: true
+                }
             });
         } catch (error) {
             console.log(`Error creating patient: ${error}`);
@@ -30,7 +40,7 @@ class PatientService {
         }
     }
 
-    async update(id: string, data: Omit<Patient, 'id'>): Promise<Patient> {
+    async update(id: string, name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
         const patientExists = await this.findById(id);
         if (!patientExists) {
             throw new Error("The Patient does not exist in the database.");
@@ -38,11 +48,20 @@ class PatientService {
 
         try {
             return await this.prisma.patient.update({
-                where: { id },
+                where: {id},
                 data: {
-                    birthDate: new Date(data.birthDate),
-                    name: data.name,
-                },
+                    birthDate,
+                    person: {
+                        update: {
+                            name,
+                            cpf,
+                            phone,
+                        }
+                    }
+
+                }, include: {
+                    person: true
+                }
             });
         } catch (error) {
             console.log(`Error when updating Patient: ${error}`);
@@ -53,21 +72,10 @@ class PatientService {
     async findById(id: string): Promise<Patient | null> {
         try {
             return await this.prisma.patient.findUnique({
-                where: { id },
+                where: {id},
             });
         } catch (error) {
             console.log(`Error when searching for patient: ${error}`);
-            throw error;
-        }
-    }
-
-    async findByName(name: string): Promise<Patient | null> {
-        try {
-            return await this.prisma.patient.findFirst({
-                where: { name },
-            });
-        } catch (error) {
-            console.log(`Error when searching for patient by name: ${error}`);
             throw error;
         }
     }
@@ -89,7 +97,7 @@ class PatientService {
 
         try {
             await this.prisma.patient.delete({
-                where: { id },
+                where: {id},
             });
         } catch (error) {
             console.log(`Error deleting patient: ${error}`);
@@ -98,4 +106,4 @@ class PatientService {
     }
 }
 
-export { PatientService };
+export {PatientService};
