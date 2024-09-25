@@ -14,7 +14,7 @@ class DrugsController {
             const { name, activeIngredient, description } = req.body;
             this.isValidRequest(name, activeIngredient, description);
             const drugs = await this.drugsService.create(name, activeIngredient, description);
-            return res.status(200).json(drugs);
+            return res.status(201).json(drugs);
         } catch (error) {
             Util.handleError(res, error, `Error creating drugs. ${error}`)
         }
@@ -38,7 +38,7 @@ class DrugsController {
             const id = req.params.id;
             Util.validId(id);
             await this.drugsService.delete(id);
-            return res.status(200).json({msg: "Deleting drugs."});
+            return res.status(204).json({msg: "Deleting drugs."});
         } catch (error) {
             Util.handleError(res, error, `Error deleting drugs. ${error}`);
         }
