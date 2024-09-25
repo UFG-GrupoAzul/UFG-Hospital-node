@@ -10,6 +10,9 @@ import drugsRoute from "./drugs/drugs.route";
 import regulatoryDoctorRoute from "./regulatoryDoctors/regulatoryDoctor.route";
 import doctorRoute from "./doctor/doctor.route";
 import transferRoute from "./transfer/transfer.route";
+import transferDocumentRoute from "./transferDocument/transferDocument.route";
+import medicalRecordRoute from "./medicalRecord/medicalRecord.route";
+
 
 const router = Router();
 
@@ -23,5 +26,7 @@ router.use("/regulatoryDoctors", authController.authMiddleware, regulatoryDoctor
 router.use("/users", authController.authMiddleware, userRoute);
 router.use("/drugs", authController.authMiddleware, drugsRoute);
 router.use("/transfers", transferRoute)
+router.use("/transferdoc", transferDocumentRoute);
+router.use("/medrecord", medicalRecordRoute);
 
 export {router};
