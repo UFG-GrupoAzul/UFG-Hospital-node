@@ -91,8 +91,8 @@ model MedicalRecord {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   prescribedDrugs PrescribedDrug[]
-  Patient         Patient         @relation(fields: [patientId], references: [id])
-  patientId       String          @db.ObjectId @unique
+  Patient         Patient          @relation(fields: [patientId], references: [id])
+  patientId       String           @unique @db.ObjectId
 }
 
 model PrescribedDrug {
@@ -130,8 +130,8 @@ model Transfer {
   eta                 DateTime
   // patient             Patient          @relation(fields: [patientId], references: [id])
   // patientId           String           @unique @db.ObjectId
-  // requestId           String           @db.ObjectId // Adiciona este campo
-  // request             Request          @relation(fields: [requestId], references: [id]) // Usa requestId na relação
+  Request             Request          @relation(fields: [requestId], references: [id])
+  requestId           String           @unique @db.ObjectId
 }
 
 model Doctor {
@@ -145,16 +145,16 @@ model Doctor {
 }
 
 model Request {
-  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
-  patient            Patient           @relation(fields: [patientId], references: [id])
-  patientId          String            @db.ObjectId
-  specialty          Specialty         @relation(fields: [specialtyId], references: [id])
-  specialtyId        String            @db.ObjectId
-  transferDocumentId String            @db.ObjectId
-  // Transfer           Transfer[]
-  TransferDocument   TransferDocument?
+  id                 String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  patient            Patient          @relation(fields: [patientId], references: [id])
+  patientId          String           @db.ObjectId
+  specialty          Specialty        @relation(fields: [specialtyId], references: [id])
+  specialtyId        String           @db.ObjectId
+  TransferDocument   TransferDocument @relation(fields: [transferDocumentId], references: [id])
+  transferDocumentId String           @unique @db.ObjectId
+  Transfer           Transfer?
 }
 
 model TransferDocument {
@@ -163,8 +163,7 @@ model TransferDocument {
   updatedAt   DateTime @updatedAt
   number      String
   observation String
-  request     Request  @relation(fields: [requestId], references: [id])
-  requestId   String   @unique @db.ObjectId
+  Request     Request?
 }
 
 model Specialty {
