@@ -1,5 +1,5 @@
-import { PrismaClient, Patient } from '@prisma/client';
-import { prisma } from "../index";
+import {PrismaClient, Patient} from '@prisma/client';
+import {prisma} from "../index";
 
 class PatientService {
     prisma: PrismaClient;
@@ -8,7 +8,7 @@ class PatientService {
         this.prisma = prisma;
     }
 
-    async create(name: string, cpf: string, phone: string, birthDate :Date): Promise<Patient> {
+    async create(name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
         // const { birthDate, name, person string } = data;
 
         // const patientExists = await this.findByName(name);
@@ -20,17 +20,17 @@ class PatientService {
             return await this.prisma.patient.create({
                 data: {
                     birthDate,
-                    person:{
-                        create:{
+                    person: {
+                        create: {
                             id: undefined,
                             name,
                             cpf,
                             phone,
-                            dType:"Patient"
+                            dType: "Patient"
                         }
                     }
 
-                }, include:{
+                }, include: {
                     person: true
                 }
             });
@@ -40,7 +40,7 @@ class PatientService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, birthDate :Date): Promise<Patient> {
+    async update(id: string, name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
         const patientExists = await this.findById(id);
         if (!patientExists) {
             throw new Error("The Patient does not exist in the database.");
@@ -48,18 +48,18 @@ class PatientService {
 
         try {
             return await this.prisma.patient.update({
-                 where: {id},
+                where: {id},
                 data: {
                     birthDate,
-                    person:{
-                        update:{
+                    person: {
+                        update: {
                             name,
                             cpf,
                             phone,
                         }
                     }
 
-                }, include:{
+                }, include: {
                     person: true
                 }
             });
@@ -72,7 +72,7 @@ class PatientService {
     async findById(id: string): Promise<Patient | null> {
         try {
             return await this.prisma.patient.findUnique({
-                where: { id },
+                where: {id},
             });
         } catch (error) {
             console.log(`Error when searching for patient: ${error}`);
@@ -97,7 +97,7 @@ class PatientService {
 
         try {
             await this.prisma.patient.delete({
-                where: { id },
+                where: {id},
             });
         } catch (error) {
             console.log(`Error deleting patient: ${error}`);
@@ -106,4 +106,4 @@ class PatientService {
     }
 }
 
-export { PatientService };
+export {PatientService};
