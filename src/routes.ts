@@ -29,7 +29,6 @@ router.use("/drugs", authController.authMiddleware, drugsRoute);
 router.use("/transfers", transferRoute)
 router.use("/transferdoc", transferDocumentRoute);
 router.use("/medrecord", medicalRecordRoute);
-router.use("/Patients", patientRoutes);
-// router.use("/Patients", authController.authMiddleware,patientRoutes);
+router.use("/patients", authController.authMiddleware,patientRoutes);
 
 export {router};
