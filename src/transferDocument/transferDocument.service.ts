@@ -7,8 +7,7 @@ class TransferDocumentService {
             return await prisma.transferDocument.create({
                 data: {
                     number,
-                    observation,
-
+                    observation
                 }
             });
         } catch (error) {
@@ -23,7 +22,7 @@ class TransferDocumentService {
                 where: {id},
                 data:  {
                     number,
-                    observation,
+                    observation
                 }
             });
         }catch (error) {

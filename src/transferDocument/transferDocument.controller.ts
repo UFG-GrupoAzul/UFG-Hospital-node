@@ -14,9 +14,9 @@ class TransferDocumentController {
 
 
         try {
-            const {number, observation, requestId} = req.body
-            this.isValidResponse(number, observation, requestId)
-            const transferDocument = await this.transferDocumentService.create(number, observation, requestId)
+            const {number, observation} = req.body
+            this.isValidResponse(number, observation)
+            const transferDocument = await this.transferDocumentService.create(number, observation)
             return res.status(201).json(transferDocument)
 
         } catch (error) {
@@ -38,10 +38,10 @@ class TransferDocumentController {
             const id = req.params.id;
             Util.validId(id);
 
-            const {number, observation, requestId} = req.body
-            this.isValidResponse(number, observation, requestId)
+            const {number, observation} = req.body
+            this.isValidResponse(number, observation)
 
-            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation, requestId)
+            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation)
             return res.status(200).json(transferDocumentUpdated)
 
 
@@ -91,10 +91,9 @@ class TransferDocumentController {
     }
 
 
-    private isValidResponse(number: any, observation: any, requestId: any) {
+    private isValidResponse(number: any, observation: any) {
         Util.validString(number, "number");
         Util.validString(observation, "observation");
-        Util.validString(requestId, "requestId");
     }
 }
 
