@@ -21,7 +21,7 @@ class RequestController {
     }
     update = async (req: Request, res: Response) => {
         try {
-            const {id} = req.params;
+            const id = req.params.id;
             Util.validId(id);
             const {patientId, specialtyId, transferDocumentId} = req.body;
             const request = this.requestService.update(id, specialtyId);
@@ -32,7 +32,7 @@ class RequestController {
     }
     delete = async (req: Request, res: Response) => {
         try {
-            const {id} = req.params;
+            const id = req.params.id;
             Util.validId(id);
             await this.requestService.delete(id);
             return res.status(204).json({msg: "Deleting request."});
@@ -50,7 +50,7 @@ class RequestController {
     }
     findById = async (req: Request, res: Response) => {
         try {
-            const ìd = req.params.id;
+            const id = req.params.id;
             Util.validId(id);
             const request = await this.requestService.findById(id);
             if (!request) {
@@ -64,7 +64,7 @@ class RequestController {
 
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const ìd = req.params.id;
+            const {id} = req.params;
             Util.validId(id);
             const request = await this.requestService.findById(id);
             if (!request) {

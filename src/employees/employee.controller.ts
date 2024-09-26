@@ -10,11 +10,10 @@ class EmployeeController {
         this.employeeService = employeeService;
     }
 
-
     create = async (req: Request, res: Response) => {
         try {
-            const {name, cpf, phone, email, registration} = req.body;
-            this.isValidRequest(name,cpf,phone,email,registration)
+            const {name, cpf, phone, registration} = req.body;
+            this.isValidRequest(name, cpf, phone, registration)
             const employee = await this.employeeService.create(name, cpf, phone, registration);
             return res.status(201).json(employee);
         } catch (error) {
@@ -26,8 +25,8 @@ class EmployeeController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const {name, cpf, phone, email, registration} = req.body;
-            this.isValidRequest(name,cpf,phone,email,registration)
+            const {name, cpf, phone, registration} = req.body;
+            this.isValidRequest(name, cpf, phone, registration)
             const employeeUpdated = await this.employeeService.update(id, name, cpf, phone, registration);
             return res.status(200).json(employeeUpdated);
         } catch (error) {
@@ -83,13 +82,12 @@ class EmployeeController {
             Util.handleError(res, error, "Error fetching employees.");
         }
     }
-    private isValidRequest(name: any, cpf: any, phone: any, email: any,registration: any) {
+
+    private isValidRequest(name: any, cpf: any, phone: any, registration: any) {
         Util.validString(name, "name");
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
-        Util.validString(email, "email");
         Util.validString(registration, "registration");
-
     }
 }
 
