@@ -2,13 +2,13 @@ import {prisma} from "../index";
 
 class TransferDocumentService {
 
-    async create(number: string, observation: string, requestId: string) {
+    async create(number: string, observation: string) {
         try {
             return await prisma.transferDocument.create({
                 data: {
                     number,
                     observation,
-                    requestId
+
                 }
             });
         } catch (error) {
@@ -17,14 +17,13 @@ class TransferDocumentService {
         }
     }
 
-    async update(id: string, number: string, observation: string, requestId: string) {
+    async update(id: string, number: string, observation: string) {
         try {
             return await prisma.transferDocument.update({
                 where: {id},
                 data:  {
                     number,
                     observation,
-                    requestId
                 }
             });
         }catch (error) {
@@ -42,7 +41,6 @@ class TransferDocumentService {
                     updatedAt: true,
                     number: true,
                     observation: true,
-                    requestId: true
                 }
             })
         }catch (error){
@@ -61,7 +59,6 @@ class TransferDocumentService {
                     updatedAt: true,
                     number: true,
                     observation: true,
-                    requestId: true
                 }
             });
         }catch (error){
