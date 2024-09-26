@@ -7,4 +7,4 @@ app.use(express.json());
 
 app.use(router);
 
-app.listen(3000, () => console.log("Tecnologia suficientemente avançada é dificilmente diferenciavel de magia"));
+app.listen(3001, () => console.log("Tecnologia suficientemente avançada é dificilmente diferenciavel de magia"));

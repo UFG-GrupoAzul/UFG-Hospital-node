@@ -16,7 +16,7 @@ class TransferDocumentController {
         try {
             const {number, observation, requestId} = req.body
             this.isValidResponse(number, observation, requestId)
-            const transferDocument = await this.transferDocumentService.create(number, observation, requestId)
+            const transferDocument = await this.transferDocumentService.create(number, observation)
             return res.status(201).json(transferDocument)
 
         } catch (error) {
@@ -41,7 +41,7 @@ class TransferDocumentController {
             const {number, observation, requestId} = req.body
             this.isValidResponse(number, observation, requestId)
 
-            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation, requestId)
+            const transferDocumentUpdated = await this.transferDocumentService.update(id, number, observation)
             return res.status(200).json(transferDocumentUpdated)
 
 

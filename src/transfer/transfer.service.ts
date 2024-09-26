@@ -16,7 +16,7 @@ class TransferService {
         originDoctorId: string, destinationDoctorId: string,
         //patientId: string,
         timeOfExit: Date = new Date(),
-        //requestId: string,
+        requestId: string,
         regulatoryDoctorId: string) {
         const eta = this.generateEta(timeOfExit);
 
@@ -43,7 +43,7 @@ class TransferService {
                     timeOfExit,
                     regulatoryDoctorId,
                     eta,
-                    //requestId: requestId, // Agora você usa o requestId diretamente
+                    requestId// Agora você usa o requestId diretamente
                 }
             });
         } catch (error) {

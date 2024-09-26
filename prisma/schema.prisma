@@ -130,7 +130,7 @@ model Transfer {
   eta                 DateTime
   // patient             Patient          @relation(fields: [patientId], references: [id])
   // patientId           String           @unique @db.ObjectId
-  Request             Request          @relation(fields: [requestId], references: [id])
+  Request             Request?          @relation(fields: [requestId], references: [id])
   requestId           String           @unique @db.ObjectId
 }
 
