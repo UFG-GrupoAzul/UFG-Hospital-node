@@ -12,7 +12,7 @@ import doctorRoute from "./doctor/doctor.route";
 import transferRoute from "./transfer/transfer.route";
 import transferDocumentRoute from "./transferDocument/transferDocument.route";
 import medicalRecordRoute from "./medicalRecord/medicalRecord.route";
-import patientRoutes from "./patient/patient.routes";
+import patientRoutes from "./patient/patient.route";
 import requestRoute from "./requests/request.route";
 
 

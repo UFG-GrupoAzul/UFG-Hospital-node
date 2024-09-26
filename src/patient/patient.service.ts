@@ -9,12 +9,10 @@ class PatientService {
     }
 
     async create(name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
-        // const { birthDate, name, person string } = data;
-
-        // const patientExists = await this.findByName(name);
-        // if (patientExists) {
-        //     throw new Error("Patient already exists in the database");
-        // }
+        const patientExists = await this.findByCpf(cpf);
+        if (patientExists) {
+            throw new Error("Patient already exists in the database");
+        }
 
         try {
             return await this.prisma.patient.create({
@@ -22,14 +20,12 @@ class PatientService {
                     birthDate,
                     person: {
                         create: {
-                            id: undefined,
                             name,
                             cpf,
                             phone,
                             dType: "Patient"
                         }
                     }
-
                 }, include: {
                     person: true
                 }
@@ -41,9 +37,9 @@ class PatientService {
     }
 
     async update(id: string, name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
-        const patientExists = await this.findById(id);
-        if (!patientExists) {
-            throw new Error("The Patient does not exist in the database.");
+        const patientExists = await this.findByCpf(cpf);
+        if (patientExists && patientExists.id != id) {
+            throw new Error("This CPF already exists in the database.");
         }
 
         try {
@@ -58,7 +54,6 @@ class PatientService {
                             phone,
                         }
                     }
-
                 }, include: {
                     person: true
                 }
@@ -73,6 +68,9 @@ class PatientService {
         try {
             return await this.prisma.patient.findUnique({
                 where: {id},
+                include: {
+                    person: true
+                }
             });
         } catch (error) {
             console.log(`Error when searching for patient: ${error}`);
@@ -82,7 +80,11 @@ class PatientService {
 
     async findAll(): Promise<Patient[]> {
         try {
-            return await this.prisma.patient.findMany();
+            return await this.prisma.patient.findMany({
+                include: {
+                    person: true
+                }
+            });
         } catch (error) {
             console.log(`Error when searching for patients: ${error}`);
             throw error;
@@ -101,6 +103,17 @@ class PatientService {
             });
         } catch (error) {
             console.log(`Error deleting patient: ${error}`);
+            throw error;
+        }
+    }
+
+    private async findByCpf(cpf: string) {
+        try {
+            return await prisma.person.findUnique({
+                where: {cpf}
+            })
+        } catch (error) {
+            console.log(`Error fetching employee: ${error}`);
             throw error;
         }
     }

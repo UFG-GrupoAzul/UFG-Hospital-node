@@ -13,7 +13,6 @@ class EmployeeService {
                     registration,
                     person: {
                         create: {
-                            id: undefined,
                             name,
                             cpf,
                             phone,
