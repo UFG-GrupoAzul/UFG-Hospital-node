@@ -59,12 +59,8 @@ class DrugsService {
 
     async update(id: string, name: string, activeIngredient: string, description: string) {
         const drugExist = await this.findByName(name);
-
-        if (!drugExist) {
-            throw new Error("This drug does not exist in the database.");
-        }
-        if (drugExist.id != id) {
-            throw new Error ("This drug already exists in the database.");
+        if (drugExist && drugExist.id != id) {
+            throw new Error("This drug already exists in the database.");
         }
 
         try {

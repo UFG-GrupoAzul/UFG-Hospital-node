@@ -105,15 +105,18 @@ model PrescribedDrug {
   administrationDate DateTime
   MedicalRecord      MedicalRecord? @relation(fields: [medicalRecordId], references: [id])
   medicalRecordId    String?        @db.ObjectId
+  Drug               Drug           @relation(fields: [drugId], references: [id])
+  drugId             String         @db.ObjectId
 }
 
 model Drug {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  name             String   @unique
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  name             String           @unique
   activeIngredient String
   description      String
+  PrescribedDrug   PrescribedDrug[]
 }
 
 model Transfer {
