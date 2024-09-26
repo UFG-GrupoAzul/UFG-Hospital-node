@@ -20,19 +20,19 @@ import prescribedDrugRoute from "./prescribleDrugs/prescribedDrug.route";
 const router = Router();
 
 router.use("/auth", authRoute);
-router.use("/doctor", doctorRoute);
+router.use("/users", authController.authMiddleware, userRoute);
+router.use("/doctors", authController.authMiddleware, doctorRoute);
+router.use("/drugs", authController.authMiddleware, drugsRoute);
 router.use("/employees", authController.authMiddleware, employeeRoute);
 router.use("/hospitals", authController.authMiddleware, hospitalRoute);
+router.use("/medrecord", authController.authMiddleware, medicalRecordRoute);
+router.use("/patients", authController.authMiddleware, patientRoutes);
+router.use("/prescribedDrugs", authController.authMiddleware, prescribedDrugRoute);
+router.use("/regulatoryDoctors", authController.authMiddleware, regulatoryDoctorRoute);
+router.use("/requests", authController.authMiddleware, requestRoute);
 router.use("/roles", authController.authMiddleware, roleRoute);
 router.use("/specialties", authController.authMiddleware, specialtyRoute);
-router.use("/regulatoryDoctors", authController.authMiddleware, regulatoryDoctorRoute);
-router.use("/users", authController.authMiddleware, userRoute);
-router.use("/drugs", authController.authMiddleware, drugsRoute);
-router.use("/prescribedDrugs", authController.authMiddleware, prescribedDrugRoute);
-router.use("/transfers", authController.authMiddleware, transferRoute)
 router.use("/transferdoc", authController.authMiddleware, transferDocumentRoute);
-router.use("/medrecord", authController.authMiddleware, medicalRecordRoute);
-router.use("/requests", authController.authMiddleware, requestRoute);
-router.use("/patients", authController.authMiddleware, patientRoutes);
+router.use("/transfers", authController.authMiddleware, transferRoute);
 
 export {router};
