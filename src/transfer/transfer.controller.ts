@@ -16,7 +16,7 @@ class TransferController {
             destinationDoctorId,
            // patientId,
             timeOfExit,
-           // requestId,
+            requestId,
             regulatoryDoctorId
         } = req.body;
         const parsedTimeOfExit = await this.parseTimeOfExit(timeOfExit);
@@ -28,7 +28,7 @@ class TransferController {
                 destinationDoctorId,
              //   patientId,
                 parsedTimeOfExit,
-               // requestId,
+                requestId,
                 regulatoryDoctorId
             );
 
