@@ -47,13 +47,13 @@ model Employee {
 }
 
 model RegulatoryDoctor {
-  id        String     @id @map("_id") @db.ObjectId
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  crm       String     @unique
+  id        String    @id @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  crm       String    @unique
   insurance String
-  person    Person     @relation(fields: [id], references: [id])
-  Transfer  Transfer[]
+  person    Person    @relation(fields: [id], references: [id])
+  Transfer  Transfer?
 }
 
 model Role {
@@ -76,23 +76,23 @@ model Hospital {
 }
 
 model Patient {
-  id             String          @id @map("_id") @db.ObjectId
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  person         Person          @relation(fields: [id], references: [id])
-  birthDate      DateTime
-  medicalRecords MedicalRecord[]
-  // Transfer       Transfer[]
-  Request        Request[]
+  id            String         @id @map("_id") @db.ObjectId
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  person        Person         @relation(fields: [id], references: [id])
+  birthDate     DateTime
+  Transfer      Transfer?
+  Request       Request[]
+  MedicalRecord MedicalRecord?
 }
 
 model MedicalRecord {
-  id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  prescribedDrugs PrescribedDrug[]
-  Patient         Patient          @relation(fields: [patientId], references: [id])
-  patientId       String           @unique @db.ObjectId
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  PrescribedDrug PrescribedDrug[]
+  Patient        Patient          @relation(fields: [patientId], references: [id])
+  patientId      String           @unique @db.ObjectId
 }
 
 model PrescribedDrug {
@@ -128,20 +128,20 @@ model Transfer {
   regulatoryDoctorId  String           @unique @db.ObjectId
   timeOfExit          DateTime
   eta                 DateTime
-  // patient             Patient          @relation(fields: [patientId], references: [id])
-  // patientId           String           @unique @db.ObjectId
-  Request             Request?          @relation(fields: [requestId], references: [id])
+  patient             Patient          @relation(fields: [patientId], references: [id])
+  patientId           String           @unique @db.ObjectId
+  Request             Request?         @relation(fields: [requestId], references: [id])
   requestId           String           @unique @db.ObjectId
 }
 
 model Doctor {
-  id                   String     @id @map("_id") @db.ObjectId
-  createdAt            DateTime   @default(now())
-  updatedAt            DateTime   @updatedAt
-  crm                  String     @unique
-  Employee             Employee   @relation(fields: [id], references: [id])
-  originTransfers      Transfer[] @relation("originDoctor")
-  destinationTransfers Transfer[] @relation("destinationDoctor")
+  id                   String    @id @map("_id") @db.ObjectId
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  crm                  String    @unique
+  Employee             Employee  @relation(fields: [id], references: [id])
+  originTransfers      Transfer? @relation("originDoctor")
+  destinationTransfers Transfer? @relation("destinationDoctor")
 }
 
 model Request {

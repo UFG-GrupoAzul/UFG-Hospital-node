@@ -35,9 +35,9 @@ class MedicalRecordService {
     async getAll(): Promise<MedicalRecord[]> {
         try {
             return await prisma.medicalRecord.findMany({
-                include: {
-                    prescribedDrugs: true
-                }
+                // include: {
+                //     prescribedDrugs: true
+                // }
             });
         } catch (error) {
             console.error(error);
@@ -49,9 +49,9 @@ class MedicalRecordService {
         try {
             return await prisma.medicalRecord.findUnique({ 
                 where: { id },
-                include: {
-                    prescribedDrugs: true
-                }
+                // include: {
+                //     prescribedDrugs: true
+                // }
             });
         } catch (error) {
             console.error(error);

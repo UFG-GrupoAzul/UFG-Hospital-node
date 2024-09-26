@@ -14,36 +14,23 @@ class TransferService {
 
     async create(
         originDoctorId: string, destinationDoctorId: string,
-        //patientId: string,
+        patientId: string,
         timeOfExit: Date = new Date(),
         requestId: string,
         regulatoryDoctorId: string) {
         const eta = this.generateEta(timeOfExit);
 
         try {
-
-            // model Transfer {
-            //     id                  String           @id @map("_id") @db.ObjectId
-            //     originDoctorId      String           @unique @db.ObjectId
-            //     destinationDoctorId String           @unique @db.ObjectId
-            //     regulatoryDoctorId  String           @unique @db.ObjectId
-            //     timeOfExit          DateTime
-            //     eta                 DateTime
-            //     patient             Patient          @relation(fields: [patientId], references: [id])
-            //     patientId           String           @unique @db.ObjectId
-            //     requestId           String           @db.ObjectId // Adiciona este campo
-            //     request             Request          @relation(fields: [requestId], references: [id]) // Usa requestId na relação
-            // }
             return await prisma.transfer.create({
                 data: {
                     //id: requestId, // Usando o requestId como o ID da Transfer
                     originDoctorId,
                     destinationDoctorId,
-                    //patientId,
+                    patientId,
                     timeOfExit,
                     regulatoryDoctorId,
                     eta,
-                    requestId// Agora você usa o requestId diretamente
+                    requestId
                 }
             });
         } catch (error) {
@@ -53,57 +40,57 @@ class TransferService {
     }
 
     async update(id: string,
-        originDoctorId: string, destinationDoctorId: string,
-        //patientId: string,
-        timeOfExit: Date = new Date(),
-        //requestId: string,
-        regulatoryDoctorId: string){
+                 originDoctorId: string, destinationDoctorId: string,
+                 patientId: string,
+                 timeOfExit: Date = new Date(),
+                 requestId: string,
+                 regulatoryDoctorId: string) {
 
         const eta = this.generateEta(timeOfExit);
 
-        try{
+        try {
             return await prisma.transfer.update({
-                where:{id},
+                where: {id},
                 data: {
                     //id: requestId, // Usando o requestId como o ID da Transfer
                     originDoctorId,
                     destinationDoctorId,
-                    //patientId,
+                    patientId,
                     timeOfExit,
                     regulatoryDoctorId,
                     eta,
-                    //requestId: requestId, // Agora você usa o requestId diretamente
+                    requestId, // Agora você usa o requestId diretamente
                 }
             })
-        }catch (error){
+        } catch (error) {
             console.error(`Error updating Transfer: ${error}`);
             throw error;
         }
 
     }
 
-    async delete(id: string){
-        try{
-            await prisma.transfer.delete({where:{id}})
-        }catch (error){
+    async delete(id: string) {
+        try {
+            await prisma.transfer.delete({where: {id}})
+        } catch (error) {
             console.error(`Error deleting transfer: ${error}`);
             throw error;
         }
     }
 
-    async findById(id: string){
-        try{
-            return await prisma.transfer.findUnique({where:{id}})
-        }catch (error){
+    async findById(id: string) {
+        try {
+            return await prisma.transfer.findUnique({where: {id}})
+        } catch (error) {
             console.error(`Error fetching transfer by ID: ${error}`);
             throw error;
         }
     }
 
-    async findAll(){
-        try{
+    async findAll() {
+        try {
             return await prisma.transfer.findMany({})
-        }catch (error){
+        } catch (error) {
             console.error(`Error fetching all transfers: ${error}`);
             throw error;
         }
@@ -112,4 +99,4 @@ class TransferService {
 }
 
 
-export { TransferService };
+export {TransferService};

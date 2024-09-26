@@ -20,19 +20,19 @@ class TransferDocumentService {
         try {
             return await prisma.transferDocument.update({
                 where: {id},
-                data:  {
+                data: {
                     number,
                     observation
                 }
             });
-        }catch (error) {
+        } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    async getAll(){
-        try{
+    async getAll() {
+        try {
             return await prisma.transferDocument.findMany({
                 select: {
                     id: true,
@@ -42,16 +42,16 @@ class TransferDocumentService {
                     observation: true,
                 }
             })
-        }catch (error){
+        } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    async getById(id: string){
-        try{
+    async getById(id: string) {
+        try {
             return await prisma.transferDocument.findUnique({
-                where:{id},
+                where: {id},
                 select: {
                     id: true,
                     createdAt: true,
@@ -60,19 +60,19 @@ class TransferDocumentService {
                     observation: true,
                 }
             });
-        }catch (error){
+        } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    async delete(id: string){
-        try{
+    async delete(id: string) {
+        try {
             await prisma.transferDocument.delete({
-                where:{id}
+                where: {id}
             })
 
-        }catch (error){
+        } catch (error) {
             console.log(`Error deleting document transfer: ${error}`);
             throw error;
         }
