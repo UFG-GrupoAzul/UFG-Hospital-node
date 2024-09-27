@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
 import {PatientService} from "./patient.service";
+import {BloodType} from "@prisma/client";
 
 
 class PatientController{
@@ -12,10 +13,15 @@ class PatientController{
     }
     create = async (req: Request, res: Response)=> {
         try {
-            const {name, cpf, phone, birthDate} = req.body;
-            // this.isValidRequest()
-            const patient = await this.patientService.create(name, cpf, phone, birthDate)
-            return res.status(201).json(patient);
+            const {name,
+                   cpf,
+                  phone,
+                  birthDate,
+                bloodType} = req.body;
+            this.isValidateEnum(bloodType);
+        // this.isValidRequest()
+        const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType)
+        return res.status(201).json(patient);
 
         } catch (error) {
             Util.handleError(res, error, "Error creating patient.")
@@ -26,9 +32,14 @@ class PatientController{
             try {
                  const id = req.params.id;
                 Util.validId(id);
-                const {name, cpf, phone,birthDate} = req.body;
+                const {name,
+                    cpf,
+                    phone,
+                    birthDate,
+                    bloodType} = req.body;
+                this.isValidateEnum(bloodType);
                 this.isValidRequest(name,cpf,phone,birthDate)
-                const patientUpdated = await this.patientService.update(id,name,cpf, phone, birthDate);
+                const patientUpdated = await this.patientService.update(id,name,cpf, phone, birthDate, bloodType);
                 return res.status(200).json(patientUpdated);
             } catch (error) {
                 Util.handleError(res, error, "Error updating patient.");
@@ -88,6 +99,11 @@ class PatientController{
                 Util.validString(phone, "phone");
                 Util.validString(birthDate,"birthDate");
 
+            }
+            private isValidateEnum(bloodType: any){
+        if(!Object.values(BloodType).includes(bloodType)){
+            throw new Error(`Invalid blood type. Enter one of the following values: ${Object.values(BloodType)}`);
+        }
             }
         }
 

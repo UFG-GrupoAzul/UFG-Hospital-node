@@ -85,7 +85,7 @@ model Patient {
   Transfer      Transfer?
   Request       Request[]
   MedicalRecord MedicalRecord?
-  // bloodType     BloodType
+  bloodType     BloodType      @default(UNDEFINED)
 }
 
 model MedicalRecord {
@@ -110,7 +110,7 @@ model PrescribedDrug {
   medicalRecordId    String?        @db.ObjectId
   Drug               Drug           @relation(fields: [drugId], references: [id])
   drugId             String         @db.ObjectId
- dosageUnit         DosageUnit      @default(G)
+  dosageUnit         DosageUnit     @default(G)
 }
 
 model Drug {
@@ -201,6 +201,7 @@ enum BloodType {
   O_NEGATIVE  @map("O-")
   AB_POSITIVE @map("AB+")
   AB_NEGATIVE @map("AB-")
+  UNDEFINED   @map("Undefined")
 }
 
 enum Classification {

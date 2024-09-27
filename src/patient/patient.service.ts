@@ -1,5 +1,6 @@
 import {PrismaClient, Patient} from '@prisma/client';
 import {prisma} from "../index";
+import {BloodType} from "@prisma/client"
 
 class PatientService {
     prisma: PrismaClient;
@@ -8,7 +9,11 @@ class PatientService {
         this.prisma = prisma;
     }
 
-    async create(name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
+    async create(name: string,
+                 cpf: string,
+                 phone: string,
+                 birthDate: Date,
+                 bloodType: BloodType): Promise<Patient> {
         const patientExists = await this.findByCpf(cpf);
         if (patientExists) {
             throw new Error("Patient already exists in the database");
@@ -18,6 +23,7 @@ class PatientService {
             return await this.prisma.patient.create({
                 data: {
                     birthDate,
+                    bloodType,
                     person: {
                         create: {
                             name,
@@ -36,7 +42,12 @@ class PatientService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, birthDate: Date): Promise<Patient> {
+    async update(id: string,
+                 name: string,
+                 cpf: string,
+                 phone: string,
+                 birthDate: Date,
+                 bloodType: BloodType): Promise<Patient> {
         const patientExists = await this.findByCpf(cpf);
         if (patientExists && patientExists.id != id) {
             throw new Error("This CPF already exists in the database.");
@@ -47,6 +58,7 @@ class PatientService {
                 where: {id},
                 data: {
                     birthDate,
+                    bloodType,
                     person: {
                         update: {
                             name,
