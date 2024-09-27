@@ -1,4 +1,5 @@
 import {prisma} from "../index"
+import { DosageUnit } from "@prisma/client"
 
 
 class PrescribedDrugService {
@@ -8,7 +9,8 @@ class PrescribedDrugService {
                  administration: string,
                  administrationDate: Date,
                  medicalRecordId: string,
-                 drugId: string) {
+                 drugId: string,
+                 dosageUnit: DosageUnit) {
         try {
             return await prisma.prescribedDrug.create({
                 data: {
@@ -17,7 +19,8 @@ class PrescribedDrugService {
                     administration,
                     administrationDate,
                     medicalRecordId,
-                    drugId
+                    drugId,
+                    dosageUnit
                 }
             });
         } catch (error) {
@@ -32,7 +35,8 @@ class PrescribedDrugService {
                  administration: string,
                  administrationDate: Date,
                  medicalRecordId: string,
-                 drugId: string
+                 drugId: string,
+                 dosageUnit: DosageUnit
     ) {
         try {
             return await prisma.prescribedDrug.update({
@@ -43,7 +47,8 @@ class PrescribedDrugService {
                     administration,
                     administrationDate,
                     medicalRecordId,
-                    drugId
+                    drugId,
+                    dosageUnit
                 }
             })
         } catch

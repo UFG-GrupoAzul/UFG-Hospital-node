@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {PrescribedDrugService} from "./prescribedDrug.service";
+import {DosageUnit} from "@prisma/client";
 
 class PrescribedDrugController {
     private prescribedDrugService: PrescribedDrugService;
@@ -11,14 +12,24 @@ class PrescribedDrugController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {dosageInfo, dosageAmount, administration, administrationDate, medicalRecordId, drugId} = req.body;
+            const {
+                dosageInfo,
+                dosageAmount,
+                administration,
+                administrationDate,
+                medicalRecordId,
+                drugId,
+                dosageUnit
+            } = req.body;
             // this.isValidRequest(name, activeIngredient, description);
+            this.isValidateEnum(dosageUnit);
             const prescribedDrugs = await this.prescribedDrugService.create(dosageInfo,
                     dosageAmount,
                     administration,
                     administrationDate,
                     medicalRecordId,
-                    drugId
+                    drugId,
+                    dosageUnit
                 )
             ;
             return res.status(201).json(prescribedDrugs);
@@ -37,16 +48,19 @@ class PrescribedDrugController {
                 administration,
                 administrationDate,
                 medicalRecordId,
-                drugId
+                drugId,
+                dosageUnit
             } = req.body;
             // this.isValidRequest(name, activeIngredient, description);
+            this.isValidateEnum(dosageUnit);
             const prescribedDrugs = await this.prescribedDrugService.update(id,
                 dosageInfo,
                 dosageAmount,
                 administration,
                 administrationDate,
                 medicalRecordId,
-                drugId);
+                drugId,
+                dosageUnit);
             return res.status(200).json(prescribedDrugs);
         } catch (error) {
             Util.handleError(res, error, `Error updating prescribed drugs. ${error}`);
@@ -103,11 +117,22 @@ class PrescribedDrugController {
         }
     }
 
+
     private isValidRequest(name: any, activeIngredient: any, description: any) {
         // Util.validString(name, "name");
         // Util.validString(activeIngredient, "activeIngredient");
         // Util.validString(description, "description");
     }
+
+    private isValidateEnum(dosageUnitEnum: any) {
+        if (!Object.values(DosageUnit).includes(dosageUnitEnum)) {
+            throw new Error(`Invalid dosage unit. Enter one of the following values: ${Object.values(DosageUnit)}`);
+        }
+    }
+
+    // private validateEnum(enum: DosageUnit) {
+    //     if (!Object.values(DosageUnit).includes(enum))
+    // }
 }
 
 const prescribedDrugService = new PrescribedDrugService();

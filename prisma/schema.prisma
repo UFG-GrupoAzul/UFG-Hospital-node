@@ -32,7 +32,7 @@ model Person {
   phone            String
   User             User?             @relation(fields: [userId], references: [id])
   userId           String?           @db.ObjectId
-  gender           Gender
+  // gender           Gender
   Employee         Employee?
   RegulatoryDoctor RegulatoryDoctor?
   Patient          Patient?
@@ -85,7 +85,7 @@ model Patient {
   Transfer      Transfer?
   Request       Request[]
   MedicalRecord MedicalRecord?
-  bloodType     BloodType
+  // bloodType     BloodType
 }
 
 model MedicalRecord {
@@ -110,8 +110,7 @@ model PrescribedDrug {
   medicalRecordId    String?        @db.ObjectId
   Drug               Drug           @relation(fields: [drugId], references: [id])
   drugId             String         @db.ObjectId
-  dosageUnit         DosageUnit
-
+ dosageUnit         DosageUnit      @default(G)
 }
 
 model Drug {
@@ -140,7 +139,7 @@ model Transfer {
   patientId           String           @unique @db.ObjectId
   Request             Request?         @relation(fields: [requestId], references: [id])
   requestId           String           @unique @db.ObjectId
-  transport           Transport
+  // transport           Transport
 }
 
 model Doctor {
@@ -164,7 +163,7 @@ model Request {
   TransferDocument   TransferDocument @relation(fields: [transferDocumentId], references: [id])
   transferDocumentId String           @unique @db.ObjectId
   Transfer           Transfer?
-  classification     Classification
+  // classification     Classification
 }
 
 model TransferDocument {
