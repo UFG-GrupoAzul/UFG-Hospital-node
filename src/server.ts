@@ -8,6 +8,6 @@ app.use(express.json());
 app.use(router);
 
 
-app.listen(3000, () => console.log("Tecnologia suficientemente avançada é dificilmente diferenciavel de magia.\nEsse Trabalho vale uma pizza.☺"));
+app.listen(3000, () => console.log("Tecnologia suficientemente avançada é dificilmente diferenciavel de magia.\nEsse Trabalho vale uma pizza ☺ . "));
 
 
