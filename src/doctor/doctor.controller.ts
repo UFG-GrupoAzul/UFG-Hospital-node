@@ -14,8 +14,8 @@ class DoctorController {
 
 
         try {
-            const {name, cpf, phone, email, registration, crm} = req.body
-            this.isValidResponse(name, cpf, phone, email, registration, crm)
+            const {name, cpf, phone,  registration, crm} = req.body
+            this.isValidResponse(name, cpf, phone,  registration, crm)
             const doctor = await this.doctorService.create(name, cpf, phone, registration, crm)
             return res.status(201).send(doctor)
 
@@ -29,8 +29,8 @@ class DoctorController {
             const id = req.params.id;
             Util.validId(id);
 
-            const {name, cpf, phone, email, registration, crm} = req.body
-            this.isValidResponse(name, cpf, phone, email, registration, crm)
+            const {name, cpf, phone, registration, crm} = req.body
+            this.isValidResponse(name, cpf, phone,  registration, crm)
 
             const doctorUpdated = await this.doctorService.update(id, name, cpf, phone, registration, crm)
             return res.status(200).send(doctorUpdated)
@@ -70,7 +70,7 @@ class DoctorController {
 
             const doctor = await this.doctorService.delete(id)
 
-            return res.status(200).send(doctor);
+            return res.status(204).send(doctor);
         }catch (error){
             Util.handleError(res, error, "Error deleting doctor.");
         }
@@ -91,11 +91,10 @@ class DoctorController {
     }
 
 
-    private isValidResponse(name: any, cpf: any, phone: any, email:any, registration: any, crm: any) {
+    private isValidResponse(name: any, cpf: any, phone: any,  registration: any, crm: any) {
         Util.validString(name, "name");
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
-        Util.validString(email, "email");
         Util.validString(registration, "registration");
     }
 }

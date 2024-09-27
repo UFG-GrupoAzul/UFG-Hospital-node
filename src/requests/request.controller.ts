@@ -23,9 +23,9 @@ class RequestController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const {patientId, specialtyId, transferDocumentId} = req.body;
-            const request = this.requestService.update(id, specialtyId);
-            return res.status(200).json(request);
+            const { specialtyId} = req.body;
+            const requestUpdated = this.requestService.update(id, specialtyId);
+            return res.status(200).json(requestUpdated);
         } catch (error) {
             Util.handleError(res, error, `Error creating request. ${error}`)
         }

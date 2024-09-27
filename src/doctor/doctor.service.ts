@@ -53,22 +53,21 @@ class DoctorService {
             const doctorExists = await this.findByCpf(cpf);
 
             if (doctorExists && doctorExists.id != id) {
-                throw new Error("Doctor already exists with this CP.");
+                throw new Error("Doctor already exists with this CPF.");
             }
 
             return await prisma.doctor.update({
                 where: {id},
-                data:  {
+                data: {
                     crm,
                     Employee: {
-                        create: {
+                        update: {
                             registration,
                             person: {
-                                create: {
+                                update: {
                                     name,
                                     cpf,
                                     phone,
-                                    dType: "Doctor"
                                 }
                             }
                         }
@@ -91,14 +90,14 @@ class DoctorService {
                     }
                 }
             });
-        }catch (error) {
+        } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    async getAll(){
-        try{
+    async getAll() {
+        try {
             return await prisma.doctor.findMany({
                 select: {
                     id: true,
@@ -117,15 +116,16 @@ class DoctorService {
                     }
                 }
             })
-        }catch (error){
+        } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    async getById(id: string){
-        try{
-            return await prisma.doctor.findUnique({where:{id:id},
+    async getById(id: string) {
+        try {
+            return await prisma.doctor.findUnique({
+                where: {id: id},
                 select: {
                     id: true,
                     crm: true,
@@ -141,18 +141,19 @@ class DoctorService {
                             }
                         }
                     }
-                }});
-        }catch (error){
+                }
+            });
+        } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    async delete(id: string){
-        try{
-            return await prisma.doctor.findUnique({where:{id:id},})
+    async delete(id: string) {
+        try {
+            return await prisma.doctor.delete({where: {id: id},})
 
-        }catch (error){
+        } catch (error) {
             console.error(error);
             throw error;
         }
