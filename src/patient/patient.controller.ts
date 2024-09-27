@@ -4,110 +4,116 @@ import {PatientService} from "./patient.service";
 import {BloodType} from "@prisma/client";
 
 
-class PatientController{
+class PatientController {
 
-    private patientService : PatientService;
+    private patientService: PatientService;
 
     constructor(patientService: PatientService) {
         this.patientService = patientService;
     }
-    create = async (req: Request, res: Response)=> {
+
+    create = async (req: Request, res: Response) => {
         try {
-            const {name,
-                   cpf,
-                  phone,
-                  birthDate,
-                bloodType} = req.body;
+            const {
+                name,
+                cpf,
+                phone,
+                birthDate,
+                bloodType
+            } = req.body;
             this.isValidateEnum(bloodType);
-        // this.isValidRequest()
-        const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType)
-        return res.status(201).json(patient);
+            // this.isValidRequest()
+            const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType)
+            return res.status(201).json(patient);
 
         } catch (error) {
             Util.handleError(res, error, "Error creating patient.")
         }
     }
 
-        update = async (req: Request, res: Response) => {
-            try {
-                 const id = req.params.id;
-                Util.validId(id);
-                const {name,
-                    cpf,
-                    phone,
-                    birthDate,
-                    bloodType} = req.body;
-                this.isValidateEnum(bloodType);
-                this.isValidRequest(name,cpf,phone,birthDate)
-                const patientUpdated = await this.patientService.update(id,name,cpf, phone, birthDate, bloodType);
-                return res.status(200).json(patientUpdated);
-            } catch (error) {
-                Util.handleError(res, error, "Error updating patient.");
-            }
+    update = async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            Util.validId(id);
+            const {
+                name,
+                cpf,
+                phone,
+                birthDate,
+                bloodType
+            } = req.body;
+            this.isValidateEnum(bloodType);
+            this.isValidRequest(name, cpf, phone, birthDate)
+            const patientUpdated = await this.patientService.update(id, name, cpf, phone, birthDate, bloodType);
+            return res.status(200).json(patientUpdated);
+        } catch (error) {
+            Util.handleError(res, error, "Error updating patient.");
         }
-        delete =  async (req: Request, res: Response) => {
-            try {
-                const id = req.params.id;
-                Util.validId(id);
-                await this.patientService.delete(id);
-                return res.status(204).json({msg: "Deleted"});
-            } catch (error) {
-                Util.handleError(res, error, "Error deleting patient.");
-            }
+    }
+    delete = async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            Util.validId(id);
+            await this.patientService.delete(id);
+            return res.status(204).json({msg: "Deleted"});
+        } catch (error) {
+            Util.handleError(res, error, "Error deleting patient.");
         }
+    }
 
-        findAll = async (req: Request, res: Response) => {
-            try {
-                const patient = await this.patientService.findAll();
-                return res.json(patient);
-            } catch (error) {
-                Util.handleError(res, error, "Error fetching patient.");
-            }
+    findAll = async (req: Request, res: Response) => {
+        try {
+            const patient = await this.patientService.findAll();
+            return res.json(patient);
+        } catch (error) {
+            Util.handleError(res, error, "Error fetching patient.");
         }
+    }
 
-        findById = async (req: Request, res: Response) => {
-            try {
-                const id = req.params.id;
-                Util.validId(id);
-                const patient = await this.patientService.findById(id);
+    findById = async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            Util.validId(id);
+            const patient = await this.patientService.findById(id);
 
-                if (!patient) {
-                    return res.status(404).json({error: "Patient not found."});
-                }
-                return res.json(patient);
-            } catch (error) {
-                Util.handleError(res, error, "Error fetching patient.");
+            if (!patient) {
+                return res.status(404).json({error: "Patient not found."});
             }
+            return res.json(patient);
+        } catch (error) {
+            Util.handleError(res, error, "Error fetching patient.");
         }
-        verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
-            try {
-                const id = req.params.id;
-                Util.validId(id);
-                const patient = await this.patientService.findById(id);
-                if (!patient) {
-                    return res.status(404).json({error: "Patient not found."});
-                }
-                return next();
-            } catch (error) {
-                Util.handleError(res, error, "Error fetching patient.");
+    }
+    verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id;
+            Util.validId(id);
+            const patient = await this.patientService.findById(id);
+            if (!patient) {
+                return res.status(404).json({error: "Patient not found."});
             }
+            return next();
+        } catch (error) {
+            Util.handleError(res, error, "Error fetching patient.");
         }
+    }
 
-        private isValidRequest(name: any, cpf: any, phone: any, birthDate: any) {
-                Util.validString(name, "name");
-                Util.validString(cpf, "cpf");
-                Util.validString(phone, "phone");
-                Util.validString(birthDate,"birthDate");
+    private isValidRequest(name: any, cpf: any, phone: any, birthDate: any) {
+        Util.validString(name, "name");
+        Util.validString(cpf, "cpf");
+        Util.validString(phone, "phone");
+        Util.validString(birthDate, "birthDate");
 
-            }
-            private isValidateEnum(bloodType: any){
-        if(!Object.values(BloodType).includes(bloodType)){
+    }
+
+    private isValidateEnum(bloodType: any) {
+        if (!Object.values(BloodType).includes(bloodType)) {
             throw new Error(`Invalid blood type. Enter one of the following values: ${Object.values(BloodType)}`);
         }
-            }
-        }
+    }
+}
 
 const patientService: PatientService = new PatientService();
-const patientController  = new PatientController(patientService);
+const patientController = new PatientController(patientService);
 
-export  {patientController};
+export {patientController};
