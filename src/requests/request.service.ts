@@ -1,14 +1,16 @@
 import {prisma} from "../index";
 import * as sea from "node:sea";
+import {Classification} from "@prisma/client"
 
 class RequestService {
-    async create(patientId: string, specialtyId: string, transferDocumentId: string) {
+    async create(patientId: string, specialtyId: string, transferDocumentId: string, classification: Classification) {
         try {
             return await prisma.request.create({
                 data: {
                     patientId,
                     specialtyId,
-                    transferDocumentId
+                    transferDocumentId,
+                    classification
                 }
             });
         } catch (error) {
@@ -22,12 +24,13 @@ class RequestService {
      * @param id
      * @param specialtyId
      */
-    async update(id: string, specialtyId: string) {
+    async update(id: string, specialtyId: string, classification: Classification) {
         try {
             return await prisma.request.update({
                 where: {id},
                 data: {
                     specialtyId,
+                    classification
                 }
             })
         } catch (error) {

@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {RequestService} from "./request.service";
+import {Classification, Transport} from "@prisma/client";
 
 
 class RequestController {
@@ -12,8 +13,9 @@ class RequestController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {patientId, specialtyId, transferDocumentId} = req.body;
-            const request = await this.requestService.create(patientId, specialtyId, transferDocumentId);
+            const {patientId, specialtyId, transferDocumentId, classification} = req.body;
+            this.isValidateEnum(classification);
+            const request = await this.requestService.create(patientId, specialtyId, transferDocumentId, classification);
             return res.status(201).json(request);
         } catch (error) {
             Util.handleError(res, error, `Error creating request. ${error}`)
@@ -23,8 +25,9 @@ class RequestController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const { specialtyId} = req.body;
-            const requestUpdated = this.requestService.update(id, specialtyId);
+            const {specialtyId, classification} = req.body;
+            this.isValidateEnum(classification);
+            const requestUpdated = this.requestService.update(id, specialtyId, classification);
             return res.status(200).json(requestUpdated);
         } catch (error) {
             Util.handleError(res, error, `Error creating request. ${error}`)
@@ -73,6 +76,12 @@ class RequestController {
             return next();
         } catch (error) {
             Util.handleError(res, error, `Error creating drugs. ${error}`)
+        }
+    }
+
+    private isValidateEnum(classificationEnum: any) {
+        if (!Object.values(Classification).includes(classificationEnum)) {
+            throw new Error(`Invalid classification. Enter one of the following values: ${Object.values(Classification)}`);
         }
     }
 }
