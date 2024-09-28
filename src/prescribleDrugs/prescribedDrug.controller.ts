@@ -129,10 +129,6 @@ class PrescribedDrugController {
             throw new Error(`Invalid dosage unit. Enter one of the following values: ${Object.values(DosageUnit)}`);
         }
     }
-
-    // private validateEnum(enum: DosageUnit) {
-    //     if (!Object.values(DosageUnit).includes(enum))
-    // }
 }
 
 const prescribedDrugService = new PrescribedDrugService();
