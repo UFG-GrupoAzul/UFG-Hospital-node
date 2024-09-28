@@ -1,4 +1,5 @@
 import {prisma} from "../index";
+import {Transport} from "@prisma/client";
 
 class TransferService {
 
@@ -17,20 +18,21 @@ class TransferService {
         patientId: string,
         timeOfExit: Date = new Date(),
         requestId: string,
-        regulatoryDoctorId: string) {
+        regulatoryDoctorId: string,
+        transport: Transport) {
         const eta = this.generateEta(timeOfExit);
 
         try {
             return await prisma.transfer.create({
                 data: {
-                    //id: requestId, // Usando o requestId como o ID da Transfer
                     originDoctorId,
                     destinationDoctorId,
                     patientId,
                     timeOfExit,
                     regulatoryDoctorId,
                     eta,
-                    requestId
+                    requestId,
+                    transport
                 }
             });
         } catch (error) {
@@ -44,7 +46,8 @@ class TransferService {
                  patientId: string,
                  timeOfExit: Date = new Date(),
                  requestId: string,
-                 regulatoryDoctorId: string) {
+                 regulatoryDoctorId: string,
+                 transport: Transport) {
 
         const eta = this.generateEta(timeOfExit);
 
@@ -52,14 +55,14 @@ class TransferService {
             return await prisma.transfer.update({
                 where: {id},
                 data: {
-                    //id: requestId, // Usando o requestId como o ID da Transfer
                     originDoctorId,
                     destinationDoctorId,
                     patientId,
                     timeOfExit,
                     regulatoryDoctorId,
                     eta,
-                    requestId, // Agora você usa o requestId diretamente
+                    requestId,
+                    transport
                 }
             })
         } catch (error) {

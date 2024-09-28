@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {TransferService} from "./transfer.service";
 import {Util} from "../utils/util";
+import {Transport} from "@prisma/client";
 
 
 class TransferController {
@@ -17,19 +18,23 @@ class TransferController {
             patientId,
             timeOfExit,
             requestId,
-            regulatoryDoctorId
+            regulatoryDoctorId,
+            transport
         } = req.body;
+
+        this.isValidateEnum(transport);
         const parsedTimeOfExit = await this.parseTimeOfExit(timeOfExit);
 
         try {
-
+            this.isValidateEnum(transport);
             const transfer = await this.transferService.create(
                 originDoctorId,
                 destinationDoctorId,
                 patientId,
                 parsedTimeOfExit,
                 requestId,
-                regulatoryDoctorId
+                regulatoryDoctorId,
+                transport
             );
 
             return res.status(201).json(transfer);
@@ -47,13 +52,15 @@ class TransferController {
             patientId,
             timeOfExit,
             requestId,
-            regulatoryDoctorId
+            regulatoryDoctorId,
+            transport
         } = req.body;
 
         const parsedTimeOfExit = await this.parseTimeOfExit(timeOfExit);
 
         try {
-            const transferUpdated = await this.transferService.update(id, originDoctorId, destinationDoctorId, patientId, parsedTimeOfExit, requestId, regulatoryDoctorId)
+            this.isValidateEnum(transport);
+            const transferUpdated = await this.transferService.update(id, originDoctorId, destinationDoctorId, patientId, parsedTimeOfExit, requestId, regulatoryDoctorId, transport)
             return res.status(201).json(transferUpdated);
         } catch (error) {
             console.error(`Error updating transfer: ${error}`);
@@ -108,6 +115,12 @@ class TransferController {
         }
 
 
+    }
+
+    private isValidateEnum(transportEnum: any) {
+        if (!Object.values(Transport).includes(transportEnum)) {
+            throw new Error(`Invalid transport. Enter one of the following values: ${Object.values(Transport)}`);
+        }
     }
 
     private async parseTimeOfExit(timeOfExit: string) {
