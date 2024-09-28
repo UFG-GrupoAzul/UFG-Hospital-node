@@ -139,7 +139,7 @@ model Transfer {
   patientId           String           @unique @db.ObjectId
   Request             Request?         @relation(fields: [requestId], references: [id])
   requestId           String           @unique @db.ObjectId
-  // transport           Transport
+  transport           Transport        @default(LAND)
 }
 
 model Doctor {
@@ -163,7 +163,7 @@ model Request {
   TransferDocument   TransferDocument @relation(fields: [transferDocumentId], references: [id])
   transferDocumentId String           @unique @db.ObjectId
   Transfer           Transfer?
-  // classification     Classification
+  classification     Classification   @default(TERTIARY)
 }
 
 model TransferDocument {
