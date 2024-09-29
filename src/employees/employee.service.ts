@@ -1,8 +1,9 @@
 import {prisma} from "../index";
+import {Gender} from "@prisma/client";
 
 class EmployeeService {
 
-    async create(name: string, cpf: string, phone: string, registration: string) {
+    async create(name: string, cpf: string, phone: string, registration: string, gender: Gender) {
         const employeeExist = await this.findByCpf(cpf);
         if (employeeExist) {
             throw new Error("Employee already exists in the database.");
@@ -16,6 +17,7 @@ class EmployeeService {
                             name,
                             cpf,
                             phone,
+                            gender,
                             dType: "Employee"
                         }
                     }
@@ -30,7 +32,7 @@ class EmployeeService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, registration: string) {
+    async update(id: string, name: string, cpf: string, phone: string, registration: string, gender: Gender) {
         const employeeExist = await this.findByCpf(cpf);
         if (employeeExist && employeeExist.id != id) {
             throw new Error("This CPF already exists in the database.");
@@ -44,7 +46,8 @@ class EmployeeService {
                         update: {
                             name,
                             cpf,
-                            phone
+                            phone,
+                            gender
                         }
                     }
                 }, include: {

@@ -1,8 +1,9 @@
 import {prisma} from "../index";
+import {Gender} from "@prisma/client";
 
 class RegulatoryDoctorService {
 
-    async create(name: string, cpf: string, phone: string, crm: string, insurance: string) {
+    async create(name: string, cpf: string, phone: string, crm: string, insurance: string, gender: Gender) {
         const regulatoryDoctorExists = await this.findByCrm(crm);
         if (regulatoryDoctorExists) {
             throw new Error("Regulatory Doctor already exists in the database");
@@ -18,6 +19,7 @@ class RegulatoryDoctorService {
                             name,
                             cpf,
                             phone,
+                            gender,
                             dType: "RegulatoryDoctor"
                         }
                     }
@@ -31,7 +33,7 @@ class RegulatoryDoctorService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, crm: string, insurance: string) {
+    async update(id: string, name: string, cpf: string, phone: string, crm: string, insurance: string, gender: Gender) {
         const regulatoryDoctorExists = await this.findByCrm(crm);
         if (regulatoryDoctorExists && regulatoryDoctorExists.id != id) {
             throw new Error("Regulatory Doctor already exists in the database.");
@@ -47,6 +49,7 @@ class RegulatoryDoctorService {
                             name,
                             cpf,
                             phone,
+                            gender,
                             dType: "RegulatoryDoctor"
                         }
                     }

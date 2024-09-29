@@ -1,4 +1,4 @@
-import {PrismaClient, Patient} from '@prisma/client';
+import {PrismaClient, Patient, Gender} from '@prisma/client';
 import {prisma} from "../index";
 import {BloodType} from "@prisma/client"
 
@@ -13,7 +13,9 @@ class PatientService {
                  cpf: string,
                  phone: string,
                  birthDate: Date,
-                 bloodType: BloodType): Promise<Patient> {
+                 bloodType: BloodType,
+                 gender: Gender)
+                 {
         const patientExists = await this.findByCpf(cpf);
         if (patientExists) {
             throw new Error("Patient already exists in the database");
@@ -29,6 +31,7 @@ class PatientService {
                             name,
                             cpf,
                             phone,
+                            gender,
                             dType: "Patient"
                         }
                     }
@@ -47,7 +50,8 @@ class PatientService {
                  cpf: string,
                  phone: string,
                  birthDate: Date,
-                 bloodType: BloodType): Promise<Patient> {
+                 bloodType: BloodType,
+                 gender: Gender): Promise<Patient> {
         const patientExists = await this.findByCpf(cpf);
         if (patientExists && patientExists.id != id) {
             throw new Error("This CPF already exists in the database.");
@@ -64,6 +68,7 @@ class PatientService {
                             name,
                             cpf,
                             phone,
+                            gender
                         }
                     }
                 }, include: {

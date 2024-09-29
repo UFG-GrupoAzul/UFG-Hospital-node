@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {RegulatoryDoctorService} from "./regulatoryDoctor.service";
+import {Gender} from "@prisma/client";
 
 class RegulatoryDoctorController {
 
@@ -13,9 +14,10 @@ class RegulatoryDoctorController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {name, cpf, phone, crm, insurance} = req.body;
+            const {name, cpf, phone, crm, insurance,gender } = req.body;
             this.isValidResponse(name, cpf, phone, crm, insurance);
-            const regulatoryDoctor = await this.regulatoryDoctorService.create(name, cpf, phone, crm, insurance);
+            this.isEnumValid(gender)
+            const regulatoryDoctor = await this.regulatoryDoctorService.create(name, cpf, phone, crm, insurance,gender);
             return res.status(201).json(regulatoryDoctor);
         } catch (error) {
             Util.handleError(res, error, "Error creating regulatoryDoctors.")
@@ -26,9 +28,11 @@ class RegulatoryDoctorController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const {name, cpf, phone, crm, insurance} = req.body;
+            const {name, cpf, phone, crm, insurance, gender} = req.body;
             this.isValidResponse(name, cpf, phone, crm, insurance);
-            const regulatoryDoctorUpdated = await this.regulatoryDoctorService.update(id, name, cpf, phone, crm, insurance);
+            this.isEnumValid(gender)
+
+            const regulatoryDoctorUpdated = await this.regulatoryDoctorService.update(id, name, cpf, phone, crm, insurance, gender);
             return res.status(200).json(regulatoryDoctorUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating regulatory doctors.");
@@ -90,6 +94,12 @@ class RegulatoryDoctorController {
         Util.validString(phone, "phone");
         Util.validString(crm, "crm");
         Util.validString(insurance, "insurance");
+    }
+
+    private isEnumValid(gender: any){
+        if(!Object.values(Gender).includes(gender)){
+            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
+        }
     }
 }
 

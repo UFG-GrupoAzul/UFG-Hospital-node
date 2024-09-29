@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {EmployeeService} from "./employee.service";
+import {Gender} from "@prisma/client";
 
 class EmployeeController {
 
@@ -12,9 +13,10 @@ class EmployeeController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {name, cpf, phone, registration} = req.body;
+            const {name, cpf, phone, registration,gender} = req.body;
+            this.isEnumValid(gender)
             this.isValidRequest(name, cpf, phone, registration)
-            const employee = await this.employeeService.create(name, cpf, phone, registration);
+            const employee = await this.employeeService.create(name, cpf, phone, registration,gender);
             return res.status(201).json(employee);
         } catch (error) {
             Util.handleError(res, error, "Error creating employees.")
@@ -25,9 +27,10 @@ class EmployeeController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const {name, cpf, phone, registration} = req.body;
+            const {name, cpf, phone, registration, gender} = req.body;
+            this.isEnumValid(gender)
             this.isValidRequest(name, cpf, phone, registration)
-            const employeeUpdated = await this.employeeService.update(id, name, cpf, phone, registration);
+            const employeeUpdated = await this.employeeService.update(id, name, cpf, phone, registration,gender);
             return res.status(200).json(employeeUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating employees.");
@@ -88,6 +91,12 @@ class EmployeeController {
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
         Util.validString(registration, "registration");
+    }
+
+    private isEnumValid(gender: any){
+        if(!Object.values(Gender).includes(gender)){
+            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
+        }
     }
 }
 

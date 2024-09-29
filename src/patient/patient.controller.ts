@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
 import {PatientService} from "./patient.service";
-import {BloodType} from "@prisma/client";
+import {BloodType, Gender} from "@prisma/client";
 
 
 class PatientController {
@@ -19,11 +19,13 @@ class PatientController {
                 cpf,
                 phone,
                 birthDate,
-                bloodType
+                bloodType,
+                gender
             } = req.body;
             this.isValidateEnum(bloodType);
-            // this.isValidRequest()
-            const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType)
+            this.isValidRequest(name,cpf,phone, birthDate);
+            this.isEnumValid(gender)
+            const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType,gender)
             return res.status(201).json(patient);
 
         } catch (error) {
@@ -40,11 +42,13 @@ class PatientController {
                 cpf,
                 phone,
                 birthDate,
-                bloodType
+                bloodType,
+                gender
             } = req.body;
             this.isValidateEnum(bloodType);
             this.isValidRequest(name, cpf, phone, birthDate)
-            const patientUpdated = await this.patientService.update(id, name, cpf, phone, birthDate, bloodType);
+            this.isEnumValid(gender)
+            const patientUpdated = await this.patientService.update(id, name, cpf, phone, birthDate, bloodType, gender);
             return res.status(200).json(patientUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating patient.");
@@ -109,6 +113,12 @@ class PatientController {
     private isValidateEnum(bloodType: any) {
         if (!Object.values(BloodType).includes(bloodType)) {
             throw new Error(`Invalid blood type. Enter one of the following values: ${Object.values(BloodType)}`);
+        }
+    }
+
+    private isEnumValid(gender: any){
+        if(!Object.values(Gender).includes(gender)){
+            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
         }
     }
 }

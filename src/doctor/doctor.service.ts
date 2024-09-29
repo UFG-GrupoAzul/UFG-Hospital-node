@@ -1,8 +1,9 @@
 import {prisma} from "../index";
+import {Gender} from "@prisma/client";
 
 class DoctorService {
 
-    async create(name: string, cpf: string, phone: string, registration: string, crm: string): Promise<any> {
+    async create(name: string, cpf: string, phone: string, registration: string, crm: string, gender: Gender): Promise<any> {
         // const employeeExist = await this.findByCpf(cpf);
         // if (employeeExist && employeeExist.id != id) {
         //     throw new Error("Employee already exists in the database.");
@@ -19,6 +20,7 @@ class DoctorService {
                                     name,
                                     cpf,
                                     phone,
+                                    gender,
                                     dType: "Doctor"
                                 }
                             }
@@ -35,7 +37,8 @@ class DoctorService {
                                 select: {
                                     cpf: true,
                                     phone: true,
-                                    name: true
+                                    name: true,
+                                    gender: true
                                 }
                             }
                         }
@@ -48,7 +51,7 @@ class DoctorService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, registration: string, crm: string) {
+    async update(id: string, name: string, cpf: string, phone: string, registration: string, crm: string, gender: Gender) {
         try {
             const doctorExists = await this.findByCpf(cpf);
 
@@ -68,6 +71,7 @@ class DoctorService {
                                     name,
                                     cpf,
                                     phone,
+                                    gender
                                 }
                             }
                         }
@@ -83,7 +87,8 @@ class DoctorService {
                                 select: {
                                     cpf: true,
                                     phone: true,
-                                    name: true
+                                    name: true,
+                                    gender: true
                                 }
                             }
                         }

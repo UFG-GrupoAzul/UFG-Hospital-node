@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {DoctorService} from './doctor.service';
 import {Util} from "../utils/util";
+import {Gender} from "@prisma/client";
 
 class DoctorController {
 
@@ -14,9 +15,10 @@ class DoctorController {
 
 
         try {
-            const {name, cpf, phone,  registration, crm} = req.body
+            const {name, cpf, phone,  registration, crm, gender} = req.body
+            this.isEnumValid(gender)
             this.isValidResponse(name, cpf, phone,  registration, crm)
-            const doctor = await this.doctorService.create(name, cpf, phone, registration, crm)
+            const doctor = await this.doctorService.create(name, cpf, phone, registration, crm, gender)
             return res.status(201).send(doctor)
 
         } catch (error) {
@@ -29,10 +31,11 @@ class DoctorController {
             const id = req.params.id;
             Util.validId(id);
 
-            const {name, cpf, phone, registration, crm} = req.body
+            const {name, cpf, phone, registration, crm,gender} = req.body
             this.isValidResponse(name, cpf, phone,  registration, crm)
+            this.isEnumValid(gender)
 
-            const doctorUpdated = await this.doctorService.update(id, name, cpf, phone, registration, crm)
+            const doctorUpdated = await this.doctorService.update(id, name, cpf, phone, registration, crm, gender)
             return res.status(200).send(doctorUpdated)
 
 
@@ -96,6 +99,12 @@ class DoctorController {
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
         Util.validString(registration, "registration");
+    }
+
+    private isEnumValid(gender: any){
+        if(!Object.values(Gender).includes(gender)){
+            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
+        }
     }
 }
 
