@@ -1,30 +1,23 @@
 import {prisma} from "../index";
 import {Gender} from "@prisma/client";
+import {$Enums} from ".prisma/client";
+import {personService} from "../persons/person.service";
 
 class EmployeeService {
+    private readonly dType = "Employee";
+    private readonly fieldName = "employee";
 
-    async create(name: string, cpf: string, phone: string, registration: string, gender: Gender) {
-        const employeeExist = await this.findByCpf(cpf);
-        if (employeeExist) {
-            throw new Error("Employee already exists in the database.");
-        }
+    async create(registration: string, positionId: string, name: string, cpf: string, phone: string, gender: Gender, dType?: string, fieldName?: string) {
         try {
+            const person = await personService.create(name, cpf, phone, gender, dType ?? this.dType, fieldName ?? this.fieldName);
             return await prisma.employee.create({
                 data: {
                     registration,
-                    person: {
-                        create: {
-                            name,
-                            cpf,
-                            phone,
-                            gender,
-                            dType: "Employee"
-                        }
-                    }
+                    positionId,
+                    id: person.id,
                 }, include: {
                     person: true
                 }
-
             });
         } catch (error) {
             console.log(`Error creating employee: ${error}`);
@@ -32,24 +25,14 @@ class EmployeeService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, registration: string, gender: Gender) {
-        const employeeExist = await this.findByCpf(cpf);
-        if (employeeExist && employeeExist.id != id) {
-            throw new Error("This CPF already exists in the database.");
-        }
+    async update(id: string, registration: string, positionId: string, name: string, cpf: string, phone: string, gender: Gender, dType?: string, fieldName?: string) {
         try {
+            await personService.update(id, name, cpf, phone, gender, dType ?? this.dType, fieldName ?? this.fieldName);
             return await prisma.employee.update({
                 where: {id},
                 data: {
                     registration,
-                    person: {
-                        update: {
-                            name,
-                            cpf,
-                            phone,
-                            gender
-                        }
-                    }
+                    positionId
                 }, include: {
                     person: true
                 }
@@ -78,7 +61,7 @@ class EmployeeService {
             return await prisma.employee.findUnique({
                 where: {id},
                 include: {
-                    person: true // Incluir os dados da Person associada
+                    person: true
                 }
             });
         } catch (error) {
@@ -89,25 +72,13 @@ class EmployeeService {
 
     async delete(id: string) {
         try {
-            await prisma.employee.delete({where: {id}})
+            await prisma.employee.delete({where: {id}});
+            await prisma.person.delete({where: {id}});
         } catch (error) {
             console.log(`Error deleting employee: ${error}`);
             throw error;
         }
     }
-
-
-    private async findByCpf(cpf: string) {
-        try {
-            return await prisma.person.findUnique({
-                where: {cpf}
-            })
-        } catch (error) {
-            console.log(`Error fetching employee: ${error}`);
-            throw error;
-        }
-    }
-
 
 }
 
