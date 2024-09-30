@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {RequestService} from "./request.service";
-import {Classification, Transport} from "@prisma/client";
+import {Classification, DosageUnit, Transport} from "@prisma/client";
 
 
 class RequestController {
@@ -14,7 +14,7 @@ class RequestController {
     create = async (req: Request, res: Response) => {
         try {
             const {patientId, specialtyId, transferDocumentId, classification} = req.body;
-            this.isValidateEnum(classification);
+            this.isValidRequest(patientId, specialtyId, transferDocumentId, classification);
             const request = await this.requestService.create(patientId, specialtyId, transferDocumentId, classification);
             return res.status(201).json(request);
         } catch (error) {
@@ -24,10 +24,10 @@ class RequestController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const {specialtyId, classification} = req.body;
-            this.isValidateEnum(classification);
-            const requestUpdated = this.requestService.update(id, specialtyId, classification);
+            this.isValidRequestUpdate(specialtyId, classification);
+            const requestUpdated = await this.requestService.update(id, specialtyId, classification);
             return res.status(200).json(requestUpdated);
         } catch (error) {
             Util.handleError(res, error, `Error creating request. ${error}`)
@@ -36,7 +36,7 @@ class RequestController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             await this.requestService.delete(id);
             return res.status(204).json({msg: "Deleting request."});
         } catch (error) {
@@ -54,7 +54,7 @@ class RequestController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const request = await this.requestService.findById(id);
             if (!request) {
                 return res.status(404).json({msg: "Not found"});
@@ -68,7 +68,7 @@ class RequestController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const {id} = req.params;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const request = await this.requestService.findById(id);
             if (!request) {
                 return res.status(404).json({msg: "Not found"});
@@ -79,10 +79,20 @@ class RequestController {
         }
     }
 
-    private isValidateEnum(classificationEnum: any) {
-        if (!Object.values(Classification).includes(classificationEnum)) {
-            throw new Error(`Invalid classification. Enter one of the following values: ${Object.values(Classification)}`);
-        }
+    private isValidIdEntity(id: any) {
+        Util.validId(id, "request");
+    }
+
+    private isValidRequest(patientId: any, specialtyId: any, transferDocumentId: any, classification: any) {
+        Util.validId(patientId, "patient");
+        Util.validId(specialtyId, "specialty");
+        Util.validId(transferDocumentId, "transfer document");
+        Util.validEnum(Classification, classification, "classification");
+    }
+
+    private isValidRequestUpdate(specialtyId: any, classification: any) {
+        Util.validId(specialtyId, "specialty");
+        Util.validEnum(Classification, classification, "classification");
     }
 }
 

@@ -27,7 +27,7 @@ model User {
 model Person {
   id               String            @id @default(auto()) @map("_id") @db.ObjectId
   name             String
-  cpf              String            @unique
+  cpf              String
   dType            String
   phone            String
   User             User?             @relation(fields: [userId], references: [id])
@@ -36,6 +36,8 @@ model Person {
   Employee         Employee?
   RegulatoryDoctor RegulatoryDoctor?
   Patient          Patient?
+
+  @@unique([cpf, dType])
 }
 
 model Employee {
@@ -45,6 +47,8 @@ model Employee {
   registration String
   person       Person   @relation(fields: [id], references: [id])
   Doctor       Doctor?
+  Position     Position @relation(fields: [positionId], references: [id])
+  positionId   String   @db.ObjectId
 }
 
 model RegulatoryDoctor {
@@ -57,11 +61,12 @@ model RegulatoryDoctor {
   Transfer  Transfer?
 }
 
-model Role {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  description String   @unique
+model Position {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  description String     @unique
+  Employee    Employee[]
 }
 
 model Hospital {
@@ -205,19 +210,19 @@ enum BloodType {
 }
 
 enum Classification {
-  PRIMARY   @map("Primária")
-  SECONDARY @map("Secundária")
-  TERTIARY  @map("Terciária")
+  PRIMARY   @map("Primary")
+  SECONDARY @map("Secondary")
+  TERTIARY  @map("Tertiary")
 }
 
 enum Transport {
-  LAND       @map("Terrestre")
-  PLANE      @map("Avião")
-  HELICOPTER @map("Helicóptero")
+  LAND       @map("Land")
+  PLANE      @map("Plane")
+  HELICOPTER @map("Helicopter")
 }
 
 enum DosageUnit {
-  MG @map("MG") // Milligram
-  G  @map("G") // Liter
-  CP @map("CP") // Capsule
+  MG @map("Milligram")
+  G  @map("Grams")
+  CP @map("Capsule")
 }

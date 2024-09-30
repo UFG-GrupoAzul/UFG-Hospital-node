@@ -22,10 +22,8 @@ class PatientController {
                 bloodType,
                 gender
             } = req.body;
-            this.isValidateEnum(bloodType);
-            this.isValidRequest(name,cpf,phone, birthDate);
-            this.isEnumValid(gender)
-            const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType,gender)
+            this.isValidRequest(name, cpf, phone, birthDate, bloodType, gender);
+            const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType, gender)
             return res.status(201).json(patient);
 
         } catch (error) {
@@ -36,7 +34,7 @@ class PatientController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const {
                 name,
                 cpf,
@@ -45,9 +43,7 @@ class PatientController {
                 bloodType,
                 gender
             } = req.body;
-            this.isValidateEnum(bloodType);
-            this.isValidRequest(name, cpf, phone, birthDate)
-            this.isEnumValid(gender)
+            this.isValidRequest(name, cpf, phone, birthDate, bloodType, gender);
             const patientUpdated = await this.patientService.update(id, name, cpf, phone, birthDate, bloodType, gender);
             return res.status(200).json(patientUpdated);
         } catch (error) {
@@ -57,7 +53,7 @@ class PatientController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             await this.patientService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
@@ -77,9 +73,8 @@ class PatientController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const patient = await this.patientService.findById(id);
-
             if (!patient) {
                 return res.status(404).json({error: "Patient not found."});
             }
@@ -91,7 +86,7 @@ class PatientController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const patient = await this.patientService.findById(id);
             if (!patient) {
                 return res.status(404).json({error: "Patient not found."});
@@ -102,25 +97,19 @@ class PatientController {
         }
     }
 
-    private isValidRequest(name: any, cpf: any, phone: any, birthDate: any) {
+    private isValidIdEntity(id: any) {
+        Util.validId(id, "patient");
+    }
+
+    private isValidRequest(name: any, cpf: any, phone: any, birthDate: any, bloodType: any, gender: any) {
         Util.validString(name, "name");
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
         Util.validString(birthDate, "birthDate");
-
+        Util.validEnum(BloodType, bloodType, "blood type");
+        Util.validEnum(Gender, gender, "gender");
     }
 
-    private isValidateEnum(bloodType: any) {
-        if (!Object.values(BloodType).includes(bloodType)) {
-            throw new Error(`Invalid blood type. Enter one of the following values: ${Object.values(BloodType)}`);
-        }
-    }
-
-    private isEnumValid(gender: any){
-        if(!Object.values(Gender).includes(gender)){
-            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
-        }
-    }
 }
 
 const patientService: PatientService = new PatientService();

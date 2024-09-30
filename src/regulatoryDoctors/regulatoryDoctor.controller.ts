@@ -14,10 +14,9 @@ class RegulatoryDoctorController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {name, cpf, phone, crm, insurance,gender } = req.body;
-            this.isValidResponse(name, cpf, phone, crm, insurance);
-            this.isEnumValid(gender)
-            const regulatoryDoctor = await this.regulatoryDoctorService.create(name, cpf, phone, crm, insurance,gender);
+            const {name, cpf, phone, crm, insurance, gender} = req.body;
+            this.isValidResponse(name, cpf, phone, crm, insurance, gender);
+            const regulatoryDoctor = await this.regulatoryDoctorService.create(name, cpf, phone, crm, insurance, gender);
             return res.status(201).json(regulatoryDoctor);
         } catch (error) {
             Util.handleError(res, error, "Error creating regulatoryDoctors.")
@@ -27,11 +26,9 @@ class RegulatoryDoctorController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const {name, cpf, phone, crm, insurance, gender} = req.body;
-            this.isValidResponse(name, cpf, phone, crm, insurance);
-            this.isEnumValid(gender)
-
+            this.isValidResponse(name, cpf, phone, crm, insurance, gender);
             const regulatoryDoctorUpdated = await this.regulatoryDoctorService.update(id, name, cpf, phone, crm, insurance, gender);
             return res.status(200).json(regulatoryDoctorUpdated);
         } catch (error) {
@@ -42,7 +39,7 @@ class RegulatoryDoctorController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             await this.regulatoryDoctorService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
@@ -62,7 +59,7 @@ class RegulatoryDoctorController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const regulatoryDoctor = await this.regulatoryDoctorService.findById(id);
 
             if (!regulatoryDoctor) {
@@ -77,7 +74,7 @@ class RegulatoryDoctorController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const regulatoryDoctor = await this.regulatoryDoctorService.findById(id);
             if (!regulatoryDoctor) {
                 return res.status(404).json({error: "RegulatoryDoctor not found."});
@@ -88,19 +85,19 @@ class RegulatoryDoctorController {
         }
     }
 
-    private isValidResponse(name: any, cpf: any, phone: any, crm: any, insurance: any) {
+    private isValidIdEntity(id: any) {
+        Util.validId(id, "regulatory doctor");
+    }
+
+    private isValidResponse(name: any, cpf: any, phone: any, crm: any, insurance: any, gender: any) {
         Util.validString(name, "name");
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
         Util.validString(crm, "crm");
         Util.validString(insurance, "insurance");
+        Util.validEnum(Gender, gender, "gender");
     }
 
-    private isEnumValid(gender: any){
-        if(!Object.values(Gender).includes(gender)){
-            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
-        }
-    }
 }
 
 const regulatoryDoctorService = new RegulatoryDoctorService();
