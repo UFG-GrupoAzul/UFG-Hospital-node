@@ -13,20 +13,20 @@ class Util {
         }
     }
 
-    static validNumberGreaterThanZero(number: any, fieldName: String) {
-        if (typeof number !== "number" || number <= 0) {
+    static validNumberGreaterThanZero(numberValue: any, fieldName: String) {
+        if (typeof numberValue !== "number" || numberValue <= 0) {
             throw new Error(`Invalid ${fieldName}: must be a positive number.`);
         }
     }
 
-    static validNumber(number: any, fieldName: String) {
-        if (typeof number !== "number") {
+    static validNumber(numberValue: any, fieldName: String) {
+        if (typeof numberValue !== "number") {
             throw new Error(`Invalid ${fieldName}.`);
         }
     }
 
-    static validBoolean(boolean: any, fieldName: String) {
-        if (typeof boolean !== "boolean") {
+    static validBoolean(booleanValue: any, fieldName: String) {
+        if (typeof booleanValue !== "boolean") {
             throw new Error(`Invalid ${fieldName}: must be a boolean.`);
         }
     }
@@ -38,9 +38,8 @@ class Util {
      * @throws Error irá gerar um error caso o text não for uma string.
      */
     static validString(text: any, fieldName: String) {
-        if (text.isNaN) {
+        if (typeof text !== "string" || text.trim().length === 0) {
             throw new Error(`Invalid ${fieldName}: must be a non empty string.`);
-
         }
     }
 
@@ -51,8 +50,8 @@ class Util {
      * @param fieldName nome do campo
      * @throws Error irá gerar um erro informando que o id é inválido.
      */
-    static validId(id: String, fieldName: String) {
-        if (!id || id.length !== 24) {
+    static validId(id: any, fieldName: String) {
+        if (typeof id !== "string" || id.length !== 24) {
             throw new Error(`Invalid id for ${fieldName}: ${id}`);
         }
     }
@@ -60,7 +59,7 @@ class Util {
     static validDate(dateValue: any, fieldName: String) {
         const date = new Date(dateValue);
         if (isNaN(date.getTime())) {
-            throw new Error(`Invalid ${fieldName}: ${dateValue}`);
+            throw new Error(`Invalid date ${fieldName}: ${dateValue}.Accepted format '2024-09-30T02:23:11.792Z'`);
         }
     }
 

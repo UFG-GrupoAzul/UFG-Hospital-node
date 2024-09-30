@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {EmployeeService} from "./employee.service";
 import {Gender} from "@prisma/client";
+import {personService} from "../persons/person.service";
 
 class EmployeeController {
 
@@ -93,7 +94,7 @@ class EmployeeController {
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
         Util.validString(registration, "registration");
-        Util.validId(positionId, "position");
+        Util.validId(positionId, "positionId");
         Util.validEnum(Gender, gender, "gender");
     }
 

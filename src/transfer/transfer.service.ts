@@ -3,26 +3,27 @@ import {Transport} from "@prisma/client";
 
 class TransferService {
 
+    /**
+     * Gerador aleatório de tempo para o fim determinar o tempo de chegada. Substituir por uma api que calcula rota.
+     * @param timeOfExit
+     * @private
+     */
     private generateEta(timeOfExit: Date): Date {
-        // Gera um número aleatório entre 10 e 60 minutos
         const randomMinutes = Math.floor(Math.random() * (60 - 10 + 1)) + 10;
-
-        // Cria um novo objeto Date, adicionando os minutos aleatórios
-        const eta = new Date(timeOfExit.getTime() + randomMinutes * 60000);
-
+        const eta = new Date(timeOfExit);
+        eta.setMinutes(eta.getMinutes() + randomMinutes);
         return eta;
     }
 
     async create(
         originDoctorId: string, destinationDoctorId: string,
         patientId: string,
-        timeOfExit: Date = new Date(),
+        timeOfExit: Date,
         requestId: string,
         regulatoryDoctorId: string,
         transport: Transport) {
-        const eta = this.generateEta(timeOfExit);
-
         try {
+            const eta = this.generateEta(timeOfExit);
             return await prisma.transfer.create({
                 data: {
                     originDoctorId,
@@ -44,13 +45,11 @@ class TransferService {
     async update(id: string,
                  originDoctorId: string, destinationDoctorId: string,
                  patientId: string,
-                 timeOfExit: Date = new Date(),
+                 timeOfExit: Date,
                  requestId: string,
                  regulatoryDoctorId: string,
                  transport: Transport) {
-
         const eta = this.generateEta(timeOfExit);
-
         try {
             return await prisma.transfer.update({
                 where: {id},

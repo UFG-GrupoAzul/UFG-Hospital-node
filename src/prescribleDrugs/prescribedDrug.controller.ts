@@ -126,13 +126,13 @@ class PrescribedDrugController {
                            medicalRecordId: any,
                            drugId: any,
                            dosageUnit: any) {
-        Util.validString(dosageInfo, "dosage info");
-        Util.validString(dosageAmount, "dosage amount");
+        Util.validString(dosageInfo, "dosageInfo");
+        Util.validString(dosageAmount, "dosageAmount");
         Util.validString(administration, "administration");
-        Util.validString(administrationDate, "administration date");
-        Util.validId(medicalRecordId, "medical record");
-        Util.validId(drugId, "drug");
-        Util.validEnum(DosageUnit, dosageUnit, "dosage unit");
+        Util.validString(administrationDate, "administrationDate");
+        Util.validId(medicalRecordId, "medicalRecordId");
+        Util.validId(drugId, "drugId");
+        Util.validEnum(DosageUnit, dosageUnit, "dosageUnit");
     }
 
 }

@@ -91,6 +91,7 @@ class RegulatoryDoctorService {
     async delete(id: string) {
         try {
             await prisma.regulatoryDoctor.delete({where: {id}})
+            await prisma.person.delete({where: {id}})
         } catch (error) {
             console.log(`Error deleting regulatory doctor: ${error}`);
             throw error;

@@ -89,7 +89,7 @@ class DoctorController {
         Util.validString(phone, "phone");
         Util.validString(registration, "registration");
         Util.validEnum(Gender, gender, "gender");
-        Util.validId(positionId, "position");
+        Util.validId(positionId, "positionId");
     }
 
     private isValidIdEntity(id: any) {

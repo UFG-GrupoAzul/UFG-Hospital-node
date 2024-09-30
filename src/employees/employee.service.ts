@@ -25,7 +25,7 @@ class EmployeeService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, registration: string, positionId: string, gender: Gender, dType?: string, fieldName?: string) {
+    async update(id: string, registration: string, positionId: string, name: string, cpf: string, phone: string, gender: Gender, dType?: string, fieldName?: string) {
         try {
             await personService.update(id, name, cpf, phone, gender, dType ?? this.dType, fieldName ?? this.fieldName);
             return await prisma.employee.update({
@@ -72,7 +72,8 @@ class EmployeeService {
 
     async delete(id: string) {
         try {
-            await prisma.employee.delete({where: {id}})
+            await prisma.employee.delete({where: {id}});
+            await prisma.person.delete({where: {id}});
         } catch (error) {
             console.log(`Error deleting employee: ${error}`);
             throw error;

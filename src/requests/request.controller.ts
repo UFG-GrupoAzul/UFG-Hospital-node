@@ -84,9 +84,9 @@ class RequestController {
     }
 
     private isValidRequest(patientId: any, specialtyId: any, transferDocumentId: any, classification: any) {
-        Util.validId(patientId, "patient");
-        Util.validId(specialtyId, "specialty");
-        Util.validId(transferDocumentId, "transfer document");
+        Util.validId(patientId, "patientId");
+        Util.validId(specialtyId, "specialtyId");
+        Util.validId(transferDocumentId, "transferDocumentId");
         Util.validEnum(Classification, classification, "classification");
     }
 

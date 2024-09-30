@@ -39,6 +39,14 @@ class PersonService {
         }
     }
 
+    async delete(id: string) {
+        try {
+            await prisma.person.delete({where: {id}})
+        } catch (error) {
+            console.log(`Error deleting employee: ${error}`);
+            throw error;
+        }
+    }
     private async findByCpfAndDType(cpf: string, dType: string, fieldName: string) {
         try {
             return await prisma.person.findUnique({

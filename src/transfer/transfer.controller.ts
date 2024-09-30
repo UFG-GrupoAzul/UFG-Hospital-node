@@ -26,8 +26,7 @@ class TransferController {
             const transfer = await this.transferService.create(originDoctorId, destinationDoctorId, patientId, timeOfExit, requestId, regulatoryDoctorId, transport);
             return res.status(201).json(transfer);
         } catch (error) {
-            console.error(`Error creating Transfer: ${error}`);
-            return res.status(500).json({error: 'Failed to create transfer.'});
+            Util.handleError(res, error, "Failed to create transfer");
         }
     }
 
@@ -55,8 +54,7 @@ class TransferController {
             const transferUpdated = await this.transferService.update(id, originDoctorId, destinationDoctorId, patientId, timeOfExit, requestId, regulatoryDoctorId, transport)
             return res.status(201).json(transferUpdated);
         } catch (error) {
-            console.error(`Error updating transfer: ${error}`);
-            return res.status(500).json({error: 'Failed to update transfer'});
+            Util.handleError(res, error, "Failed to update transfer");
         }
 
     }
@@ -68,8 +66,7 @@ class TransferController {
             const transfer = await this.transferService.findById(id)
             return res.status(200).json(transfer)
         } catch (error) {
-            console.error(`Error finding transfer: ${error}`);
-            return res.status(404).json({error: 'Failed to find transfer'});
+            Util.handleError(res, error, "Failed to find transfer");
         }
     }
 
@@ -78,8 +75,7 @@ class TransferController {
             const transfers = await this.transferService.findAll();
             return res.status(200).json(transfers);
         } catch (error) {
-            console.error(`Error finding transfers: ${error}`);
-            return res.status(500).json({error: 'Failed to find all transfers'});
+            Util.handleError(res, error, "Failed to find all transfer");
         }
     }
 
@@ -90,8 +86,7 @@ class TransferController {
             await this.transferService.delete(id)
             return res.status(204).json({msg: "Transfer deleted"});
         } catch (error) {
-            console.error(`Error deleting transfer: ${error}`);
-            return res.status(500).json({error: 'Failed to delete transfer'});
+            Util.handleError(res, error, "Failed to delete transfer");
         }
     }
 
@@ -105,7 +100,7 @@ class TransferController {
             }
             return next()
         } catch (error) {
-            console.error(`Error finding transfer: ${error}`);
+            Util.handleError(res, error, "Failed to finding transfer");
         }
     }
 
@@ -120,13 +115,13 @@ class TransferController {
                            requestId: any,
                            regulatoryDoctorId: any,
                            transport: any) {
-        Util.validId(originDoctorId, "origin doctor");
-        Util.validId(destinationDoctorId, "destination doctor");
-        Util.validId(patientId, "patient");
-        Util.validId(requestId, "request");
-        Util.validId(regulatoryDoctorId, "regulatory doctor");
+        Util.validId(originDoctorId, "originDoctorId");
+        Util.validId(destinationDoctorId, "destinationDoctorId");
+        Util.validId(patientId, "patientId");
+        Util.validId(requestId, "requestId");
+        Util.validId(regulatoryDoctorId, "regulatoryDoctorId");
         Util.validEnum(Transport, transport, "transport");
-        Util.validDate(timeOfExit, "time of exit");
+        Util.validDate(timeOfExit, "timeOfExit");
     }
 
 }

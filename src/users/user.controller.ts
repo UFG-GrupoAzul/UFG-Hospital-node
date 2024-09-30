@@ -87,7 +87,7 @@ class UserController {
     }
 
     private isValidRequest(name: any, email: any, password: any, permission: any) {
-        Util.validString(password, "name");
+        Util.validString(password, "password");
         Util.validString(name, "name");
         Util.validString(email, "email");
         Util.validString(permission, "permission");

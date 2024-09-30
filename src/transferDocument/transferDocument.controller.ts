@@ -95,7 +95,7 @@ class TransferDocumentController {
     private isValidResponse(number: any, observation: any, medicalRecordId: any) {
         Util.validString(number, "number");
         Util.validString(observation, "observation");
-        Util.validId(medicalRecordId, "medical record");
+        Util.validId(medicalRecordId, "medicalRecordId");
     }
 }
 

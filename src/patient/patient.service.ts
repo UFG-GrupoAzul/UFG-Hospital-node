@@ -72,9 +72,8 @@ class PatientService {
 
     async delete(id: string) {
         try {
-            await prisma.patient.delete({
-                where: {id},
-            });
+            await prisma.patient.delete({where: {id}});
+            await prisma.person.delete({where: {id}});
         } catch (error) {
             console.log(`Error deleting patient: ${error}`);
             throw error;

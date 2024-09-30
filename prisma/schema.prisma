@@ -45,7 +45,7 @@ model Employee {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   registration String
-  person       Person   @relation(fields: [id], references: [id])
+  person       Person   @relation(fields: [id], references: [id], onDelete: Cascade)
   Doctor       Doctor?
   Position     Position @relation(fields: [positionId], references: [id])
   positionId   String   @db.ObjectId
@@ -57,7 +57,7 @@ model RegulatoryDoctor {
   updatedAt DateTime  @updatedAt
   crm       String    @unique
   insurance String
-  person    Person    @relation(fields: [id], references: [id])
+  person    Person    @relation(fields: [id], references: [id], onDelete: Cascade)
   Transfer  Transfer?
 }
 
@@ -85,7 +85,7 @@ model Patient {
   id            String         @id @map("_id") @db.ObjectId
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  person        Person         @relation(fields: [id], references: [id])
+  person        Person         @relation(fields: [id], references: [id], onDelete: Cascade)
   birthDate     DateTime
   Transfer      Transfer?
   Request       Request[]
@@ -152,7 +152,7 @@ model Doctor {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   crm                  String    @unique
-  Employee             Employee  @relation(fields: [id], references: [id])
+  Employee             Employee  @relation(fields: [id], references: [id], onDelete: Cascade)
   originTransfers      Transfer? @relation("originDoctor")
   destinationTransfers Transfer? @relation("destinationDoctor")
 }
