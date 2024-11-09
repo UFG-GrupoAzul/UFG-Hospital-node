@@ -2,7 +2,6 @@ import {NextFunction, Request, Response} from "express";
 import {Util} from "../utils/util";
 import {EmployeeService} from "./employee.service";
 import {Gender} from "@prisma/client";
-import {personService} from "../persons/person.service";
 
 class EmployeeController {
 
@@ -14,9 +13,10 @@ class EmployeeController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {registration, positionId, name, cpf, phone, gender} = req.body;
-            this.isValidRequest(name, cpf, phone, registration, positionId, gender)
-            const employee = await this.employeeService.create(registration, positionId, name, cpf, phone, gender);
+            const {name, cpf, phone, registration,gender} = req.body;
+            this.isEnumValid(gender)
+            this.isValidRequest(name, cpf, phone, registration)
+            const employee = await this.employeeService.create(name, cpf, phone, registration,gender);
             return res.status(201).json(employee);
         } catch (error) {
             Util.handleError(res, error, "Error creating employees.")
@@ -26,10 +26,11 @@ class EmployeeController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
-            const {registration, positionId, name, cpf, phone, gender} = req.body;
-            this.isValidRequest(name, cpf, phone, registration, positionId, gender)
-            const employeeUpdated = await this.employeeService.update(id, registration, positionId, name, cpf, phone, gender);
+            Util.validId(id);
+            const {name, cpf, phone, registration, gender} = req.body;
+            this.isEnumValid(gender)
+            this.isValidRequest(name, cpf, phone, registration)
+            const employeeUpdated = await this.employeeService.update(id, name, cpf, phone, registration,gender);
             return res.status(200).json(employeeUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating employees.");
@@ -39,7 +40,7 @@ class EmployeeController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             await this.employeeService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
@@ -59,7 +60,7 @@ class EmployeeController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const employee = await this.employeeService.findById(id);
 
             if (!employee) {
@@ -74,7 +75,7 @@ class EmployeeController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const employee = await this.employeeService.findById(id);
             if (!employee) {
                 return res.status(404).json({error: "Employee not found."});
@@ -85,23 +86,22 @@ class EmployeeController {
         }
     }
 
-    private isValidIdEntity(id: any) {
-        Util.validId(id, "employee");
-    }
-
-    private isValidRequest(name: any, cpf: any, phone: any, registration: any, positionId: any, gender: any) {
+    private isValidRequest(name: any, cpf: any, phone: any, registration: any) {
         Util.validString(name, "name");
         Util.validString(cpf, "cpf");
         Util.validString(phone, "phone");
         Util.validString(registration, "registration");
-        Util.validId(positionId, "positionId");
-        Util.validEnum(Gender, gender, "gender");
     }
 
+    private isEnumValid(gender: any){
+        if(!Object.values(Gender).includes(gender)){
+            throw new Error(`Invalid gender, enter one of the following: ${Object.values(Gender)}`);
+        }
+    }
 }
 
 const employeeService = new EmployeeService();
 const employeeController = new EmployeeController(employeeService);
 
-export {employeeController, employeeService};
+export {EmployeeController, employeeController};
 

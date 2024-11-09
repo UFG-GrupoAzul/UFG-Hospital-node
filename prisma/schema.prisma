@@ -27,7 +27,7 @@ model User {
 model Person {
   id               String            @id @default(auto()) @map("_id") @db.ObjectId
   name             String
-  cpf              String
+  cpf              String            @unique
   dType            String
   phone            String
   User             User?             @relation(fields: [userId], references: [id])
@@ -36,8 +36,6 @@ model Person {
   Employee         Employee?
   RegulatoryDoctor RegulatoryDoctor?
   Patient          Patient?
-
-  @@unique([cpf, dType])
 }
 
 model Employee {
@@ -45,10 +43,8 @@ model Employee {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   registration String
-  person       Person   @relation(fields: [id], references: [id], onDelete: Cascade)
+  person       Person   @relation(fields: [id], references: [id])
   Doctor       Doctor?
-  Position     Position @relation(fields: [positionId], references: [id])
-  positionId   String   @db.ObjectId
 }
 
 model RegulatoryDoctor {
@@ -57,16 +53,15 @@ model RegulatoryDoctor {
   updatedAt DateTime  @updatedAt
   crm       String    @unique
   insurance String
-  person    Person    @relation(fields: [id], references: [id], onDelete: Cascade)
+  person    Person    @relation(fields: [id], references: [id])
   Transfer  Transfer?
 }
 
-model Position {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  description String     @unique
-  Employee    Employee[]
+model Role {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String   @unique
 }
 
 model Hospital {
@@ -85,7 +80,7 @@ model Patient {
   id            String         @id @map("_id") @db.ObjectId
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  person        Person         @relation(fields: [id], references: [id], onDelete: Cascade)
+  person        Person         @relation(fields: [id], references: [id])
   birthDate     DateTime
   Transfer      Transfer?
   Request       Request[]
@@ -152,7 +147,7 @@ model Doctor {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   crm                  String    @unique
-  Employee             Employee  @relation(fields: [id], references: [id], onDelete: Cascade)
+  Employee             Employee  @relation(fields: [id], references: [id])
   originTransfers      Transfer? @relation("originDoctor")
   destinationTransfers Transfer? @relation("destinationDoctor")
 }
@@ -210,19 +205,19 @@ enum BloodType {
 }
 
 enum Classification {
-  PRIMARY   @map("Primary")
-  SECONDARY @map("Secondary")
-  TERTIARY  @map("Tertiary")
+  PRIMARY   @map("Primária")
+  SECONDARY @map("Secundária")
+  TERTIARY  @map("Terciária")
 }
 
 enum Transport {
-  LAND       @map("Land")
-  PLANE      @map("Plane")
-  HELICOPTER @map("Helicopter")
+  LAND       @map("Terrestre")
+  PLANE      @map("Avião")
+  HELICOPTER @map("Helicóptero")
 }
 
 enum DosageUnit {
-  MG @map("Milligram")
-  G  @map("Grams")
-  CP @map("Capsule")
+  MG @map("MG") // Milligram
+  G  @map("G") // Liter
+  CP @map("CP") // Capsule
 }

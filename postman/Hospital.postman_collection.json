@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "fe9fa8b4-8d69-4ef9-b93a-2ddd74f2784a",
+		"_postman_id": "f566c078-2ac2-4238-b508-138c539a4c84",
 		"name": "Hospital",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "35026121",
-		"_collection_link": "https://ufg-grupo-azul.postman.co/workspace/UFG---Grupo-Azul-Workspace~e129ef5d-dc1d-4626-8a16-7a228d84805e/collection/36676680-fe9fa8b4-8d69-4ef9-b93a-2ddd74f2784a?action=share&source=collection_link&creator=35026121"
+		"_exporter_id": "35026139"
 	},
 	"item": [
 		{
@@ -77,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"Paulo\",\r\n    \"email\": \"paulonill@gmail.com\",\r\n    \"password\": \"senhasecreta\",\r\n    \"permission\": \"USER\"\r\n}\r\n",
+							"raw": "{\r\n    \"name\" : \"Danillo\",\r\n    \"email\": \"parreira16@gmail.com\",\r\n    \"password\": \"senhasecreta\",\r\n    \"permission\": \"MEDICO\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -204,13 +203,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users/66f9faa2eb310fe16521f702",
+							"raw": "{{host}}/users/66f4b82199f6efcea2e879df",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"users",
-								"66f9faa2eb310fe16521f702"
+								"66f4b82199f6efcea2e879df"
 							]
 						}
 					},
@@ -219,7 +218,7 @@
 			]
 		},
 		{
-			"name": "positions",
+			"name": "roles",
 			"item": [
 				{
 					"name": "create",
@@ -238,7 +237,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\" : \"Médico\"\r\n}\r\n",
+							"raw": "{\r\n    \"description\" : \"Diretor\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -246,12 +245,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/positions",
+							"raw": "{{host}}/roles",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"positions"
+								"roles"
 							]
 						}
 					},
@@ -273,12 +272,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/positions",
+							"raw": "{{host}}/roles",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"positions"
+								"roles"
 							]
 						}
 					},
@@ -300,13 +299,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/positions/66f9fae0eb310fe16521f704",
+							"raw": "{{host}}/roles/66f4b87199f6efcea2e879e1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"positions",
-								"66f9fae0eb310fe16521f704"
+								"roles",
+								"66f4b87199f6efcea2e879e1"
 							]
 						}
 					},
@@ -337,13 +336,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/positions/66f9fae0eb310fe16521f704",
+							"raw": "{{host}}/roles/66f4b85499f6efcea2e879e0",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"positions",
-								"66f9fae0eb310fe16521f704"
+								"roles",
+								"66f4b85499f6efcea2e879e0"
 							]
 						}
 					},
@@ -365,13 +364,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/positions/66f9fae0eb310fe16521f704",
+							"raw": "{{host}}/roles/66f4b85499f6efcea2e879e0",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"positions",
-								"66f9fae0eb310fe16521f704"
+								"roles",
+								"66f4b85499f6efcea2e879e0"
 							]
 						}
 					},
@@ -399,7 +398,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"patientId\": \"60d21b46f4b9cc993e710c95\",\r\n    \"specialtyId\": \"60d21b46f4b9cc993e710c95\",\r\n    \"transferDocumentId\": \"60d21b46f4b9cc993e710c95\",\r\n    \"classification\": \"PRIMARY\"\r\n}",
+							"raw": "{\r\n    \"patientId\": \"60d21b46f4b9cc993e710c95\", \r\n    \"specialtyId\": \"60d21b46f4b9cc993e710c95\",\r\n     \"transferDocumentId\": \"60d21b46f4b9cc993e710c95\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -461,13 +460,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/requests/66f9fb3eeb310fe16521f706",
+							"raw": "{{host}}/requests/66f5f4b6e60b162af2a75c44",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"requests",
-								"66f9fb3eeb310fe16521f706"
+								"66f5f4b6e60b162af2a75c44"
 							]
 						}
 					},
@@ -490,7 +489,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"patientId\": \"60d21b46f4b9cc993e710c95\",\r\n    \"specialtyId\": \"60d21b46f4b9cc993e710c95\",\r\n    \"transferDocumentId\": \"60d21b46f4b9cc993e710c95\",\r\n    \"classification\": \"SECONDARY\"\r\n}",
+							"raw": "{\r\n    \"description\" : \"Secretária(o)\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -498,13 +497,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/requests/66f9fb3eeb310fe16521f706",
+							"raw": "{{host}}/request/66ecc25b20f59b044ed97a9e",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"requests",
-								"66f9fb3eeb310fe16521f706"
+								"request",
+								"66ecc25b20f59b044ed97a9e"
 							]
 						}
 					},
@@ -526,13 +525,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/requests/66f9fb3eeb310fe16521f706",
+							"raw": "{{host}}/requests/66f5f4b6e60b162af2a75c44",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"requests",
-								"66f9fb3eeb310fe16521f706"
+								"66f5f4b6e60b162af2a75c44"
 							]
 						}
 					},
@@ -560,7 +559,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Luana\",\r\n    \"cpf\": \"77777777777\",\r\n    \"phone\": \"62777777777\",\r\n    \"registration\": \"7777\",\r\n    \"positionId\": \"66fa00eab3ec51aeffd3e7ed\",\r\n    \"gender\": \"MALE\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Luana\",\r\n    \"cpf\": \"77777777777\",\r\n    \"phone\": \"62777777777\",\r\n    \"registration\": \"7777\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -651,7 +650,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Luana\",\r\n    \"cpf\": \"77777777777\",\r\n    \"phone\": \"62777777777\",\r\n    \"registration\": \"7777\",\r\n    \"positionId\": \"66fa0610706a040d22ff6a94\",\r\n    \"gender\": \"FEMALE\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Luana\",\r\n    \"cpf\": \"888888888888\",\r\n    \"phone\": \"888888888888\",\r\n    \"registration\": \"888888888888\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -659,13 +658,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/employees/66fa07fc2585be4171260a4a",
+							"raw": "{{host}}/employees/66f4bdb6df0433bfb7be90a7",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"employees",
-								"66fa07fc2585be4171260a4a"
+								"66f4bdb6df0433bfb7be90a7"
 							]
 						}
 					},
@@ -687,13 +686,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/employees/66fa0829e903a0bd31ec19d2",
+							"raw": "{{host}}/employees/66f4bdb6df0433bfb7be90a7",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"employees",
-								"66fa0829e903a0bd31ec19d2"
+								"66f4bdb6df0433bfb7be90a7"
 							]
 						}
 					},
@@ -721,7 +720,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"teste\",\r\n    \"cpf\": \"99922932132199999\",\r\n    \"phone\": \"62932131299999999\",\r\n    \"crm\": \"32421321312312\",\r\n    \"insurance\": \"SUS\",\r\n    \"gender\": \"MALE\"\r\n}",
+							"raw": "{\r\n    \"name\": \"teste\",\r\n    \"cpf\": \"99922932132199999\",\r\n    \"phone\": \"62932131299999999\",\r\n    \"crm\": \"32421321312312\",\r\n    \"insurance\": \"SUS\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -812,7 +811,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Zilda Arns Neumann\",\r\n    \"cpf\": \"99922999999\",\r\n    \"phone\": \"62999999999\",\r\n    \"crm\": \"32421312\",\r\n    \"insurance\": \"IMAS\",\r\n    \"gender\": \"FEMALE\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Zilda Arns Neumann\",\r\n    \"cpf\": \"99922999999\",\r\n    \"phone\": \"62999999999\",\r\n    \"crm\": \"32421312\",\r\n    \"insurance\": \"IMAS\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -820,13 +819,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/regulatoryDoctors/66fa120e585c43e374ece277",
+							"raw": "{{host}}/regulatoryDoctors/66f4be47df0433bfb7be90a8",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"regulatoryDoctors",
-								"66fa120e585c43e374ece277"
+								"66f4be47df0433bfb7be90a8"
 							]
 						}
 					},
@@ -1043,7 +1042,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"string\",\r\n    \"cpf\": \"fdsafdsa\",\r\n    \"phone\": \"string\",\r\n    \"birthDate\": \"2024-09-26T00:00:00.000Z\",\r\n    \"bloodType\": \"A_POSITIVE\",\r\n    \"gender\": \"MALE\"\r\n}",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"cpf\": \"fdsafdsa\",\r\n    \"phone\": \"string\",\r\n    \"birthDate\": \"2024-09-26T00:00:00.000Z\",\r\n    \"bloodType\": \"A_NEGATIVE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1134,7 +1133,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Luana\",\r\n    \"cpf\": \"432432\",\r\n    \"phone\": \"string\",\r\n    \"birthDate\": \"2024-09-26T00:00:00.000Z\"\r\n}",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"cpf\": \"fdsafdsa\",\r\n    \"phone\": \"string\",\r\n    \"birthDate\": \"2024-09-26T00:00:00.000Z\",\r\n    \"bloodType\": \"A_NEGATIVE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1170,13 +1169,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/patients/66fa08ae6473ab2af9c14bd5",
+							"raw": "{{host}}/patients/66f4bfb1df0433bfb7be90b4",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"patients",
-								"66fa08ae6473ab2af9c14bd5"
+								"66f4bfb1df0433bfb7be90b4"
 							]
 						}
 					},
@@ -1349,6 +1348,33 @@
 			"name": "prescribedDrugs",
 			"item": [
 				{
+					"name": "findAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/prescribedDrugs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"prescribedDrugs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create",
 					"request": {
 						"auth": {
@@ -1365,40 +1391,13 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"dosageInfo\": \"string\",\r\n    \"dosageAmount\": 10.0,\r\n    \"administration\": \"string\",\r\n    \"administrationDate\": \"2024-09-26T02:13:26.723Z\",\r\n    \"medicalRecordId\": \"66f4c346fe2f5997e35310db\",\r\n    \"drugId\": \"66f4c346fe2f5997e35310db\",\r\n    \"dosageUnit\": \"MG\"\r\n}",
+							"raw": "{\r\n    \"dosageInfo\": \"string\",\r\n    \"dosageAmount\": 10.0,\r\n    \"administration\": \"string\",\r\n    \"administrationDate\": \"2024-09-26T02:13:26.723Z\",\r\n    \"medicalRecordId\": \"66f4c346fe2f5997e35310db\",\r\n    \"drugId\": \"66f4c346fe2f5997e35310db\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}/prescribedDrugs",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"prescribedDrugs"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "findAll",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
 						"url": {
 							"raw": "{{host}}/prescribedDrugs",
 							"host": [
@@ -1428,7 +1427,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"dosageInfo\": \"string\",\r\n    \"dosageAmount\": 11.1,\r\n    \"administration\": \"string\",\r\n    \"administrationDate\": \"2024-09-26T02:13:26.723Z\",\r\n    \"medicalRecordId\": \"66f4c346fe2f5997e35310db\",\r\n    \"drugId\": \"66f4c346fe2f5997e35310db\",\r\n    \"dosageUnit\": \"MG\"\r\n}",
+							"raw": "{\r\n    \"dosageInfo\": \"string\",\r\n    \"dosageAmount\": 11.1,\r\n    \"administration\": \"string\",\r\n    \"administrationDate\": \"2024-09-26T02:13:26.723Z\",\r\n    \"medicalRecordId\": \"66f4c346fe2f5997e35310db\",\r\n    \"drugId\": \"66f4c346fe2f5997e35310db\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1526,7 +1525,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"HGG\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"HUGO\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1617,7 +1616,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"HGG\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"HUGOL\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1625,13 +1624,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/hospitals/66fa12cec09583784d342afb",
+							"raw": "{{host}}/hospitals/66f5ddb9f313152e19c0ecd1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"hospitals",
-								"66fa12cec09583784d342afb"
+								"66f5ddb9f313152e19c0ecd1"
 							]
 						}
 					},
@@ -1687,7 +1686,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Drauzio\",\r\n    \"cpf\":\"00000000000\",\r\n    \"phone\": \"0099999999\",\r\n    \"registration\": \"3421312\",\r\n    \"crm\": \"321\",\r\n    \"gender\": \"MALE\",\r\n    \"positionId\": \"60d21b46f4b9cc993e710c95\"\r\n}",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"cpf\": st\"r\"ing,\r\n    \"phone\": \"string\",\r\n    \"registration\": \"string\",\r\n    \"crm\": \"string\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1778,7 +1777,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Drauzio\",\r\n    \"cpf\":\"00000000000\",\r\n    \"phone\": \"0099999999\",\r\n    \"registration\": \"3421312\",\r\n    \"crm\": \"321123\",\r\n    \"gender\": \"MALE\",\r\n    \"positionId\": \"60d21b46f4b9cc993e710c95\"\r\n}",
+							"raw": "{\r\n    \"name\": \"HUGOL\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1786,13 +1785,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/doctors/66fa09a50e53f485a3c4a4a9",
+							"raw": "{{host}}/doctors/66f5ddb9f313152e19c0ecd1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"doctors",
-								"66fa09a50e53f485a3c4a4a9"
+								"66f5ddb9f313152e19c0ecd1"
 							]
 						}
 					},
@@ -1814,13 +1813,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/doctors/66fa09a50e53f485a3c4a4a9",
+							"raw": "{{host}}/doctors/66f5ddb9f313152e19c0ecd1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"doctors",
-								"66fa09a50e53f485a3c4a4a9"
+								"66f5ddb9f313152e19c0ecd1"
 							]
 						}
 					},
@@ -1848,7 +1847,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"number\": \"123\",\r\n    \"observation\": \"string\",\r\n    \"medicalRecordId\": \"66fa00eab3ec51aeffd3e7ed\"\r\n}",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"cpf\": st\"r\"ing,\r\n    \"phone\": \"string\",\r\n    \"registration\": \"string\",\r\n    \"crm\": \"string\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1910,13 +1909,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/transferdocs/66fa0b90c3ea7faf8ef79e50",
+							"raw": "{{host}}/transferdocs",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"transferdocs",
-								"66fa0b90c3ea7faf8ef79e50"
+								"transferdocs"
 							]
 						}
 					},
@@ -1939,7 +1937,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"number\": \"123321\",\r\n    \"observation\": \"string\",\r\n    \"medicalRecordId\": \"66fa00eab3ec51aeffd3e7ed\"\r\n}",
+							"raw": "{\r\n    \"name\": \"HUGOL\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1947,13 +1945,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/transferdocs/66fa0b90c3ea7faf8ef79e50",
+							"raw": "{{host}}/transferdocs",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"transferdocs",
-								"66fa0b90c3ea7faf8ef79e50"
+								"transferdocs"
 							]
 						}
 					},
@@ -1975,13 +1972,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/transferdocs/66fa0b90c3ea7faf8ef79e50",
+							"raw": "{{host}}/transferdocs",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"transferdocs",
-								"66fa0b90c3ea7faf8ef79e50"
+								"transferdocs"
 							]
 						}
 					},
@@ -2009,7 +2005,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"originDoctorId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"destinationDoctorId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"patientId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"requestId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"regulatoryDoctorId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"transport\":\"LAND\",\r\n    \"timeOfExit\": \"2024-09-30T02:23:11.792Z\"\r\n}",
+							"raw": "{\r\n    \"name\": \"string\",\r\n    \"cpf\": st\"r\"ing,\r\n    \"phone\": \"string\",\r\n    \"registration\": \"string\",\r\n    \"crm\": \"string\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2071,13 +2067,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/transfers/66fa11cc585c43e374ece272",
+							"raw": "{{host}}/transfers/66f5f640a4662ee7cff847c7",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"transfers",
-								"66fa11cc585c43e374ece272"
+								"66f5f640a4662ee7cff847c7"
 							]
 						}
 					},
@@ -2100,7 +2096,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"originDoctorId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"destinationDoctorId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"patientId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"requestId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"regulatoryDoctorId\":\"66fa0b90c3ea7faf8ef79e50\",\r\n    \"transport\":\"LAND\",\r\n    \"timeOfExit\": \"2024-09-30T02:23:11.792Z\"\r\n}",
+							"raw": "{\r\n    \"name\": \"HUGOL\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2108,13 +2104,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/transfers/66fa11cc585c43e374ece272",
+							"raw": "{{host}}/transferdocs",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"transfers",
-								"66fa11cc585c43e374ece272"
+								"transferdocs"
 							]
 						}
 					},
@@ -2136,13 +2131,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/transfers/66fa11cc585c43e374ece272",
+							"raw": "{{host}}/transferdocs",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"transfers",
-								"66fa11cc585c43e374ece272"
+								"transferdocs"
 							]
 						}
 					},
@@ -2205,12 +2199,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/medrecords",
+							"raw": "{{host}}/medrecords/66f5f0e26d9acbb414a148f4",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"medrecords"
+								"medrecords",
+								"66f5f0e26d9acbb414a148f4"
 							]
 						}
 					},
@@ -2232,13 +2227,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/medrecords/66fa117c585c43e374ece270",
+							"raw": "{{host}}/doctors/66f5ddb9f313152e19c0ecd1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"medrecords",
-								"66fa117c585c43e374ece270"
+								"doctors",
+								"66f5ddb9f313152e19c0ecd1"
 							]
 						}
 					},
@@ -2261,7 +2256,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"patientId\": \"66f5ece0584070a4ea631f3b\"\r\n}",
+							"raw": "{\r\n    \"name\": \"HUGOL\",\r\n    \"phone\": \"62888888888\",\r\n    \"latitude\": -4.8151959,\r\n    \"longitude\": -8.80190150,\r\n    \"availableBeds\": 10,\r\n    \"icuAvailable\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2269,13 +2264,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/medrecords/66fa117c585c43e374ece270",
+							"raw": "{{host}}/medrecords/66f5ddb9f313152e19c0ecd1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"medrecords",
-								"66fa117c585c43e374ece270"
+								"66f5ddb9f313152e19c0ecd1"
 							]
 						}
 					},
@@ -2297,13 +2292,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/medrecords/66fa118a585c43e374ece271",
+							"raw": "{{host}}/medrecords/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"medrecords",
-								"66fa118a585c43e374ece271"
+								""
 							]
 						}
 					},

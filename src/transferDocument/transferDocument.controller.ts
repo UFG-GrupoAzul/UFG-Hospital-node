@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
-import {TransferDocumentService} from './transferDocument.service';
+import { TransferDocumentService } from './transferDocument.service';
 
 class TransferDocumentController {
 
@@ -11,29 +11,32 @@ class TransferDocumentController {
     }
 
     create = async (req: Request, res: Response) => {
+
+
         try {
             const {number, observation, medicalRecordId} = req.body
             this.isValidResponse(number, observation, medicalRecordId)
             const transferDocument = await this.transferDocumentService.create(number, observation, medicalRecordId);
             return res.status(201).json(transferDocument)
+
         } catch (error) {
             Util.handleError(res, error, "Error creating document transfer.");
         }
     }
 
     findAll = async (req: Request, res: Response) => {
-        try {
+        try{
             const transferDocuments = await this.transferDocumentService.getAll()
             return res.status(200).json(transferDocuments);
-        } catch (error) {
+        }catch(error){
             Util.handleError(res, error, "Error fetching document transfer.");
         }
     }
 
     update = async (req: Request, res: Response) => {
-        try {
+        try{
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
 
             const {number, observation, medicalRecordId} = req.body
             this.isValidResponse(number, observation, medicalRecordId)
@@ -42,7 +45,7 @@ class TransferDocumentController {
             return res.status(200).json(transferDocumentUpdated)
 
 
-        } catch (error) {
+        }catch (error){
             Util.handleError(res, error, "Error updating document transfer.");
         }
     }
@@ -50,7 +53,7 @@ class TransferDocumentController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
 
             const transferDocument = await this.transferDocumentService.getById(id)
             return res.status(200).json(transferDocument);
@@ -61,22 +64,22 @@ class TransferDocumentController {
     }
 
     delete = async (req: Request, res: Response) => {
-        try {
+        try{
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
 
             const transferDocument = await this.transferDocumentService.delete(id)
 
             return res.status(204).json(transferDocument);
-        } catch (error) {
+        }catch (error){
             Util.handleError(res, error, "Error deleting document transfer.");
         }
-    }
+    } 
 
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const transferDocument = await this.transferDocumentService.getById(id);
             if (!transferDocument) {
                 return res.status(404).json({error: "Document transfer not found."});
@@ -88,14 +91,10 @@ class TransferDocumentController {
     }
 
 
-    private isValidIdEntity(id: any) {
-        Util.validId(id, "transfer document");
-    }
-
     private isValidResponse(number: any, observation: any, medicalRecordId: any) {
         Util.validString(number, "number");
         Util.validString(observation, "observation");
-        Util.validId(medicalRecordId, "medicalRecordId");
+        Util.validId(medicalRecordId);
     }
 }
 

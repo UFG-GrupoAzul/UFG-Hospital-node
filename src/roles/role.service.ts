@@ -1,88 +1,88 @@
 import {prisma} from "../index";
 
-class PositionService {
+class RoleService {
 
     async create(description: string) {
-        const positionExist = await this.findByDescription(description);
-        if (positionExist) {
-            throw new Error("Position already exists in the database.");
+        const roleExist = await this.findByDescription(description);
+        if (roleExist) {
+            throw new Error("Role already exists in the database.");
         }
         try {
-            return await prisma.position.create({
+            return await prisma.role.create({
                 data: {
                     description
                 }
             });
         } catch (error) {
-            console.log(`Error creating position: ${error}`);
+            console.log(`Error creating role: ${error}`);
             throw error;
         }
     }
 
     async findByDescription(description: string) {
         try {
-            return await prisma.position.findUnique({
+            return await prisma.role.findUnique({
                 where: {description}
             });
         } catch (error) {
-            console.log(`Error fetching position: ${error}`);
+            console.log(`Error fetching role: ${error}`);
             throw error;
         }
     }
 
     async update(id: string, description: string) {
-        const positionExist = await this.findByDescription(description);
+        const roleExist = await this.findByDescription(description);
 
-        if (positionExist && positionExist.id != id) {
-            throw new Error("Position already exists in the database.");
+        if (roleExist && roleExist.id != id) {
+            throw new Error("Role already exists in the database.");
         }
         try {
-            return await prisma.position.update({
+            return await prisma.role.update({
                 where: {id},
                 data: {
                     description
                 }
             });
         } catch (error) {
-            console.log(`Error updating position: ${error}`);
+            console.log(`Error updating role: ${error}`);
             throw error;
         }
     }
 
     async delete(id: string) {
         try {
-            await prisma.position.delete({
+            await prisma.role.delete({
                 where: {id}
             });
         } catch (error) {
-            console.log(`Error deleting position: ${error}`);
+            console.log(`Error deleting role: ${error}`);
             throw error;
         }
     }
 
     async findAll() {
         try {
-            return await prisma.position.findMany({
+            return await prisma.role.findMany({
                 orderBy: {
                     description: "asc"
                 }
             });
         } catch (error) {
-            console.log(`Error fetching position: ${error}`);
+            console.log(`Error fetching role: ${error}`);
             throw error;
         }
     }
 
     async findById(id: string) {
         try {
-            return await prisma.position.findUnique({
+            return await prisma.role.findUnique({
                 where: {id}
             });
         } catch (error) {
-            console.log(`Error fetching position: ${error}`);
+            console.log(`Error fetching role: ${error}`);
             throw error;
         }
     }
 }
 
-export {PositionService};
+export {RoleService};

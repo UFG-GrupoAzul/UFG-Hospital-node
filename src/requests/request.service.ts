@@ -23,7 +23,6 @@ class RequestService {
      * Somente será possível trocar a especialidade da requisição, qualquer outro dados deve alterar no modelo necessário.
      * @param id
      * @param specialtyId
-     * @param classification
      */
     async update(id: string, specialtyId: string, classification: Classification) {
         try {

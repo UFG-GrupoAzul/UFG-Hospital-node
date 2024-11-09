@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {Util} from "../utils/util";
-import {MedicalRecordService} from './medicalRecord.service';
+import { MedicalRecordService } from './medicalRecord.service';
 
 class MedicalRecordController {
 
@@ -16,15 +16,15 @@ class MedicalRecordController {
             this.isValidResponse(patientId)
             const medicalRecord = await this.medicalRecordService.create(patientId)
             return res.status(201).json(medicalRecord)
-        } catch (error) {
+          } catch (error) {
             Util.handleError(res, error, "Error creating medical record.");
-        }
+          }
     }
 
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
 
             const {patientId} = req.body
             this.isValidResponse(patientId)
@@ -34,13 +34,13 @@ class MedicalRecordController {
         } catch (error) {
             Util.handleError(res, error, "Error updating medical record.");
         }
-    }
+      }
 
 
     findAll = async (req: Request, res: Response) => {
         try {
-            const medicalRecords = await this.medicalRecordService.getAll();
-            return res.status(200).json(medicalRecords);
+          const medicalRecords = await this.medicalRecordService.getAll();
+          return res.status(200).json(medicalRecords);
         } catch (error) {
             Util.handleError(res, error, "Error fetching medical record.");
         }
@@ -48,13 +48,13 @@ class MedicalRecordController {
 
     findById = async (req: Request, res: Response) => {
         try {
-            const id = req.params.id;
-            this.isValidIdEntity(id);
+          const id = req.params.id;
+          Util.validId(id);
 
 
-            const medicalRecord = await this.medicalRecordService.getById(id);
-            return res.status(200).json(medicalRecord);
-
+          const medicalRecord = await this.medicalRecordService.getById(id);
+          return res.status(200).json(medicalRecord);
+          
         } catch (error) {
             Util.handleError(res, error, "Error finding medical record.");
         }
@@ -62,24 +62,21 @@ class MedicalRecordController {
 
     delete = async (req: Request, res: Response) => {
         try {
-            const id = req.params.id;
-            this.isValidIdEntity(id);
+          const id = req.params.id;
+          Util.validId(id);
 
-            const medicalRecord = await this.medicalRecordService.delete(id);
-            res.status(204).send(medicalRecord);
+          const medicalRecord = await this.medicalRecordService.delete(id);
+          res.status(204).send(medicalRecord);
         } catch (error) {
             Util.handleError(res, error, "Error deleting medical record.");
         }
-    }
+      }
 
-    private isValidIdEntity(id: any) {
-        Util.validId(id, "medical record");
-    }
 
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const medicalRecord = await this.medicalRecordService.getById(id);
             if (!medicalRecord) {
                 return res.status(404).json({error: "Medical record not found."});

@@ -1,10 +1,7 @@
 import {prisma} from "../index";
 import {Gender} from "@prisma/client";
-import {personService} from "../persons/person.service";
 
 class RegulatoryDoctorService {
-    private readonly dType = "RegulatoryDoctor";
-    private readonly fieldName = "regulatory doctor";
 
     async create(name: string, cpf: string, phone: string, crm: string, insurance: string, gender: Gender) {
         const regulatoryDoctorExists = await this.findByCrm(crm);
@@ -12,12 +9,20 @@ class RegulatoryDoctorService {
             throw new Error("Regulatory Doctor already exists in the database");
         }
         try {
-            const person = await personService.create(name, cpf, phone, gender, this.dType, this.fieldName);
             return await prisma.regulatoryDoctor.create({
                 data: {
                     crm,
                     insurance,
-                    id: person.id
+                    person: {
+                        create: {
+                            id: undefined,
+                            name,
+                            cpf,
+                            phone,
+                            gender,
+                            dType: "RegulatoryDoctor"
+                        }
+                    }
                 }, include: {
                     person: true
                 }
@@ -34,12 +39,20 @@ class RegulatoryDoctorService {
             throw new Error("Regulatory Doctor already exists in the database.");
         }
         try {
-            await personService.update(id, name, cpf, phone, gender, this.dType, this.fieldName);
             return await prisma.regulatoryDoctor.update({
                 where: {id},
                 data: {
                     crm,
-                    insurance
+                    insurance,
+                    person: {
+                        update: {
+                            name,
+                            cpf,
+                            phone,
+                            gender,
+                            dType: "RegulatoryDoctor"
+                        }
+                    }
                 }, include: {
                     person: true
                 }
@@ -91,7 +104,6 @@ class RegulatoryDoctorService {
     async delete(id: string) {
         try {
             await prisma.regulatoryDoctor.delete({where: {id}})
-            await prisma.person.delete({where: {id}})
         } catch (error) {
             console.log(`Error deleting regulatory doctor: ${error}`);
             throw error;

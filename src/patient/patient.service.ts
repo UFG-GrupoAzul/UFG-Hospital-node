@@ -1,20 +1,40 @@
 import {PrismaClient, Patient, Gender} from '@prisma/client';
 import {prisma} from "../index";
 import {BloodType} from "@prisma/client"
-import {personService} from "../persons/person.service";
 
 class PatientService {
-    private readonly dType = "Patient";
-    private readonly fieldName = "patient";
+    prisma: PrismaClient;
 
-    async create(name: string, cpf: string, phone: string, birthDate: Date, bloodType: BloodType, gender: Gender) {
-        const person = await personService.create(name, cpf, phone, gender, this.dType, this.fieldName);
+    constructor() {
+        this.prisma = prisma;
+    }
+
+    async create(name: string,
+                 cpf: string,
+                 phone: string,
+                 birthDate: Date,
+                 bloodType: BloodType,
+                 gender: Gender)
+                 {
+        const patientExists = await this.findByCpf(cpf);
+        if (patientExists) {
+            throw new Error("Patient already exists in the database");
+        }
+
         try {
-            return await prisma.patient.create({
+            return await this.prisma.patient.create({
                 data: {
                     birthDate,
                     bloodType,
-                    id: person.id
+                    person: {
+                        create: {
+                            name,
+                            cpf,
+                            phone,
+                            gender,
+                            dType: "Patient"
+                        }
+                    }
                 }, include: {
                     person: true
                 }
@@ -25,14 +45,32 @@ class PatientService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, birthDate: Date, bloodType: BloodType, gender: Gender) {
+    async update(id: string,
+                 name: string,
+                 cpf: string,
+                 phone: string,
+                 birthDate: Date,
+                 bloodType: BloodType,
+                 gender: Gender): Promise<Patient> {
+        const patientExists = await this.findByCpf(cpf);
+        if (patientExists && patientExists.id != id) {
+            throw new Error("This CPF already exists in the database.");
+        }
+
         try {
-            await personService.update(id, name, cpf, phone, gender, this.dType, this.fieldName);
-            return await prisma.patient.update({
+            return await this.prisma.patient.update({
                 where: {id},
                 data: {
                     birthDate,
-                    bloodType
+                    bloodType,
+                    person: {
+                        update: {
+                            name,
+                            cpf,
+                            phone,
+                            gender
+                        }
+                    }
                 }, include: {
                     person: true
                 }
@@ -43,9 +81,9 @@ class PatientService {
         }
     }
 
-    async findById(id: string) {
+    async findById(id: string): Promise<Patient | null> {
         try {
-            return await prisma.patient.findUnique({
+            return await this.prisma.patient.findUnique({
                 where: {id},
                 include: {
                     person: true
@@ -57,9 +95,9 @@ class PatientService {
         }
     }
 
-    async findAll() {
+    async findAll(): Promise<Patient[]> {
         try {
-            return await prisma.patient.findMany({
+            return await this.prisma.patient.findMany({
                 include: {
                     person: true
                 }
@@ -70,12 +108,29 @@ class PatientService {
         }
     }
 
-    async delete(id: string) {
+    async delete(id: string): Promise<void> {
+        const patientExists = await this.findById(id);
+        if (!patientExists) {
+            throw new Error("The Patient does not exist in the database.");
+        }
+
         try {
-            await prisma.patient.delete({where: {id}});
-            await prisma.person.delete({where: {id}});
+            await this.prisma.patient.delete({
+                where: {id},
+            });
         } catch (error) {
             console.log(`Error deleting patient: ${error}`);
+            throw error;
+        }
+    }
+
+    private async findByCpf(cpf: string) {
+        try {
+            return await prisma.person.findUnique({
+                where: {cpf}
+            })
+        } catch (error) {
+            console.log(`Error fetching employee: ${error}`);
             throw error;
         }
     }

@@ -1,18 +1,31 @@
 import {prisma} from "../index";
 import {Gender} from "@prisma/client";
-import {employeeService} from "../employees/employee.controller";
 
 class DoctorService {
-    private readonly dType = "Doctor";
-    private readonly fieldName = "doctor";
 
-    async create(name: string, cpf: string, phone: string, registration: string, positionId: string, crm: string, gender: Gender): Promise<any> {
+    async create(name: string, cpf: string, phone: string, registration: string, crm: string, gender: Gender): Promise<any> {
+        // const employeeExist = await this.findByCpf(cpf);
+        // if (employeeExist && employeeExist.id != id) {
+        //     throw new Error("Employee already exists in the database.");
+        // }
         try {
-            const employee = await employeeService.create(registration, positionId, name, cpf, phone, gender, this.dType, this.fieldName);
             return await prisma.doctor.create({
                 data: {
                     crm,
-                    id: employee.id
+                    Employee: {
+                        create: {
+                            registration,
+                            person: {
+                                create: {
+                                    name,
+                                    cpf,
+                                    phone,
+                                    gender,
+                                    dType: "Doctor"
+                                }
+                            }
+                        }
+                    }
                 },
                 select: {
                     id: true,
@@ -38,13 +51,31 @@ class DoctorService {
         }
     }
 
-    async update(id: string, name: string, cpf: string, phone: string, registration: string, positionId: string, crm: string, gender: Gender) {
+    async update(id: string, name: string, cpf: string, phone: string, registration: string, crm: string, gender: Gender) {
         try {
-            await employeeService.update(id, registration, positionId, name, cpf, phone, gender, this.dType, this.fieldName);
+            const doctorExists = await this.findByCpf(cpf);
+
+            if (doctorExists && doctorExists.id != id) {
+                throw new Error("Doctor already exists with this CPF.");
+            }
+
             return await prisma.doctor.update({
                 where: {id},
                 data: {
-                    crm
+                    crm,
+                    Employee: {
+                        update: {
+                            registration,
+                            person: {
+                                update: {
+                                    name,
+                                    cpf,
+                                    phone,
+                                    gender
+                                }
+                            }
+                        }
+                    }
                 },
                 select: {
                     id: true,
@@ -125,14 +156,24 @@ class DoctorService {
 
     async delete(id: string) {
         try {
-            await prisma.doctor.delete({where: {id}});
-            await prisma.person.delete({where: {id}});
+            return await prisma.doctor.delete({where: {id: id},})
+
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
+    private async findByCpf(cpf: string) {
+        try {
+            return await prisma.person.findUnique({
+                where: {cpf}
+            })
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
 
 export {DoctorService};

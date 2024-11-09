@@ -21,7 +21,8 @@ class PrescribedDrugController {
                 drugId,
                 dosageUnit
             } = req.body;
-            this.isValidRequest(dosageInfo, dosageAmount, administration, administrationDate, medicalRecordId, drugId, dosageUnit);
+            // this.isValidRequest(name, activeIngredient, description);
+            this.isValidateEnum(dosageUnit);
             const prescribedDrugs = await this.prescribedDrugService.create(dosageInfo,
                     dosageAmount,
                     administration,
@@ -40,7 +41,7 @@ class PrescribedDrugController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const {
                 dosageInfo,
                 dosageAmount,
@@ -50,7 +51,8 @@ class PrescribedDrugController {
                 drugId,
                 dosageUnit
             } = req.body;
-            this.isValidRequest(dosageInfo, dosageAmount, administration, administrationDate, medicalRecordId, drugId, dosageUnit);
+            // this.isValidRequest(name, activeIngredient, description);
+            this.isValidateEnum(dosageUnit);
             const prescribedDrugs = await this.prescribedDrugService.update(id,
                 dosageInfo,
                 dosageAmount,
@@ -68,7 +70,7 @@ class PrescribedDrugController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             await this.prescribedDrugService.delete(id);
             return res.status(204).json({msg: "Deleting prescribed drugs."});
         } catch (error) {
@@ -88,7 +90,7 @@ class PrescribedDrugController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const prescribedDrugs = await this.prescribedDrugService.findById(id);
 
             if (!prescribedDrugs) {
@@ -104,7 +106,7 @@ class PrescribedDrugController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const prescribedDrugs = await this.prescribedDrugService.findById(id);
             if (!prescribedDrugs) {
                 return res.status(404).json({msg: "No prescribed drugs found"});
@@ -115,26 +117,18 @@ class PrescribedDrugController {
         }
     }
 
-    private isValidIdEntity(id: any) {
-        Util.validId(id, "prescribed drug");
+
+    private isValidRequest(name: any, activeIngredient: any, description: any) {
+        // Util.validString(name, "name");
+        // Util.validString(activeIngredient, "activeIngredient");
+        // Util.validString(description, "description");
     }
 
-    private isValidRequest(dosageInfo: any,
-                           dosageAmount: any,
-                           administration: any,
-                           administrationDate: any,
-                           medicalRecordId: any,
-                           drugId: any,
-                           dosageUnit: any) {
-        Util.validString(dosageInfo, "dosageInfo");
-        Util.validString(dosageAmount, "dosageAmount");
-        Util.validString(administration, "administration");
-        Util.validString(administrationDate, "administrationDate");
-        Util.validId(medicalRecordId, "medicalRecordId");
-        Util.validId(drugId, "drugId");
-        Util.validEnum(DosageUnit, dosageUnit, "dosageUnit");
+    private isValidateEnum(dosageUnitEnum: any) {
+        if (!Object.values(DosageUnit).includes(dosageUnitEnum)) {
+            throw new Error(`Invalid dosage unit. Enter one of the following values: ${Object.values(DosageUnit)}`);
+        }
     }
-
 }
 
 const prescribedDrugService = new PrescribedDrugService();

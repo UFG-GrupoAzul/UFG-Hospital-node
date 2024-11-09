@@ -11,7 +11,7 @@ class DrugsController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {name, activeIngredient, description} = req.body;
+            const { name, activeIngredient, description } = req.body;
             this.isValidRequest(name, activeIngredient, description);
             const drugs = await this.drugsService.create(name, activeIngredient, description);
             return res.status(201).json(drugs);
@@ -23,8 +23,8 @@ class DrugsController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
-            const {name, activeIngredient, description} = req.body;
+            Util.validId(id);
+            const { name, activeIngredient, description } = req.body;
             this.isValidRequest(name, activeIngredient, description);
             const drugs = await this.drugsService.update(id, name, activeIngredient, description);
             return res.status(200).json(drugs);
@@ -36,7 +36,7 @@ class DrugsController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             await this.drugsService.delete(id);
             return res.status(204).json({msg: "Deleting drugs."});
         } catch (error) {
@@ -56,7 +56,7 @@ class DrugsController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const drugs = await this.drugsService.findById(id);
 
             if (!drugs) {
@@ -72,7 +72,7 @@ class DrugsController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            this.isValidIdEntity(id);
+            Util.validId(id);
             const drugs = await this.drugsService.findById(id);
             if (!drugs) {
                 return res.status(404).json({msg: "No drugs found"});
@@ -81,10 +81,6 @@ class DrugsController {
         } catch (error) {
             Util.handleError(res, error, `Error verifying drugs. ${error}`);
         }
-    }
-
-    private isValidIdEntity(id: any) {
-        Util.validId(id, "drugs");
     }
 
     private isValidRequest(name: any, activeIngredient: any, description: any) {
