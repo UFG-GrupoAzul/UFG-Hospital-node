@@ -24,7 +24,7 @@ class SpecialtyController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const {name, description} = req.body;
             this.isValidRequest(name, description);
             const specialtyUpdated = await this.specialtyService.update(id, name, description);
@@ -37,7 +37,7 @@ class SpecialtyController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             await this.specialtyService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
@@ -56,7 +56,7 @@ class SpecialtyController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const specialty = await this.specialtyService.findById(id);
 
             if (!specialty) {
@@ -71,7 +71,7 @@ class SpecialtyController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const specialty = await this.specialtyService.findById(id);
             if (!specialty) {
                 return res.status(404).json({error: "Specialty not found."});
@@ -80,6 +80,10 @@ class SpecialtyController {
         } catch (error) {
             Util.handleError(res, error, "Error fetching specialties.");
         }
+    }
+
+    private isValidIdEntity(id: any) {
+        Util.validId(id, "specialty");
     }
 
     private isValidRequest(name: any, description: any) {

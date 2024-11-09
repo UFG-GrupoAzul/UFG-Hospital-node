@@ -24,7 +24,7 @@ class UserController {
     update = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const {name, email, password, permission} = req.body;
             this.isValidRequest(name, email, password, permission);
             const userUpdated = await this.userService.update(id, name, email, password, permission);
@@ -37,7 +37,7 @@ class UserController {
     delete = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             await this.userService.delete(id);
             return res.status(204).json({msg: "Deleted"});
         } catch (error) {
@@ -56,7 +56,7 @@ class UserController {
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const user = await this.userService.findById(id);
 
             if (!user) {
@@ -71,7 +71,7 @@ class UserController {
     verifyIfExists = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            Util.validId(id);
+            this.isValidIdEntity(id);
             const user = await this.userService.findById(id);
             if (!user) {
                 return res.status(404).json({error: "User not found."});
@@ -82,8 +82,12 @@ class UserController {
         }
     }
 
+    private isValidIdEntity(id: any) {
+        Util.validId(id, "user");
+    }
+
     private isValidRequest(name: any, email: any, password: any, permission: any) {
-        Util.validString(password, "name");
+        Util.validString(password, "password");
         Util.validString(name, "name");
         Util.validString(email, "email");
         Util.validString(permission, "permission");
