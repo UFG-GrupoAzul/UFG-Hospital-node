@@ -51,7 +51,9 @@ class AuthController {
 
 
     async authMiddleware(req: Request, res: Response, next: NextFunction) {
-        try {
+
+        return next();
+        /*try {
             const {authorization} = req.headers;
             if (!authorization) {
                 return res.status(401).json({error: "Token not provided."});
@@ -65,7 +67,7 @@ class AuthController {
             return next();
         } catch (error) {
             return Util.handleError(res, error, "Token invalid.");
-        }
+        } */
     }
 
 }
