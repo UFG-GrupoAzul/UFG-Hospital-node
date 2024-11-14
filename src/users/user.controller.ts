@@ -12,7 +12,10 @@ class UserController {
 
     create = async (req: Request, res: Response) => {
         try {
-            const {name, email, password, permission} = req.body;
+            let {name, email, password, permission} = req.body;
+            if (!permission) {
+                permission = 'NO_PERMISSION';
+            }
             this.isValidRequest(name, email, permission);
             this.validPassword(password);
             const user = await this.userService.create(name, email, password, permission);
@@ -26,7 +29,10 @@ class UserController {
         try {
             const id = req.params.id;
             Util.validId(id);
-            const {name, email, password, permission} = req.body;
+            let {name, email, password, permission} = req.body;
+            if (!permission) {
+                permission = 'NO_PERMISSION';
+            }
             this.isValidRequest(name, email, permission);
             const userUpdated = await this.userService.update(id, name, email, password, permission);
             return res.status(200).json(userUpdated);
@@ -59,7 +65,6 @@ class UserController {
             const id = req.params.id;
             Util.validId(id);
             const user = await this.userService.findById(id);
-
             if (!user) {
                 return res.status(404).json({error: "User not found."});
             }
@@ -90,9 +95,6 @@ class UserController {
     private isValidRequest(name: any, email: any, permission: any) {
         Util.validString(name, "name");
         Util.validString(email, "email");
-        if (!permission) {
-            permission = 'NO_PERMISSION';
-        }
         Util.validString(permission, "permission");
     }
 }
