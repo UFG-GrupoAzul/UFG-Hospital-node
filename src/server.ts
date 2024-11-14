@@ -6,7 +6,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({ origin: "http://localhost:5500" }));
+app.use(cors({ origin: '*' }));
+
 app.use(router);
 
 app.listen(3001, () => console.log("Tecnologia suficientemente avançada é dificilmente diferenciável de magia.\nEsse Trabalho vale uma pizza ☺ . "));
