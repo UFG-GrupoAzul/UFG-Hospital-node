@@ -56,15 +56,18 @@ class UserService {
         if (userExist && userExist.id != id) {
             throw new Error("User already exists in the database.");
         }
-        const hashPassword = await this.getHashPassword(password);
+        let hashPassword = null;
+        if (password) {
+            hashPassword = await this.getHashPassword(password);
+        }
         try {
             return await prisma.user.update({
                 where: {id},
                 data: {
                     name,
                     email,
-                    password: hashPassword,
-                    permission
+                    permission,
+                    ...(hashPassword && { password: hashPassword })
                 },
                 select: {
                     id: true,
@@ -102,6 +105,7 @@ class UserService {
                     id: true,
                     name: true,
                     email: true,
+                    permission: true,
                     password: false,
                     createdAt: true,
                     updatedAt: true
@@ -121,6 +125,7 @@ class UserService {
                     id: true,
                     name: true,
                     email: true,
+                    permission: true,
                     password: false,
                     createdAt: true,
                     updatedAt: true
