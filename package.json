@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run  build --output public",
     "dev": "ts-node-dev src/server.ts"
   },
   "devDependencies": {
