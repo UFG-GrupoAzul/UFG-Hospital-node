@@ -10,4 +10,8 @@ app.use(cors({ origin: '*' }));
 
 app.use(router);
 
-app.listen(3001, () => console.log("Tecnologia suficientemente avançada é dificilmente diferenciável de magia.\nEsse Trabalho vale uma pizza ☺ . "));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("Tecnologia suficientemente avançada é dificilmente diferenciável de magia.\nEsse Trabalho vale uma pizza ☺ . ")
+});
