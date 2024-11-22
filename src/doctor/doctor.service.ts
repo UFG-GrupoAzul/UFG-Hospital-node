@@ -114,7 +114,9 @@ class DoctorService {
                                 select: {
                                     cpf: true,
                                     phone: true,
-                                    name: true
+                                    name: true,
+                                    gender: true
+
                                 }
                             }
                         }
