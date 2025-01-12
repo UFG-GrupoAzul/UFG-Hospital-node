@@ -188,8 +188,8 @@ model Specialty {
 
 // Enums traduzidos para inglês e com valores representativos
 enum Gender {
-  MALE   @map("Male")
-  FEMALE @map("Female")
+  MALE   @map("Masculino")
+  FEMALE @map("Feminino")
 }
 
 enum BloodType {
@@ -201,7 +201,7 @@ enum BloodType {
   O_NEGATIVE  @map("O-")
   AB_POSITIVE @map("AB+")
   AB_NEGATIVE @map("AB-")
-  UNDEFINED   @map("Undefined")
+  UNDEFINED   @map("Indefinido")
 }
 
 enum Classification {

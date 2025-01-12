@@ -15,7 +15,7 @@ import medicalRecordRoute from "./medicalRecord/medicalRecord.route";
 import patientRoutes from "./patient/patient.route";
 import requestRoute from "./requests/request.route";
 import prescribedDrugRoute from "./prescribleDrugs/prescribedDrug.route";
-
+import enumsRoute from "./enums/enums.route";
 
 const router = Router();
 
@@ -24,6 +24,7 @@ router.use("/users", authController.authMiddleware, userRoute);
 router.use("/doctors", authController.authMiddleware, doctorRoute);
 router.use("/drugs", authController.authMiddleware, drugsRoute);
 router.use("/employees", authController.authMiddleware, employeeRoute);
+router.use("/enums", enumsRoute);
 router.use("/hospitals", authController.authMiddleware, hospitalRoute);
 router.use("/medrecords", authController.authMiddleware, medicalRecordRoute);
 router.use("/patients", authController.authMiddleware, patientRoutes);
