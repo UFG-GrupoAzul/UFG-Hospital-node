@@ -25,7 +25,7 @@ class PatientController {
             this.isValidateEnum(bloodType);
             this.isValidRequest(name,cpf,phone, birthDate);
             this.isEnumValid(gender)
-            const patient = await this.patientService.create(name, cpf, phone, birthDate, bloodType,gender)
+            const patient = await this.patientService.create(name, cpf, phone, new Date(birthDate), bloodType,gender)
             return res.status(201).json(patient);
 
         } catch (error) {
@@ -48,7 +48,7 @@ class PatientController {
             this.isValidateEnum(bloodType);
             this.isValidRequest(name, cpf, phone, birthDate)
             this.isEnumValid(gender)
-            const patientUpdated = await this.patientService.update(id, name, cpf, phone, birthDate, bloodType, gender);
+            const patientUpdated = await this.patientService.update(id, name, cpf, phone, new Date(birthDate), bloodType, gender);
             return res.status(200).json(patientUpdated);
         } catch (error) {
             Util.handleError(res, error, "Error updating patient.");

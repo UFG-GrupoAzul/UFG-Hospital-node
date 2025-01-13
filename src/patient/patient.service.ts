@@ -24,7 +24,7 @@ class PatientService {
         try {
             return await this.prisma.patient.create({
                 data: {
-                    birthDate,
+                    birthDate ,
                     bloodType,
                     person: {
                         create: {
