@@ -70,7 +70,7 @@ class RequestService {
                     createdAt: "desc",
                 },
                 where:{
-                    isComplete: true
+                    isComplete: false
                 }
             });
         } catch (error) {
