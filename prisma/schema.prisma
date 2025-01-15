@@ -160,8 +160,8 @@ model Request {
   patientId          String           @db.ObjectId
   specialty          Specialty        @relation(fields: [specialtyId], references: [id])
   specialtyId        String           @db.ObjectId
-  TransferDocument   TransferDocument @relation(fields: [transferDocumentId], references: [id])
-  transferDocumentId String           @unique @db.ObjectId
+  TransferDocument   TransferDocument? @relation(fields: [transferDocumentId], references: [id])
+  transferDocumentId String?           @unique @db.ObjectId
   Transfer           Transfer?
   classification     Classification   @default(TERTIARY)
 }
