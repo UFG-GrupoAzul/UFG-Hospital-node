@@ -11,6 +11,17 @@ class RequestController {
         this.requestService = requestService;
     }
 
+    updateComplete = async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            Util.validId(id);
+            const requestUpdated = this.requestService.isComplete(id);
+            return res.status(200).json(requestUpdated);
+        } catch (error) {
+            Util.handleError(res, error, `Error creating request. ${error}`)
+        }
+    }
+
     create = async (req: Request, res: Response) => {
         try {
             const {patientId, specialtyId, transferDocumentId, classification} = req.body;

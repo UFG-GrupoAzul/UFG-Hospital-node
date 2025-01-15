@@ -74,12 +74,13 @@ class RequestService {
         }
     }
 
-    private isComplete(id: string) {
+    async isComplete(id: string) {
         try {
             return await prisma.request.update({
+
                 where: {id},
                 data: {
-                    isComplete: true                    
+                   isComplete: true
                 }
             })
         } catch (error) {
