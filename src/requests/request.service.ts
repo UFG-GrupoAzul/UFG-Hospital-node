@@ -73,6 +73,20 @@ class RequestService {
             throw error;
         }
     }
+
+    private isComplete(id: string) {
+        try {
+            return await prisma.request.update({
+                where: {id},
+                data: {
+                    isComplete: true                    
+                }
+            })
+        } catch (error) {
+            console.log(`Error creating request: ${error}`);
+            throw error;
+        }
+    }
 }
 
 export {RequestService};
