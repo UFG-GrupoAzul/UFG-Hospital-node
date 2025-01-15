@@ -63,6 +63,22 @@ class RequestService {
         }
     }
 
+    async findAllCompleteFiltered() {
+        try {
+            return await prisma.request.findMany({
+                orderBy: {
+                    createdAt: "desc",
+                },
+                where:{
+                    isComplete: true
+                }
+            });
+        } catch (error) {
+            console.log(`Error fetching request: ${error}`);
+            throw error;
+        }
+    }
+
     async findById(id: string) {
         try {
             return await prisma.request.findUnique({
@@ -80,7 +96,7 @@ class RequestService {
 
                 where: {id},
                 data: {
-                   isComplete: true
+                    isComplete: true
                 }
             })
         } catch (error) {

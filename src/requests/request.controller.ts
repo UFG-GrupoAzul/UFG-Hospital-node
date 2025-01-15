@@ -62,6 +62,17 @@ class RequestController {
             Util.handleError(res, error, `Error creating drugs. ${error}`)
         }
     }
+
+    findAllCompleteFiltered = async (req: Request, res: Response) => {
+        try {
+            const request = await this.requestService.findAllCompleteFiltered();
+            return res.status(200).json(request);
+        } catch (error) {
+            Util.handleError(res, error, `Error creating drugs. ${error}`)
+        }
+    }
+
+
     findById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
